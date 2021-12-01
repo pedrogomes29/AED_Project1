@@ -18,13 +18,14 @@ private:
     unsigned capacity;
     unsigned number;
     double duration;
-    Schedule date_of_departure;
+    Schedule schedule;
     string origin;
     string destination;
     vector<Passenger> passengers;
 public:
     Flight(unsigned capacity,unsigned number,double duration,const string& date_of_departure, unsigned hour,unsigned minute, string origin,
            string destination, vector<Passenger> passengers);
+    Schedule get_schedule()const;
     bool add_passenger(Passenger p);
 };
 

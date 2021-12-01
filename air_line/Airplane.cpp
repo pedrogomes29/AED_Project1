@@ -11,5 +11,5 @@ Airplane::Airplane(string _license_plate,string _type,unsigned _capacity){
 }
 
 bool Airplane::add_flight(Flight f){
-
+    
 }
