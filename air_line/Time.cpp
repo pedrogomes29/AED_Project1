@@ -14,9 +14,9 @@ Time::Time(unsigned int hour, unsigned int time) {
 }
 
 
-unsigned Time::get_hour(){
+unsigned Time::get_hour() const{
     return hour;
 }
-unsigned Time::get_minute(){
+unsigned Time::get_minute() const{
     return minute;
 }

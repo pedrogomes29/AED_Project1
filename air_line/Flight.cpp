@@ -9,12 +9,16 @@ Flight::Flight(unsigned capacity,unsigned number,double duration,const string& d
 this->capacity = capacity;
 this->number = number;
 this->duration = duration;
-this->date_of_departure = Schedule(Time(hour,minute),Date(date_of_departure));
+this->schedule = Schedule(Time(hour,minute),Date(date_of_departure));
 this-> origin = origin;
 this->destination = destination;
 this-> passengers = passengers;
 }
 
 bool Flight::add_passenger(Passenger p) {
-
+    if(passengers.size()<capacity){
+        passengers.push_back(p);
+        return true;
+    }
+    return false;
 }

@@ -18,7 +18,7 @@ private:
     unsigned capacity;
     unsigned number;
     double duration;
-    Schedule date_of_departure;
+    Schedule schedule;
     string origin;
     string destination;
     vector<Passenger> passengers;

@@ -13,8 +13,8 @@ private:
 public:
     Time();
     Time(unsigned hour,unsigned time);
-    unsigned get_hour();
-    unsigned get_minute();
+    unsigned get_hour() const;
+    unsigned get_minute() const;
 };
 
 
