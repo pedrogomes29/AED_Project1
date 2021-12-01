@@ -14,9 +14,26 @@ Schedule::Schedule(Time time, Date date) {
     this->date = date;
 }
 
-Time Schedule::get_time(){
+Time Schedule::get_time()const{
     return time;
 }
-Date Schedule::get_date(){
+Date Schedule::get_date()const{
     return date;
+}
+
+bool Schedule::operator<(Schedule const &schedule2){
+    if(date<schedule2.get_date()){
+        return true;
+    }
+    else if (schedule2.get_date()<date){
+        return false;
+    }
+    else{
+        if(time<schedule2.get_time()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

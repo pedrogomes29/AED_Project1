@@ -15,7 +15,7 @@ public:
     Time(unsigned hour,unsigned time);
     unsigned get_hour() const;
     unsigned get_minute() const;
-    operator
+    bool operator<(Time const &time2);
 };
 
 

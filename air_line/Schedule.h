@@ -15,8 +15,9 @@ private:
 public:
     Schedule();
     Schedule(Time time,Date date);
-    Time get_time();
-    Date get_date();
+    Time get_time()const;
+    Date get_date()const;
+    bool operator<(Schedule const &schedule2);
 };
 
 

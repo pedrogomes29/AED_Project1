@@ -14,6 +14,22 @@ Time::Time(unsigned int hour, unsigned int time) {
 }
 
 
+bool Time::operator< (Time const &time2){
+    if(hour<time2.get_hour()){
+        return true;
+    }
+    else if (time2.get_hour()<hour){
+        return false;
+    }
+    else{
+        if(minute<time2.get_minute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+}
 unsigned Time::get_hour() const{
     return hour;
 }
