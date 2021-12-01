@@ -8,13 +8,13 @@
 
 class Time {
 private:
-    unsigned hour;
-    unsigned minute;
+    int hour;
+    int minute;
 public:
     Time();
-    Time(unsigned hour,unsigned time);
-    unsigned get_hour() const;
-    unsigned get_minute() const;
+    Time(int hour,int minute);
+    int get_hour() const;
+    int get_minute() const;
     bool operator<(Time const &time2);
 };
 

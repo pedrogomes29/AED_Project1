@@ -8,7 +8,7 @@ Time::Time(){
     hour = 0;
     minute = 0;
 }
-Time::Time(unsigned int hour, unsigned int time) {
+Time::Time(int hour,int minute) {
     this->hour = hour;
     this->minute = minute;
 }
@@ -30,9 +30,9 @@ bool Time::operator< (Time const &time2){
         }
     }
 }
-unsigned Time::get_hour() const{
+int Time::get_hour() const{
     return hour;
 }
-unsigned Time::get_minute() const{
+int Time::get_minute() const{
     return minute;
 }

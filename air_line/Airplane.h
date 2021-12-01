@@ -8,6 +8,7 @@
 #include <string>
 #include <queue>
 #include <list>
+#include <ctime>
 #include "Service.h"
 #include "Airplane.h"
 #include "Flight.h"
@@ -23,6 +24,7 @@ private:
 public:
     Airplane(string _license_plate,string _type,unsigned _capacity);
     bool add_flight(Flight f);
+    void update_flights();
 };
 
 

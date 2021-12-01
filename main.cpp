@@ -1,6 +1,7 @@
+#include <ctime>
 #include <iostream>
+#include "air_line/Date.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+    return 1;
 }

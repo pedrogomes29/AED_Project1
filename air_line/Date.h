@@ -19,6 +19,10 @@ public:
 
     explicit Date(const string& date);
 
+    void increment(int days=1);
+
+    int days_in_month(int m) const;
+
     int get_day() const;
 
     int get_month() const;
@@ -32,6 +36,6 @@ public:
     void set_year(int year);
 
     bool operator <(Date d2) const;
-    }
+
 };
 #endif //AIRLINE_DATE_H
