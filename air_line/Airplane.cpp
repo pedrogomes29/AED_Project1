@@ -3,3 +3,14 @@
 //
 
 #include "Airplane.h"
+
+Airplane::Airplane(string _license_plate,string _type,unsigned _capacity){
+    license_plate = _license_plate;
+    type=_type;
+    capacity=_capacity;
+}
+
+bool Airplane::add_flight(flight f){
+    auto iter = flights.begin();
+    while(iter!=flights.end() or *iter
+}

@@ -5,9 +5,14 @@
 #ifndef AIRLINE_PASSENGER_H
 #define AIRLINE_PASSENGER_H
 
+#include <string>
+
+using namespace std;
 
 class Passenger {
-
+private:
+    string name;
+    bool luggage;
 };
 
 
