@@ -9,6 +9,7 @@
 #include "Passenger.h"
 #include <vector>
 #include "Date.h"
+#include "Schedule.h"
 
 using namespace std;
 
@@ -17,12 +18,12 @@ private:
     unsigned capacity;
     unsigned number;
     double duration;
-    Date date_of_departure;
+    Schedule date_of_departure;
     string origin;
     string destination;
     vector<Passenger> passengers;
 public:
-    Flight(unsigned capacity,unsigned number,double duration,const string& date_of_departure, string origin,
+    Flight(unsigned capacity,unsigned number,double duration,const string& date_of_departure, unsigned hour,unsigned minute, string origin,
            string destination, vector<Passenger> passengers);
     bool add_passenger(Passenger p);
 };

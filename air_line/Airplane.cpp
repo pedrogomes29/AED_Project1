@@ -10,7 +10,6 @@ Airplane::Airplane(string _license_plate,string _type,unsigned _capacity){
     capacity=_capacity;
 }
 
-bool Airplane::add_flight(flight f){
-    auto iter = flights.begin();
-    while(iter!=flights.end() or *iter
+bool Airplane::add_flight(Flight f){
+
 }
