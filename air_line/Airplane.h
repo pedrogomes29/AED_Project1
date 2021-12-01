@@ -4,10 +4,14 @@
 
 #ifndef AIRLINE_AIRPLANE_H
 #define AIRLINE_AIRPLANE_H
-
+#include <string>
+using namespace std;
 
 class Airplane {
-
+private:
+    string license_plate;
+    string type;
+    unsigned capacity;
 };
 
 
