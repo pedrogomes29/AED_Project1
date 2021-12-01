@@ -20,5 +20,9 @@ Schedule Flight::get_schedule() const {
     return schedule;
 }
 bool Flight::add_passenger(Passenger p) {
-
+    if(passengers.size()<capacity){
+        passengers.push_back(p);
+        return true;
+    }
+    return false;
 }
