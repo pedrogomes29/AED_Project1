@@ -31,5 +31,7 @@ public:
 
     void set_year(int year);
 
+    bool operator <(Date d2) const;
+    }
 };
 #endif //AIRLINE_DATE_H

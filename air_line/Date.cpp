@@ -40,3 +40,16 @@ day = 0;
 month = 0;
 year = 0;
 }
+
+bool Date::operator<(Date d2) const {
+    if (this->year > d2.year) return false;
+    else if(this->year  == d2.year){
+        if(this->month > d2.month) return false;
+        else if(this->month == d2.month){
+            if(this->day>d2.day) return false;
+            else return true;
+        }
+        else return true;
+    }
+    else return true;
+}
