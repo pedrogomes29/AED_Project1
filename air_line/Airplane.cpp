@@ -57,3 +57,9 @@ void Airplane::update_flights(){
         flights.erase(aux);
     }
 }
+
+bool Airplane::add_service(Service serv) {
+    Time duration = serv.get_duration();
+
+
+}
