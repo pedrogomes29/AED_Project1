@@ -25,7 +25,8 @@ public:
     Airplane(string _license_plate,string _type,unsigned _capacity);
     bool add_flight(Flight f);
     void update_flights();
+    bool add_service(Service serv);
 };
 
 
-#endif //AIRLINE_AIRPLANE_Hs
+#endif //AIRLINE_AIRPLANE_H
