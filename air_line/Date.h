@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include <istream>
 using namespace std;
 class Date {
 private:
@@ -37,5 +38,7 @@ public:
 
     bool operator <(Date d2) const;
 
+    friend istream& operator>> (istream& stream, Date& d);
+    friend ostream& operator<< (ostream& stream, const Date& d);
 };
 #endif //AIRLINE_DATE_H

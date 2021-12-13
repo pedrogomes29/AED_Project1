@@ -25,10 +25,12 @@ private:
 public:
     Flight(unsigned capacity,unsigned number,Time duration,const string& date_of_departure, unsigned hour,unsigned minute, string origin,
            string destination, vector<Passenger> passengers);
+    Flight(unsigned capacity,unsigned number,Time duration,Schedule schedule,string origin,string destination);
     Schedule get_schedule()const;
     bool add_passenger(Passenger p);
     unsigned get_number() const;
     Time get_duration() const;
+    unsigned get_capacity () const;
     string get_origin() const;
     string get_destination() const;
     vector<Passenger> get_passengers() const;

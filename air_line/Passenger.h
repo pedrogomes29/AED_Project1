@@ -13,6 +13,10 @@ class Passenger {
 private:
     string name;
     bool luggage;
+public:
+    Passenger(const string &name,bool luggage);
+    bool has_luggage() const;
+    string get_name() const;
 };
 
 

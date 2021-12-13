@@ -116,3 +116,13 @@ void Date::increment(int days) {
         }
     }
 }
+istream& operator>> (istream& stream, Date& d){
+    char aux_char;
+    stream>> d.day>>aux_char>>d.month>>aux_char>>d.year;
+    return stream;
+}
+
+ostream& operator<<(ostream& stream, const Date& d){
+    stream << d.get_day() << '/' << d.get_month() << '/' << d.get_year();
+    return stream;
+}

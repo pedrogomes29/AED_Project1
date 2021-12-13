@@ -3,5 +3,5 @@
 #include "air_line/Date.h"
 
 int main() {
-    return 1;
+    cout << 1;
 }

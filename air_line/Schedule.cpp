@@ -3,7 +3,6 @@
 //
 
 #include "Schedule.h"
-
 Schedule::Schedule(){
     time=Time();
     date = Date();
@@ -36,4 +35,13 @@ bool Schedule::operator<(Schedule const &schedule2){
             return false;
         }
     }
+}
+istream& operator>> (istream& stream, Schedule &s){
+    stream >> s.date >> s.time;
+    return stream;
+}
+
+ostream& operator<< (ostream& stream, const Schedule &s){
+    stream << s.date << " " << s.time;
+    return stream;
 }

@@ -21,6 +21,11 @@ private:
     string name_of_employee;
 public:
     Service(Type type,const string &date,int hour, int minute,const string &name);
+    Service(Type type,const Schedule & schedule,const string&name_of_employee);
+    Type get_type() const;
+    Time get_duration() const;
+    Schedule get_schedule() const;
+    string get_name() const;
 };
 
 

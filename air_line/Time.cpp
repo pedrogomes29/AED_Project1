@@ -36,3 +36,13 @@ int Time::get_hour() const{
 int Time::get_minute() const{
     return minute;
 }
+istream &operator>>(istream& stream,Time& t){
+    char aux_char;
+    stream>>t.hour >> aux_char >> t.minute;
+    return stream;
+}
+
+ostream & operator<<(ostream& stream,const Time&t){
+    stream << t.hour << ":" << t.minute;
+    return stream;
+}

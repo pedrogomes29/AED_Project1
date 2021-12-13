@@ -8,6 +8,7 @@
 
 #include "Date.h"
 #include "Time.h"
+#include <istream>
 class Schedule {
 private:
     Time time;
@@ -18,6 +19,8 @@ public:
     Time get_time()const;
     Date get_date()const;
     bool operator<(Schedule const &schedule2);
+    friend istream& operator>> (istream& stream, Schedule &s);
+    friend ostream& operator<< (ostream& stream,const Schedule &s);
 };
 
 

@@ -15,6 +15,14 @@ this->destination = destination;
 this-> passengers = passengers;
 }
 
+Flight::Flight(unsigned capacity,unsigned number,Time duration,Schedule schedule,string origin,string destination){
+    this->capacity = capacity;
+    this->number = number;
+    this->duration = duration;
+    this->schedule = schedule;
+    this-> origin = origin;
+    this->destination = destination;
+}
 
 Schedule Flight::get_schedule() const {
     return schedule;
@@ -45,4 +53,8 @@ string Flight::get_destination() const {
 
 vector<Passenger> Flight::get_passengers() const {
     return passengers;
+}
+
+unsigned Flight::get_capacity () const{
+    return capacity;
 }

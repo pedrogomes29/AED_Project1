@@ -16,4 +16,24 @@ Service::Service(Type type,const string &date,int hour, int minute, const string
     this->schedule = Schedule(Time(hour,minute),Date(date));
     this->name_of_employee=name;
 }
-
+Service::Service(Type type,const Schedule & schedule,const string&name_of_employee){
+    this->type_service=type;
+    if(type==maintenance)
+        this->duration = MAINTENANCE_DURATION;
+    else
+        this->duration = CLEANING_DURATION;
+    this->schedule = schedule;
+    this->name_of_employee = name_of_employee;
+}
+Type Service::get_type() const{
+    return type_service;
+}
+Time Service::get_duration() const{
+    return duration;
+}
+Schedule Service::get_schedule() const{
+    return schedule;
+}
+string Service::get_name() const{
+    return name_of_employee;
+}

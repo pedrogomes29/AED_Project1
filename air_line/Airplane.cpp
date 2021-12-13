@@ -63,3 +63,20 @@ bool Airplane::add_service(Service serv) {
 
 
 }
+
+string Airplane::get_license_plate() const {
+    return license_plate;
+}
+
+string Airplane::get_type() const{
+    return type;
+}
+unsigned Airplane::get_capacity() const{
+    return capacity;
+};
+queue<Service> Airplane::get_services() const{
+    return services;
+};
+list<Flight> Airplane::get_flights() const{
+    return flights;
+};
