@@ -7,7 +7,6 @@
 #include "Passenger.h"
 #include <string>
 #include <fstream>
-#include <sys/stat.h>
 
 using namespace std;
 
@@ -81,7 +80,10 @@ void Airline::update_airplane(Airplane & airplane){
             int flight_number;
             cout << "Enter flight number: ";
             cin >> flight_number;
-            airplane.remove_flight(flight_number);
+            if(airplane.remove_flight(flight_number))
+                cout << "Removed airplane successfuly" << endl;
+            else
+                cout << "No such airplane found" << endl;
             break;
         }
         case '3': {
