@@ -267,8 +267,7 @@ Airline::Airline(){
 }
 
 Airline::~Airline(){
-    ofstream file;
-    file.open("files/Airplanes.txt");
+    ofstream file("files/Airplanes.txt");
     if(!file.is_open()){
         cerr << "Error opening file Airplanes.txt";
         exit(1);
@@ -286,6 +285,7 @@ Airline::~Airline(){
             for(const Passenger&passenger:flight.get_passengers()){
                 flight_file << passenger.get_name() << " " << passenger.has_luggage();
             }
+            flight_file.close();
         }
         queue<Service> services = airplane.get_services();
         if(!services.empty()) {
@@ -297,5 +297,7 @@ Airline::~Airline(){
                 services.pop();
             }
         }
+        airplane_file.close();
     }
+    file.close();
 };
