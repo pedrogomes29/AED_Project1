@@ -241,6 +241,7 @@ Airline::Airline(){
                         }
                         a1.add_flight(f1);
                     }
+                    flight_file.close();
                 }
             }
             if(found_services) {
@@ -263,7 +264,7 @@ Airline::Airline(){
             airplane_file.close();
         }
     }
-
+file.close();
 }
 
 Airline::~Airline(){
