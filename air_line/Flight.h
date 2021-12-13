@@ -23,6 +23,7 @@ private:
     string destination;
     vector<Passenger> passengers;
 public:
+    Flight();
     Flight(unsigned capacity,unsigned number,Time duration,const string& date_of_departure, unsigned hour,unsigned minute, string origin,
            string destination, vector<Passenger> passengers);
     Flight(unsigned capacity,unsigned number,Time duration,Schedule schedule,string origin,string destination);
