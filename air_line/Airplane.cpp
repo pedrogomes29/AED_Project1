@@ -109,4 +109,10 @@ queue<Service> Airplane::get_services() const{
 };
 list<Flight> Airplane::get_flights() const{
     return flights;
+}
+
+bool Airplane::remove_service() {
+    if(services.empty()) return false;
+    services.pop();
+    return true;
 };

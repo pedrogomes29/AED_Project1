@@ -26,6 +26,7 @@ public:
     string get_license_plate() const;
     string get_type() const;
     unsigned get_capacity() const;
+    bool remove_service();
     queue<Service> get_services() const;
     list<Flight> get_flights() const;
     Flight & find_flight(unsigned number);

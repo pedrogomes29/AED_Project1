@@ -105,7 +105,7 @@ void Airline::update_airplane(Airplane & airplane){
 
             break;
         case '6':
-
+            airplane.remove_service();
             break;
         default:
             cout << "The option you entered is invalid." << endl;
