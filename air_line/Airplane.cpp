@@ -69,6 +69,10 @@ bool Airplane::add_service(Service serv) {
     for(auto const &f:flights){
         if(s<f.get_schedule() && f.get_schedule()<s_f )
             return false;
+        if(s<f.get_schedule() && f.get_schedule()<s_f)
+            return false;
+        if (f.get_schedule() < s && s< result(f.get_schedule(),f.get_duration()))
+            return false;
     }
     services.push(serv);
     return true;
@@ -109,4 +113,10 @@ queue<Service> Airplane::get_services() const{
 };
 list<Flight> Airplane::get_flights() const{
     return flights;
+}
+
+bool Airplane::remove_service() {
+    if(services.empty()) return false;
+    services.pop();
+    return true;
 };
