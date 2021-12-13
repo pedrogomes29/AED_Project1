@@ -27,22 +27,18 @@ void Airline::add_passenger(Flight & flight){
 }
 
 
-bool Airline::find_airplane(const string& license_plate,Airplane & airplane){
+Airplane* Airline::find_airplane(const string& license_plate){
     for(Airplane &a1:airplanes){
         if(a1.get_license_plate()==license_plate) {
-            airplane = a1;
-            return true;
+            return &a1;
         }
     }
-    return false;
+    return nullptr;
 }
 
-void add_flight(Airplane & airplane){
+void Airline::add_flight(Airplane & airplane){
     string origin, destination;
     unsigned flight_number;
-    char sep;
-    int hour, minute,day,month,year;
-    int origin_hour, origin_minute;
     int capacity = airplane.get_capacity();
     cout << "Enter flight number: ";
     cin >> flight_number;
@@ -92,12 +88,12 @@ void Airline::update_airplane(Airplane & airplane){
             int flight_number;
             cout << "Enter flight number: ";
             cin >> flight_number;
-            Flight & f;
-            if (airplane.find_flight(flight_number,f);) {
-                update_flight(f);
+            Flight *f = airplane.find_flight(flight_number);
+            if (f!= nullptr) {
+                update_flight(*f);
             }
             else {
-                cout << "No such plane with flight_number " << flight_number << endl;
+                cout << "No such plane with flight number " << flight_number << endl;
             }
             break;
         }
@@ -155,9 +151,9 @@ void Airline::interface() {
                 string license_plate;
                 cout << "Enter the airplane's license_plate: ";
                 cin >> license_plate;
-                Airplane & a1;
-                if(find_airplane(license_plate,a1)){
-                    update_airplane(a1);
+                Airplane *a1=find_airplane(license_plate);
+                if(a1!=nullptr){
+                    update_airplane(*a1);
                 }
                 else{
                     cout << "No such airplane with license plate " << license_plate << endl;
@@ -212,10 +208,9 @@ Airline::Airline(){
             airplane_file>>type;
             airplane_file>>capacity;
             Airplane a1 = Airplane(license_plate,type,capacity);
-            airplanes.push_back(a1);
             bool found_services=false;
             airplane_file.ignore(1); // ignores the '\n'
-            while(!airplane_file.eof() and !airplane_file.peek()==EOF){
+            while(!airplane_file.eof() and airplane_file.peek()!=EOF){
                 string aux;
                 airplane_file>>aux;
                 airplane_file.ignore(1); //ignores the '\n'
@@ -264,6 +259,8 @@ Airline::Airline(){
                     }
                 }
             }
+            airplanes.push_back(a1);
+            airplane_file.close();
         }
     }
 

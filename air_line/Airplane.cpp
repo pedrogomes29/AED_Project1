@@ -95,14 +95,13 @@ bool Airplane::remove_flight(unsigned number) {
 }
 
 
-bool Airplane::find_flight(unsigned number,Flight & airplane){
+Flight* Airplane::find_flight(unsigned number){
     for(Flight &f:flights){
         if(f.get_number()==number) {
-            airplane = f;
-            return true;
+            return &f;
         }
     }
-    return false;
+    return nullptr;
 }
 
 string Airplane::get_license_plate() const {
