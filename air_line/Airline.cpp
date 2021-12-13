@@ -40,7 +40,6 @@ void add_flight(Airplane & airplane){
     unsigned flight_number;
     cout << "Enter flight number: ";
     cin >> flight_number;
-
     airplane.add_flight();
 }
 
@@ -64,9 +63,18 @@ void Airline::update_airplane(Airplane & airplane){
             airplane.remove_flight(flight_number);
             break;
         }
-        case '3':
-
+        case '3': {
+            int flight_number;
+            cout << "Enter flight number: ";
+            cin >> flight_number;
+            Flight &f = airplane.find_flight(flight_number);
+            if (f.get_destination() == "") //Invalid airplane found
+                cout << "Flight with number " << flight_number << "not found." << endl;
+            else {
+                update_flight(f);
+            }
             break;
+        }
         case '4':
 
             break;
@@ -105,6 +113,18 @@ void Airline::interface() {
             }
         }
     }
+}
+
+void Airline::add_airplane() {
+    string license_plate,type;
+    unsigned capacity;
+    cout << "Enter license plate: ";
+    cin >> license_plate;
+    cout << "Enter airplane type: ";
+    cin >> type;
+    cout << "Enter airplane capacity: ";
+    cin >> capacity;
+    airplanes.push_back(Airplane(license_plate,type,capacity));
 }
 
 

@@ -74,6 +74,16 @@ bool Airplane::remove_flight(unsigned number) {
     return false;
 }
 
+
+Flight & Airplane::find_flight(unsigned number){
+    Flight invalid_airplane(0,0,Time(0,0),Schedule(Time(0,0),Date(0,0,0)),"","");
+    for(Flight &f:flights){
+        if(f.get_number()==number)
+            return f;
+    }
+    return invalid_airplane;
+}
+
 string Airplane::get_license_plate() const {
     return license_plate;
 }
