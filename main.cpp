@@ -1,7 +1,7 @@
 #include <ctime>
 #include <iostream>
-#include "air_line/Date.h"
+#include "air_line/Airline.h"
 
 int main() {
-    cout << 1;
+    Airline().interface();
 }

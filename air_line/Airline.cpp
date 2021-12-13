@@ -98,9 +98,27 @@ void Airline::update_airplane(Airplane & airplane){
             }
             break;
         }
-        case '4':
-
+        case '4': {
+            string employee, type;
+            Schedule schedule;
+            Service service(maintenance,"",0,0,"");
+            cout << "Enter the employee name: ";
+            cin >> employee;
+            cout << "Enter the type of service (maintenance or cleaning)";
+            if (type == "maintenance") {
+                service = Service(maintenance, schedule, employee);
+            } else if (type == "cleaning") {
+                service = Service(cleaning, schedule, employee);
+            } else {
+                cout << "No such type of service." << endl;
+                break;
+            }
+            if (airplane.add_service(service))
+                cout << "Service added successfuly" << endl;
+            else
+                cout << "Failed to add service (flight conflict)" << endl;
             break;
+        }
         case '5':
 
             break;
