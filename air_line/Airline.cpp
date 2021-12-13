@@ -131,7 +131,7 @@ Airline::~Airline(){
         queue<Service> services = airplane.get_services();
         while(!services.empty()){
             Service service = services.front();
-            cout << service.get_name() << " " << service.get_type()<< " " <<service.get_schedule() << endl;
+            cout << service.get_name() << " " << (service.get_type()? "cleaning":"maintenance") << " " <<service.get_schedule() << endl;
             services.pop();
         }
         cout << "---------EndOfAirplane---------" << endl;
