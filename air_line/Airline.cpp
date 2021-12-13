@@ -37,11 +37,30 @@ Airplane& Airline::find_airplane(const string& license_plate){
 }
 
 void add_flight(Airplane & airplane){
+    string origin, destination;
     unsigned flight_number;
+    char sep;
+    int hour, minute,day,month,year;
+    int origin_hour, origin_minute;
+    int capacity = airplane.get_capacity();
     cout << "Enter flight number: ";
     cin >> flight_number;
-
-    airplane.add_flight();
+    cout << "Enter date of the flight (day/month/year): ";
+    cin >> day >> sep >> month >> year;
+    Date d = Date(day, month, year);
+    cout << "Enter hour of the flight (hour:minute): ";
+    cin >> origin_hour>> sep >> origin_minute;
+    Time origin_time = Time(origin_hour, origin_minute);
+    Schedule schedule = Schedule(origin_time, d);
+    cout << "Enter duration of the flight (hour:minute): ";
+    cin >> hour >> sep >> minute;
+    Time duration = Time(hour, minute);
+    cout << "Enter origin location ";
+    cin>> origin;
+    cout << "Enter destination location: ";
+    cin>>destination;
+    Flight f = Flight(capacity, flight_number, duration, schedule, origin, destination);
+    airplane.add_flight(f);
 }
 
 void Airline::update_airplane(Airplane & airplane){
