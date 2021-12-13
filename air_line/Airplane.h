@@ -22,6 +22,7 @@ private:
     queue<Service> services;
     list<Flight> flights;
 public:
+    Airplane();
     Airplane(string _license_plate,string _type,unsigned _capacity);
     string get_license_plate() const;
     string get_type() const;

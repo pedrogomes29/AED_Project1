@@ -4,6 +4,12 @@
 
 #include "Airplane.h"
 
+Airplane::Airplane() {
+    license_plate = "";
+    type = "";
+    capacity= 0;
+};
+
 Airplane::Airplane(string _license_plate,string _type,unsigned _capacity){
     license_plate = _license_plate;
     type=_type;
@@ -120,4 +126,4 @@ bool Airplane::remove_service() {
     if(services.empty()) return false;
     services.pop();
     return true;
-};
+}

@@ -4,6 +4,15 @@
 
 #include "Flight.h"
 
+Flight::Flight() {
+    this->capacity = 0;
+    this->number = 0;
+    this->duration = Time(0,0);
+    this->schedule = Schedule(Time(0,0),Date(0,0,0));
+    this-> origin = "";
+    this->destination = "destination";
+}
+
 Flight::Flight(unsigned capacity,unsigned number,Time duration,const string& date_of_departure, unsigned hour,unsigned minute, string origin,
                string destination, vector<Passenger> passengers){
 this->capacity = capacity;
@@ -58,3 +67,5 @@ vector<Passenger> Flight::get_passengers() const {
 unsigned Flight::get_capacity () const{
     return capacity;
 }
+
+
