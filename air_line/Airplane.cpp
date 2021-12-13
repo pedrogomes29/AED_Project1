@@ -67,8 +67,8 @@ bool Airplane::add_service(Service serv) {
     Schedule s = serv.get_schedule();
     Schedule s_f = result(s,duration);
     for(auto const &f:flights){
-        if(s<f.get_schedule() && f.get_schedule()<s_f ) return false;
-
+        if(s<f.get_schedule() && f.get_schedule()<s_f) return false;
+        if (f.get_schedule() < s && s< result(f.get_schedule(),f.get_duration())) return false;
     }
     services.push(serv);
     return true;
