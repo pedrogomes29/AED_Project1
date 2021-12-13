@@ -80,26 +80,51 @@ Airline::Airline(){
             airplane_file>>capacity;
             Airplane a1 = Airplane(license_plate,type,capacity);
             airplanes.push_back(a1);
-            while(airplane_file.eof()){
-                airplane_file>>flight_number;
-                flight_file.open("Flight_"+ to_string(flight_number)+".txt");
-                if(!flight_file.is_open()) {
-                    cerr << "Error opening file of flight number " << flight_number << endl;
-                    exit(1);
+            bool found_services=false;
+            while(!airplane_file.eof()){
+                string aux;
+                airplane_file>>aux;
+                if (aux=="-----------Services-----------"){
+                    found_services=true;
+                    break;
                 }
-                else{
-                    unsigned flight_capacity;
-                    Time duration;
-                    Schedule schedule;
-                    string origin, destination;
-                    vector<Passenger> passengers;
-                    while(!flight_file.eof()){
-                        flight_file>>flight_capacity>>duration>>schedule>>origin>>destination;
-                        Flight f1= Flight(flight_capacity,flight_number,duration,schedule,origin,destination);
+                else {
+                    flight_number = stoi(aux);
+                    flight_file.open("Flight_" + to_string(flight_number) + ".txt");
+                    if (!flight_file.is_open()) {
+                        cerr << "Error opening file of flight number " << flight_number << endl;
+                        exit(1);
+                    } else {
+                        unsigned flight_capacity;
+                        Time duration;
+                        Schedule schedule;
+                        string origin, destination, passenger_name;
+                        bool luggage;
+                        flight_file >> flight_capacity >> duration >> schedule >> origin >> destination;
+                        Flight f1 = Flight(flight_capacity, flight_number, duration, schedule, origin, destination);
+                        while (!flight_file.eof()) {
+                            flight_file >> passenger_name >> luggage;
+                            Passenger p1 = Passenger(passenger_name, luggage);
+                            f1.add_passenger(p1);
+                        }
                         a1.add_flight(f1);
                     }
                 }
-
+            }
+            if(found_services) {
+                string employee, type;
+                Schedule s;
+                while (!airplane_file.eof()) {
+                    airplane_file>> employee>>type>>s;
+                    if(type=="maintenance"){
+                        Service service= Service(maintenance, s, employee);
+                        a1.add_service(service);
+                    }
+                    else{
+                        Service service= Service(cleaning, s, employee);
+                        a1.add_service(service);
+                    }
+                }
             }
         }
     }
@@ -134,6 +159,5 @@ Airline::~Airline(){
             cout << service.get_name() << " " << (service.get_type()? "cleaning":"maintenance") << " " <<service.get_schedule() << endl;
             services.pop();
         }
-        cout << "---------EndOfAirplane---------" << endl;
     }
 };
