@@ -34,6 +34,7 @@ Airplane& Airline::find_airplane(const string& license_plate){
         if(a1.get_license_plate()==license_plate)
             return a1;
     }
+    return default_airplane;
 }
 
 void add_flight(Airplane & airplane){
@@ -83,9 +84,18 @@ void Airline::update_airplane(Airplane & airplane){
             airplane.remove_flight(flight_number);
             break;
         }
-        case '3':
-
+        case '3': {
+            int flight_number;
+            cout << "Enter flight number: ";
+            cin >> flight_number;
+            Flight &f = airplane.find_flight(flight_number);
+            if (f.get_destination() == "") //Invalid airplane found
+                cout << "Flight with number " << flight_number << "not found." << endl;
+            else {
+                update_flight(f);
+            }
             break;
+        }
         case '4':
 
             break;
@@ -100,7 +110,7 @@ void Airline::update_airplane(Airplane & airplane){
     }
 }
 
-void Airline::check_airplanes(const Airplane &airplane) {
+void Airline::check_airplanes() {
 
 }
 
@@ -121,9 +131,40 @@ void Airline::interface() {
             case '2': {
                 string license_plate;
                 cout << "Enter the airplane's license_plate: ";
+                Airplane & a1 = find_airplane(license_plate);
+                if(a1.get_license_plate()==""){
+                    cout << "No such airplane with license plate " << license_plate << endl;
+                }
+                else{
+                    update_airplane(a1);
+                }
+                break;
+            }
+            case '3':{
+                check_airplanes();
+                break;
+            }
+            case '4':{
+                continue;
+            }
+            default:{
+                cout << "The option you entered is invalid. " << endl;
+                break;
             }
         }
     }
+}
+
+void Airline::add_airplane() {
+    string license_plate,type;
+    unsigned capacity;
+    cout << "Enter license plate: ";
+    cin >> license_plate;
+    cout << "Enter airplane type: ";
+    cin >> type;
+    cout << "Enter airplane capacity: ";
+    cin >> capacity;
+    airplanes.push_back(Airplane(license_plate,type,capacity));
 }
 
 

@@ -28,6 +28,7 @@ public:
     unsigned get_capacity() const;
     queue<Service> get_services() const;
     list<Flight> get_flights() const;
+    Flight & find_flight(unsigned number);
     bool add_flight(Flight f);
     bool remove_flight(unsigned number);
     void update_flights();
