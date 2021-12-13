@@ -19,7 +19,7 @@ public:
     ~Airline();
     void interface();
     void add_airplane();
-    void check_airplanes(const Airplane &airplane);
+    void check_airplanes();
     void update_airplane(Airplane &airplane);
     void update_flight(Flight &flight);
     void add_passenger(Flight &flight);

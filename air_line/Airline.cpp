@@ -34,6 +34,7 @@ Airplane& Airline::find_airplane(const string& license_plate){
         if(a1.get_license_plate()==license_plate)
             return a1;
     }
+    return default_airplane;
 }
 
 void add_flight(Airplane & airplane){
@@ -89,7 +90,7 @@ void Airline::update_airplane(Airplane & airplane){
     }
 }
 
-void Airline::check_airplanes(const Airplane &airplane) {
+void Airline::check_airplanes() {
 
 }
 
@@ -110,6 +111,25 @@ void Airline::interface() {
             case '2': {
                 string license_plate;
                 cout << "Enter the airplane's license_plate: ";
+                Airplane & a1 = find_airplane(license_plate);
+                if(a1.get_license_plate()==""){
+                    cout << "No such airplane with license plate " << license_plate << endl;
+                }
+                else{
+                    update_airplane(a1);
+                }
+                break;
+            }
+            case '3':{
+                check_airplanes();
+                break;
+            }
+            case '4':{
+                continue;
+            }
+            default:{
+                cout << "The option you entered is invalid. " << endl;
+                break;
             }
         }
     }
