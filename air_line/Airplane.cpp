@@ -59,9 +59,19 @@ void Airplane::update_flights(){
 }
 
 bool Airplane::add_service(Service serv) {
+    if(flights.empty()){
+        services.push(serv);
+        return true;
+    }
     Time duration = serv.get_duration();
+    Schedule s = serv.get_schedule();
+    Schedule s_f = result(s,duration);
+    for(auto const &f:flights){
+        if(s<f.get_schedule() && f.get_schedule()<s_f ) return false;
 
-
+    }
+    services.push(serv);
+    return true;
 }
 
 bool Airplane::remove_flight(unsigned number) {
