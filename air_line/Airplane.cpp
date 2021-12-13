@@ -89,13 +89,14 @@ bool Airplane::remove_flight(unsigned number) {
 }
 
 
-Flight & Airplane::find_flight(unsigned number){
-    Flight default_airplane(0,0,Time(0,0),Schedule(Time(0,0),Date(0,0,0)),"","");
+bool Airplane::find_flight(unsigned number,Flight & airplane){
     for(Flight &f:flights){
-        if(f.get_number()==number)
-            return f;
+        if(f.get_number()==number) {
+            airplane = f;
+            return true;
+        }
     }
-    return default_airplane;
+    return false;
 }
 
 string Airplane::get_license_plate() const {

@@ -23,8 +23,7 @@ public:
     void update_airplane(Airplane &airplane);
     void update_flight(Flight &flight);
     void add_passenger(Flight &flight);
-    Airplane& find_airplane(const string &license_plate);
+    bool find_airplane(const string& license_plate,Airplane & airplane);
 };
-
 
 #endif //AIRLINE_AIRLINE_H

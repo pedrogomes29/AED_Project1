@@ -27,13 +27,14 @@ void Airline::add_passenger(Flight & flight){
 }
 
 
-Airplane& Airline::find_airplane(const string& license_plate){
-    Airplane default_airplane = Airplane("","",0);
+bool Airline::find_airplane(const string& license_plate,Airplane & airplane){
     for(Airplane &a1:airplanes){
-        if(a1.get_license_plate()==license_plate)
-            return a1;
+        if(a1.get_license_plate()==license_plate) {
+            airplane = a1;
+            return true;
+        }
     }
-    return default_airplane;
+    return false;
 }
 
 void add_flight(Airplane & airplane){
@@ -46,15 +47,15 @@ void add_flight(Airplane & airplane){
     cout << "Enter flight number: ";
     cin >> flight_number;
     cout << "Enter date of the flight (day/month/year): ";
-    cin >> day >> sep >> month >> year;
-    Date d = Date(day, month, year);
+    Date d(0,0,0);
+    cin >> d;
     cout << "Enter hour of the flight (hour:minute): ";
-    cin >> origin_hour>> sep >> origin_minute;
-    Time origin_time = Time(origin_hour, origin_minute);
+    Time origin_time(0,0);
+    cin >> origin_time;
     Schedule schedule = Schedule(origin_time, d);
+    Time duration = Time(0,0);
     cout << "Enter duration of the flight (hour:minute): ";
-    cin >> hour >> sep >> minute;
-    Time duration = Time(hour, minute);
+    cin >> duration;
     cout << "Enter origin location ";
     cin>> origin;
     cout << "Enter destination location: ";
@@ -71,6 +72,7 @@ void Airline::update_airplane(Airplane & airplane){
     cout << "4. Check-in luggage" << endl;
     cout << "5. Add Service" << endl;
     cout << "6. Remove Service" << endl;
+    cin >> option;
     switch(option){
         case '1':{
             add_flight(airplane);
@@ -90,11 +92,12 @@ void Airline::update_airplane(Airplane & airplane){
             int flight_number;
             cout << "Enter flight number: ";
             cin >> flight_number;
-            Flight &f = airplane.find_flight(flight_number);
-            if (f.get_destination() == "") //Invalid airplane found
-                cout << "Flight with number " << flight_number << "not found." << endl;
-            else {
+            Flight & f;
+            if (airplane.find_flight(flight_number,f);) {
                 update_flight(f);
+            }
+            else {
+                cout << "No such plane with flight_number " << flight_number << endl;
             }
             break;
         }
@@ -136,7 +139,7 @@ void Airline::check_airplanes() {
 
 void Airline::interface() {
     char option;
-    while (!cin.eof() and option != '5') {
+    while (!cin.eof() and option != '4') {
         cout << "Please enter an option" << endl;
         cout << "1. Add an airplane" << endl;
         cout << "2. Update airplane" << endl;
@@ -151,12 +154,13 @@ void Airline::interface() {
             case '2': {
                 string license_plate;
                 cout << "Enter the airplane's license_plate: ";
-                Airplane & a1 = find_airplane(license_plate);
-                if(a1.get_license_plate()==""){
-                    cout << "No such airplane with license plate " << license_plate << endl;
+                cin >> license_plate;
+                Airplane & a1;
+                if(find_airplane(license_plate,a1)){
+                    update_airplane(a1);
                 }
                 else{
-                    update_airplane(a1);
+                    cout << "No such airplane with license plate " << license_plate << endl;
                 }
                 break;
             }
@@ -189,15 +193,15 @@ void Airline::add_airplane() {
 
 
 Airline::Airline(){
-    fstream file, airplane_file,flight_file;
-    file.open("Airplanes.txt");
+    ifstream file, airplane_file,flight_file;
+    file.open("files/Airplanes.txt");
     if(!file.is_open()){
         cerr << "Error opening file Airplanes.txt";
         exit(1);
     }
     string license_plate;
     while(getline(file,license_plate)){
-        airplane_file.open("Airplane_"+license_plate+".txt");
+        airplane_file.open("files/Airplane_"+license_plate+".txt");
         if(!airplane_file.is_open()) {
             cerr << "Error opening airplane file with license plate " <<license_plate<<endl;
             exit(1);
@@ -210,16 +214,18 @@ Airline::Airline(){
             Airplane a1 = Airplane(license_plate,type,capacity);
             airplanes.push_back(a1);
             bool found_services=false;
-            while(!airplane_file.eof()){
+            airplane_file.ignore(1); // ignores the '\n'
+            while(!airplane_file.eof() and !airplane_file.peek()==EOF){
                 string aux;
                 airplane_file>>aux;
+                airplane_file.ignore(1); //ignores the '\n'
                 if (aux=="-----------Services-----------"){
                     found_services=true;
                     break;
                 }
                 else {
                     flight_number = stoi(aux);
-                    flight_file.open("Flight_" + to_string(flight_number) + ".txt");
+                    flight_file.open("files/Flight_" + to_string(flight_number) + ".txt");
                     if (!flight_file.is_open()) {
                         cerr << "Error opening file of flight number " << flight_number << endl;
                         exit(1);
@@ -230,9 +236,11 @@ Airline::Airline(){
                         string origin, destination, passenger_name;
                         bool luggage;
                         flight_file >> flight_capacity >> duration >> schedule >> origin >> destination;
+                        flight_file.ignore(1); //ignores the '\n'
                         Flight f1 = Flight(flight_capacity, flight_number, duration, schedule, origin, destination);
-                        while (!flight_file.eof()) {
+                        while (!flight_file.eof() and !flight_file.peek()==EOF) {
                             flight_file >> passenger_name >> luggage;
+                            flight_file.ignore(1); //ignores the '\n'
                             Passenger p1 = Passenger(passenger_name, luggage);
                             f1.add_passenger(p1);
                         }
@@ -243,8 +251,9 @@ Airline::Airline(){
             if(found_services) {
                 string employee, type;
                 Schedule s;
-                while (!airplane_file.eof()) {
+                while (!airplane_file.eof() and !airplane_file.peek()==EOF) {
                     airplane_file>> employee>>type>>s;
+                    airplane_file.ignore(1); //ignores the '\n'
                     if(type=="maintenance"){
                         Service service= Service(maintenance, s, employee);
                         a1.add_service(service);
@@ -262,31 +271,34 @@ Airline::Airline(){
 
 Airline::~Airline(){
     ofstream file;
-    file.open("Airplanes.txt");
+    file.open("files/Airplanes.txt");
     if(!file.is_open()){
         cerr << "Error opening file Airplanes.txt";
         exit(1);
     }
     for(Airplane const& airplane:airplanes){
         file << airplane.get_license_plate() << endl;
-        ofstream airplane_file("Airplane_"+airplane.get_license_plate()+".txt");
+        ofstream airplane_file("files/Airplane_"+airplane.get_license_plate()+".txt");
         airplane_file << airplane.get_type() << endl <<
         airplane.get_capacity() << endl;
         for (const Flight& flight:airplane.get_flights()){
             airplane_file << flight.get_number() << endl;
-            ofstream flight_file("Flight_"+to_string(flight.get_number())+".txt");
+            ofstream flight_file("files/Flight_"+to_string(flight.get_number())+".txt");
             flight_file << flight.get_capacity() << endl << flight.get_duration() << endl
-            << flight.get_schedule() << endl <<flight.get_origin() << endl << endl <<flight.get_destination() << endl;
+            << flight.get_schedule() << endl <<flight.get_origin() << endl <<flight.get_destination() << endl;
             for(const Passenger&passenger:flight.get_passengers()){
                 flight_file << passenger.get_name() << " " << passenger.has_luggage();
             }
         }
-        cout << "-----------Services-----------" << endl;
         queue<Service> services = airplane.get_services();
-        while(!services.empty()){
-            Service service = services.front();
-            cout << service.get_name() << " " << (service.get_type()? "cleaning":"maintenance") << " " <<service.get_schedule() << endl;
-            services.pop();
+        if(!services.empty()) {
+            airplane_file << "-----------Services-----------" << endl;
+            while (!services.empty()) {
+                Service service = services.front();
+                airplane_file << service.get_name() << " " << (service.get_type() ? "cleaning" : "maintenance") << " "
+                     << service.get_schedule() << endl;
+                services.pop();
+            }
         }
     }
 };

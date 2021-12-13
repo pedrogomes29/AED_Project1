@@ -29,12 +29,11 @@ public:
     bool remove_service();
     queue<Service> get_services() const;
     list<Flight> get_flights() const;
-    Flight & find_flight(unsigned number);
+    bool find_flight(unsigned number,Flight & airplane);
     bool add_flight(Flight f);
     bool remove_flight(unsigned number);
     void update_flights();
     bool add_service(Service serv);
 };
-
 
 #endif //AIRLINE_AIRPLANE_H

@@ -35,7 +35,7 @@ public:
     string get_destination() const;
     vector<Passenger> get_passengers() const;
 };
-
+;
 
 
 #endif //AIRLINE_FLIGHT_H
