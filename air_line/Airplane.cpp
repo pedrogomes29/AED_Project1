@@ -64,6 +64,16 @@ bool Airplane::add_service(Service serv) {
 
 }
 
+bool Airplane::remove_flight(unsigned number) {
+    for (auto iter = flights.begin();iter!=flights.end();iter++){
+        if(iter->get_number()==number){
+            flights.erase(iter);
+            return true;
+        }
+    }
+    return false;
+}
+
 string Airplane::get_license_plate() const {
     return license_plate;
 }

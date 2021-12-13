@@ -36,6 +36,14 @@ Airplane& Airline::find_airplane(const string& license_plate){
     }
 }
 
+void add_flight(Airplane & airplane){
+    unsigned flight_number;
+    cout << "Enter flight number: ";
+    cin >> flight_number;
+
+    airplane.add_flight();
+}
+
 void Airline::update_airplane(Airplane & airplane){
     char option;
     cout << "1. Add flight" << endl;
@@ -45,13 +53,17 @@ void Airline::update_airplane(Airplane & airplane){
     cout << "5. Add Service" << endl;
     cout << "6. Remove Service" << endl;
     switch(option){
-        case '1':
-
-            airplane.add_flight();
+        case '1':{
+            add_flight(airplane);
             break;
-        case '2':
-
+        }
+        case '2': {
+            int flight_number;
+            cout << "Enter flight number: ";
+            cin >> flight_number;
+            airplane.remove_flight(flight_number);
             break;
+        }
         case '3':
 
             break;
@@ -75,42 +87,22 @@ void Airline::check_airplanes(const Airplane &airplane) {
 
 void Airline::interface() {
     char option;
-    while(!cin.eof() and option!='5') {
+    while (!cin.eof() and option != '5') {
         cout << "Please enter an option" << endl;
         cout << "1. Add an airplane" << endl;
         cout << "2. Update airplane" << endl;
         cout << "3. Check airplanes" << endl;
         cout << "4. Exit" << endl;
         cin >> option;
-        switch(option){
-            case '1':
+        switch (option) {
+            case '1': {
                 add_airplane();
                 break;
-            case '2':
+            }
+            case '2': {
                 string license_plate;
                 cout << "Enter the airplane's license_plate: ";
-                cin >> license_plate;
-                Airplane a1 = find_airplane(license_plate);
-                if(a1.get_license_plate()==license_plate)
-                    update_airplane(a1);
-                else{
-                    cout << "There is no airplane with license plate " << license_plate;
-                }
-                break;
-            case '3':
-                string license;
-                cout << "Enter the airplane's license_plate: ";
-                cin >> license;
-                Airplane a2 = find_airplane(license);
-                if(a2.get_license_plate()==license)
-                    check_airplanes(a2);
-                else{
-                    cout << "There is no airplane with license plate " << license_plate;
-                }
-                break;
-            default:
-                cout << "The option you intered is invalid" << endl;
-                break;
+            }
         }
     }
 }

@@ -29,6 +29,7 @@ public:
     queue<Service> get_services() const;
     list<Flight> get_flights() const;
     bool add_flight(Flight f);
+    bool remove_flight(unsigned number);
     void update_flights();
     bool add_service(Service serv);
 };
