@@ -31,25 +31,8 @@ Schedule result(Schedule s,Time t){
     return Schedule(Time(hour,min),d);
 }
 
-bool Airplane::add_flight(Flight f){
-    if(flights.empty()){
-        flights.insert(flights.begin(),f);
-        return true;
-    }
-    else {
-        auto iter = flights.begin();
-        auto previous = flights.begin();
-        while (iter->get_schedule() < f.get_schedule() and iter != flights.end()) {
-            previous = iter;
-            iter++;
-        }
-        Schedule arrival = result(previous->get_schedule(), previous->get_duration());
-        if (previous->get_destination() == f.get_origin() and arrival < f.get_schedule()) {
-            flights.insert(iter, f);
-            return true;
-        }
-        return false;
-    }
+void Airplane::add_flight(const Flight &f){
+    flights.push_back(f);
 }
 
 void Airplane::update_flights(){
@@ -63,6 +46,7 @@ void Airplane::update_flights(){
         flights.erase(aux);
     }
 }
+
 
 bool Airplane::add_service(Service serv) {
     if(flights.empty()){
@@ -84,7 +68,7 @@ bool Airplane::add_service(Service serv) {
     return true;
 }
 
-bool Airplane::remove_flight(unsigned number) {
+bool Airplane::remove_flight(unsigned number){
     for (auto iter = flights.begin();iter!=flights.end();iter++){
         if(iter->get_number()==number){
             remove(("files/Flight_"+to_string(iter->get_number())+".txt").c_str());

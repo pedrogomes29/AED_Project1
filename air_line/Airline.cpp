@@ -10,6 +10,17 @@
 
 using namespace std;
 
+bool Airline::find_airport(const string &name,Airport * airportptr){
+    for (Airport& airport:airports){
+        if(airport.get_name()==name) {
+            airportptr = &airport;
+            return true;
+        }
+    }
+    return false;
+}
+
+
 void Airline::update_flight(Flight & flight){
     cout << "1. Change flight time" << endl;
     cout << "2. Add passenger" << endl;
@@ -36,7 +47,7 @@ Airplane* Airline::find_airplane(const string& license_plate){
     return nullptr;
 }
 
-void Airline::add_flight(Airplane & airplane){
+bool Airline::add_flight(Airplane & airplane){
     string origin, destination;
     unsigned flight_number;
     int capacity = airplane.get_capacity();
@@ -54,10 +65,16 @@ void Airline::add_flight(Airplane & airplane){
     cin >> duration;
     cout << "Enter origin location ";
     cin>> origin;
+    Airport * aux;
+    if(!find_airport(origin,aux))
+        return false;
     cout << "Enter destination location: ";
     cin>>destination;
+    if(!find_airport(origin,aux))
+        return false;
     Flight f = Flight(capacity, flight_number, duration, schedule, origin, destination);
     airplane.add_flight(f);
+    return true;
 }
 
 void Airline::update_airplane(Airplane & airplane){
@@ -71,7 +88,10 @@ void Airline::update_airplane(Airplane & airplane){
     cin >> option;
     switch(option){
         case '1':{
-            add_flight(airplane);
+            if(add_flight(airplane))
+                cout << "Added flight successfully" << endl;
+            else
+                cout << "No such airport" << endl;
             break;
         }
         case '2': {

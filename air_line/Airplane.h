@@ -31,10 +31,10 @@ public:
     queue<Service> get_services() const;
     list<Flight> get_flights() const;
     Flight* find_flight(unsigned number);
-    bool add_flight(Flight f);
-    bool remove_flight(unsigned number);
+    void add_flight(const Flight &f);
     void update_flights();
     bool add_service(Service serv);
+    bool remove_flight(unsigned number);
 };
 
 #endif //AIRLINE_AIRPLANE_H
