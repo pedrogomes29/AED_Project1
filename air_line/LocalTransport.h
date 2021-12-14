@@ -8,6 +8,7 @@
 #include "Schedule.h"
 #include <vector>
 #include <string>
+#include <vector>
 
 using namespace std;
 
