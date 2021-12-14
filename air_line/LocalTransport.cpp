@@ -7,10 +7,10 @@
 LocalTransport::LocalTransport() {
  distance = 0;
  type = "";
- schedules = list<Schedule>();
+ schedules = vector<Schedule>();
 }
 
-LocalTransport::LocalTransport(float distance, string type, list<Schedule> schedules) {
+LocalTransport::LocalTransport(float distance, string type, vector<Schedule> schedules) {
     this-> distance = distance;
     this-> type = type;
     this -> schedules = schedules;
