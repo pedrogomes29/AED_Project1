@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/out")
 
-add_executable(Airline main.cpp air_line/Flight.cpp air_line/Flight.h air_line/Airplane.cpp air_line/Airplane.h air_line/Service.cpp air_line/Service.h air_line/Passenger.cpp air_line/Passenger.h air_line/Date.cpp air_line/Date.h air_line/Schedule.cpp air_line/Schedule.h air_line/Time.cpp air_line/Time.h air_line/Airline.cpp air_line/Airline.h)
+add_executable(Airline main.cpp air_line/Flight.cpp air_line/Flight.h air_line/Airplane.cpp air_line/Airplane.h air_line/Service.cpp air_line/Service.h air_line/Passenger.cpp air_line/Passenger.h air_line/Date.cpp air_line/Date.h air_line/Schedule.cpp air_line/Schedule.h air_line/Time.cpp air_line/Time.h air_line/Airline.cpp air_line/Airline.h air_line/Airport.cpp air_line/Airport.h)
 
 # Doxygen Build
 find_package(Doxygen)
