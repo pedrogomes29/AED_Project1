@@ -5,6 +5,10 @@
 #ifndef AIRLINE_AIRPORT_H
 #define AIRLINE_AIRPORT_H
 #include <string>
+#include <vector>
+#include "BST.h"
+#include "Schedule.h"
+#include "LocalTransport.h"
 
 using namespace std;
 
@@ -14,7 +18,7 @@ private:
     string name;
     BST<LocalTransport> transports;
 public:
-    Airport(string name,)
+    Airport(string name);
 };
 
 
