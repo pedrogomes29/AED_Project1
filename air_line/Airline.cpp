@@ -159,12 +159,13 @@ void Airline::check_airplanes() {
 
 void Airline::interface() {
     char option;
-    while (!cin.eof() and option != '4') {
+    while (!cin.eof() and option != '5') {
         cout << "Please enter an option" << endl;
         cout << "1. Add an airplane" << endl;
         cout << "2. Update airplane" << endl;
         cout << "3. Check airplanes" << endl;
-        cout << "4. Exit" << endl;
+        cout << "4. Check near transports" << endl;
+        cout << "5. Exit" << endl;
         cin >> option;
         switch (option) {
             case '1': {
@@ -189,6 +190,12 @@ void Airline::interface() {
                 break;
             }
             case '4':{
+                string airport_name;
+                cout << "Enter the airport you are currently in: ";
+                cin>>airport_name;
+
+            }
+            case '5':{
                 continue;
             }
             default:{
