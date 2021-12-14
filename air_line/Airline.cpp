@@ -180,12 +180,13 @@ void Airline::check_airplanes() {
 
 void Airline::interface() {
     char option;
-    while (!cin.eof() and option != '4') {
+    while (!cin.eof() and option != '5') {
         cout << "Please enter an option" << endl;
         cout << "1. Add an airplane" << endl;
         cout << "2. Update airplane" << endl;
         cout << "3. Check airplanes" << endl;
-        cout << "4. Exit" << endl;
+        cout << "4. Check near transports" << endl;
+        cout << "5. Exit" << endl;
         cin >> option;
         switch (option) {
             case '1': {
@@ -210,6 +211,31 @@ void Airline::interface() {
                 break;
             }
             case '4':{
+                string airport_name;
+                Airport* ap = nullptr;
+                cout << "Enter the airport you are currently in: ";
+                cin>>airport_name;
+                if(this->find_airport(airport_name,ap)){
+                    Time time_now;
+                    int n;
+                    cout<< "What time is it now: ";
+                    cin>>time_now;
+                    cout<<"How many transports do you wish to see: ";
+                    cin >> n;
+                    vector<LocalTransport>nearest_t = ap->get_closest_transports(n);
+                    if(nearest_t.size()<n){
+                        cout<<"There are only "<< nearest_t.size()<<" transports that are near the airport."<<endl;
+                    }
+                    for(auto& transport: nearest_t){
+                        cout<< transport.get_name()<< "with the next schedule at "<< transport.next_schedules(n,time_now)[0] <<endl;
+                    }
+                }
+                else{
+                    cout<< "Invalid Airport Name"<<endl;
+                }
+                break;
+            }
+            case '5':{
                 continue;
             }
             default:{

@@ -70,3 +70,11 @@ vector<Time> LocalTransport::next_schedules(int n, Time t) {
     return result;
 }
 
+string LocalTransport::get_name() const {
+    return name;
+}
+
+void LocalTransport::set_name(string name) {
+    this->name = name;
+}
+

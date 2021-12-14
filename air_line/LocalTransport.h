@@ -20,6 +20,8 @@ private:
 public:
     LocalTransport();
     LocalTransport(string name,float distance,string type,vector<Time> schedules);
+    string get_name() const;
+    void set_name(string name);
     float get_distance() const;
     void set_distance(float &d);
     string get_type() const;
