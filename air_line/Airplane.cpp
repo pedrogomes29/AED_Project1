@@ -6,6 +6,8 @@
 #include <stack>
 #include "Airplane.h"
 
+void print_carriages(vector<vector<stack<string>>> vector1);
+
 Airplane::Airplane() {
     license_plate = "";
     type = "";
@@ -69,7 +71,14 @@ bool Airplane::add_service(Service serv) {
     services.push(serv);
     return true;
 }
-
+void print_carriages(vector<vector<stack<string>>> vector1) {
+    for(int i = 0; i<vector1.size();i++){
+        for(int j=0;j<vector1[0].size();j++){
+            cout<< vector1[i][j].top()<<endl;
+            vector1[i][j].pop();
+        }
+    }
+}
 
 
 
@@ -99,7 +108,6 @@ void show_baggages(Flight f){
         }
     }
 }
-
 
 bool Airplane::remove_flight(unsigned number){
     for (auto iter = flights.begin();iter!=flights.end();iter++){
