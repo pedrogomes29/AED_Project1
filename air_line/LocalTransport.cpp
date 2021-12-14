@@ -53,3 +53,20 @@ void LocalTransport::add_schedule(Time s) {
     }
 }
 
+vector<Time> LocalTransport::next_schedules(int n, Time t) {
+    if(n>schedules.size()) return schedules;
+    vector<Time> result;
+    auto iter = schedules.begin();
+    bool next_day = false;
+    while(n){
+        if(t<*iter or next_day) result.push_back(*iter);
+        n--;
+        iter++;
+        if (iter==schedules.end()){
+            iter=schedules.begin();
+            next_day = true;
+        }
+    }
+    return result;
+}
+

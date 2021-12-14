@@ -28,6 +28,7 @@ public:
     void set_schedules(vector<Time> &s);
     void add_schedule(Time s);
     bool operator<(LocalTransport &lt1) const;
+    vector<Time> next_schedules(int n, Time t);
 };
 
 
