@@ -87,6 +87,7 @@ bool Airplane::add_service(Service serv) {
 bool Airplane::remove_flight(unsigned number) {
     for (auto iter = flights.begin();iter!=flights.end();iter++){
         if(iter->get_number()==number){
+            remove(("files/Flight_"+to_string(iter->get_number())+".txt").c_str());
             flights.erase(iter);
             return true;
         }

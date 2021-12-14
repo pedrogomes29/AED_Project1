@@ -18,7 +18,7 @@ LocalTransport::LocalTransport(string name, float distance, string type, vector<
     this -> schedules = schedules;
 }
 
-bool LocalTransport::operator<(LocalTransport &lt1) const {
+bool LocalTransport::operator<(const LocalTransport &lt1) const{
     return this->distance < lt1.distance;
 }
 

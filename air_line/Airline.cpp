@@ -79,9 +79,9 @@ void Airline::update_airplane(Airplane & airplane){
             cout << "Enter flight number: ";
             cin >> flight_number;
             if(airplane.remove_flight(flight_number))
-                cout << "Removed airplane successfuly" << endl;
+                cout << "Removed flight successfuly" << endl;
             else
-                cout << "No such airplane found" << endl;
+                cout << "No such flight found" << endl;
             break;
         }
         case '3': {
