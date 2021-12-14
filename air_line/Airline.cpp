@@ -98,6 +98,7 @@ void Airline::update_airplane(Airplane & airplane){
             int flight_number;
             cout << "Enter flight number: ";
             cin >> flight_number;
+
             if(airplane.remove_flight(flight_number))
                 cout << "Removed flight successfuly" << endl;
             else

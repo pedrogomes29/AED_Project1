@@ -2,6 +2,8 @@
 // Created by pedro on 01/12/21.
 //
 
+#include <iostream>
+#include <stack>
 #include "Airplane.h"
 
 Airplane::Airplane() {
@@ -68,9 +70,46 @@ bool Airplane::add_service(Service serv) {
     return true;
 }
 
+
+
+
+
+
+void show_baggages(Flight f){
+    unsigned num_of_carriages, num_of_stacks, stack_size;
+    cout << "Enter the number of carriages: ";
+    cin >> num_of_carriages;
+    cout << "Enter the number of stacks: ";
+    cin >> num_of_stacks;
+    cout << "Enter the stack size: ";
+    cin >> stack_size;
+    vector<vector<stack<string>>> carriages(num_of_carriages, vector<stack<string>>(num_of_stacks));
+    vector<Passenger> passengers = f.get_passengers();
+    for(Passenger p:passengers){
+        if(p.has_luggage()){
+            unsigned carriage;
+            unsigned pile;
+            if(!find_next_stack(carriages,carriage,pile)) {
+                print_carriages(carriages);
+                carriages = vector<vector<stack<string>>>(num_of_carriages,vector<stack<string>>(num_of_stacks)); // clears carriages
+            }
+            else{
+                carriages[carriage][pile].push(p.get_name());
+            }
+        }
+    }
+}
+
+
 bool Airplane::remove_flight(unsigned number){
     for (auto iter = flights.begin();iter!=flights.end();iter++){
         if(iter->get_number()==number){
+            bool is_about_to_happen;
+            cout << "Do you want to cancel the flight or is it about to happen? (0 to cancel else 1): ";
+            cin >> is_about_to_happen;
+            if(is_about_to_happen) {
+                show_baggages(*iter);
+            }
             remove(("files/Flight_"+to_string(iter->get_number())+".txt").c_str());
             flights.erase(iter);
             return true;
