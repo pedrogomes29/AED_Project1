@@ -5,12 +5,14 @@
 #include "LocalTransport.h"
 
 LocalTransport::LocalTransport() {
- distance = 0;
- type = "";
- schedules = vector<Time>();
+    name = "";
+    distance = 0;
+    type = "";
+    schedules = vector<Time>();
 }
 
-LocalTransport::LocalTransport(float distance, string type, vector<Time> schedules) {
+LocalTransport::LocalTransport(string name, float distance, string type, vector<Time> schedules) {
+    this-> name = name;
     this-> distance = distance;
     this-> type = type;
     this -> schedules = schedules;
@@ -45,6 +47,26 @@ void LocalTransport::set_schedules(vector<Time> &s) {
 }
 
 void LocalTransport::add_schedule(Time s) {
-    this->schedules.push_back(s);
+    for(auto iter= schedules.begin();iter!=schedules.end();iter++){
+        if(s<*iter)
+            schedules.insert(iter,s);
+    }
+}
+
+vector<Time> LocalTransport::next_schedules(int n, Time t) {
+    if(n>schedules.size()) return schedules;
+    vector<Time> result;
+    auto iter = schedules.begin();
+    bool next_day = false;
+    while(n){
+        if(t<*iter or next_day) result.push_back(*iter);
+        n--;
+        iter++;
+        if (iter==schedules.end()){
+            iter=schedules.begin();
+            next_day = true;
+        }
+    }
+    return result;
 }
 
