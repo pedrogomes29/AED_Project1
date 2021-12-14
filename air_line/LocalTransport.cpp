@@ -7,10 +7,10 @@
 LocalTransport::LocalTransport() {
  distance = 0;
  type = "";
- schedules = vector<Schedule>();
+ schedules = vector<Time>();
 }
 
-LocalTransport::LocalTransport(float distance, string type, vector<Schedule> schedules) {
+LocalTransport::LocalTransport(float distance, string type, vector<Time> schedules) {
     this-> distance = distance;
     this-> type = type;
     this -> schedules = schedules;
@@ -36,15 +36,15 @@ void LocalTransport::set_type(string &t) {
     type = t;
 }
 
-vector<Schedule> LocalTransport::get_schedules() const {
+vector<Time> LocalTransport::get_schedules() const {
     return schedules;
 }
 
-void LocalTransport::set_schedules(vector<Schedule> &s) {
+void LocalTransport::set_schedules(vector<Time> &s) {
     schedules = s;
 }
 
-void LocalTransport::add_schedule(Schedule s) {
+void LocalTransport::add_schedule(Time s) {
     this->schedules.push_back(s);
 }
 

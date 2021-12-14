@@ -5,7 +5,7 @@
 #ifndef AIRLINE_LOCALTRANSPORT_H
 #define AIRLINE_LOCALTRANSPORT_H
 
-#include "Schedule.h"
+#include "Time.h"
 #include <list>
 #include <string>
 #include <vector>
@@ -16,17 +16,17 @@ class LocalTransport {
 private:
     float distance;
     string type;
-    vector<Schedule> schedules;
+    vector<Time> schedules;
 public:
     LocalTransport();
-    LocalTransport(float distance,string type,vector<Schedule> schedules);
+    LocalTransport(float distance,string type,vector<Time> schedules);
     float get_distance() const;
     void set_distance(float &d);
     string get_type() const;
     void set_type(string &t);
-    vector<Schedule> get_schedules() const;
-    void set_schedules(vector<Schedule> &s);
-    void add_schedule(Schedule s);
+    vector<Time> get_schedules() const;
+    void set_schedules(vector<Time> &s);
+    void add_schedule(Time s);
     bool operator<(LocalTransport &lt1) const;
 };
 
