@@ -26,7 +26,7 @@ public:
     void update_flight(Flight &flight);
     void add_passenger(Flight &flight);
     Airplane* find_airplane(const string& license_plate);
-    void add_flight(Airplane & airplane);
+    bool add_flight(Airplane & airplane);
     bool add_airport(const string &name);
     bool find_airport(const string &name,Airport * airportptr);
 };
