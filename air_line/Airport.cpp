@@ -4,7 +4,7 @@
 
 #include "Airport.h"
 
-Airport::Airport(const string &name):name(name),transports(LocalTransport(0.0,"",vector<Schedule>())) {
+Airport::Airport(const string &name):name(name),transports(LocalTransport("",0.0,"",vector<Time>())) {
 }
 
 
@@ -19,4 +19,14 @@ bool Airport::add_transport(const LocalTransport &lt){
 }
 bool Airport::remove_transport (const LocalTransport &lt){
     return transports.remove(lt);
+}
+
+vector<LocalTransport> Airport::get_closest_transports(unsigned n_closest){
+    BSTItrIn<LocalTransport> itr(transports);
+    vector<LocalTransport> nearest_transports;
+    while(!itr.isAtEnd() and n_closest>0){
+        nearest_transports.push_back(itr.retrieve());
+        n_closest--;
+    }
+    return nearest_transports;
 }

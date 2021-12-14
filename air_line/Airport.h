@@ -22,6 +22,7 @@ public:
     void set_name(const string &name);
     bool add_transport(const LocalTransport &lt);
     bool remove_transport (const LocalTransport &lt);
+    vector<LocalTransport> get_closest_transports(unsigned n_closest);
     Airport(const string& name);
 };
 
