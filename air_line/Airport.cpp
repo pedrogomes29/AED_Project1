@@ -4,6 +4,6 @@
 
 #include "Airport.h"
 
-Airport::Airport(string name):name(name),transports(LocalTransport("",0.0,vector<Schedule>())) {
+Airport::Airport(string name):name(name),transports(LocalTransport(0.0,"",vector<Schedule>())) {
 
 }

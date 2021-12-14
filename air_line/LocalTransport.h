@@ -6,7 +6,7 @@
 #define AIRLINE_LOCALTRANSPORT_H
 
 #include "Schedule.h"
-#include <list>
+#include <vector>
 #include <string>
 
 using namespace std;
@@ -15,10 +15,10 @@ class LocalTransport {
 private:
     float distance;
     string type;
-    list<Schedule> schedules;
+    vector<Schedule> schedules;
 public:
     LocalTransport();
-    LocalTransport(float distance,string type,list<Schedule> schedules);
+    LocalTransport(float distance,string type,vector<Schedule> schedules);
 };
 
 
