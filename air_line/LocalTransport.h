@@ -20,6 +20,14 @@ private:
 public:
     LocalTransport();
     LocalTransport(float distance,string type,vector<Schedule> schedules);
+    float get_distance() const;
+    void set_distance(float &d);
+    string get_type() const;
+    void set_type(string &t);
+    vector<Schedule> get_schedules() const;
+    void set_schedules(vector<Schedule> &s);
+    void add_schedule(Schedule s);
+    bool operator<(LocalTransport &lt1) const;
 };
 
 
