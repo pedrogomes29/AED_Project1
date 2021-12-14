@@ -118,9 +118,33 @@ void Airline::update_airplane(Airplane & airplane){
                 cout << "Failed to add service (flight conflict)" << endl;
             break;
         }
-        case '5':
-
+        case '5': {
+            string employee,type;
+            cout << "Enter the name of the employee: ";
+            cin.ignore(1); // ignores the '\n'
+            getline(cin,employee);
+            cout << "Enter the type of service (maintenance or cleaning): ";
+            cin >> type;
+            cout << "Enter date of the service (day/month/year): ";
+            Date d(0,0,0);
+            cin >> d;
+            cout << "Enter hour of the service (hour:minute): ";
+            Time t(0,0);
+            cin >> t;
+            Schedule schedule(t,d);
+            if(type=="maintenance"){
+                Service service= Service(maintenance, schedule, employee);
+                airplane.add_service(service);
+            }
+            else if(type=="cleaning"){
+                Service service= Service(cleaning,schedule, employee);
+                airplane.add_service(service);
+            }
+            else{
+                cout << "The type of service that you entered does not exist." << endl;
+            }
             break;
+        }
         case '6':
             airplane.remove_service();
             break;
@@ -213,7 +237,6 @@ Airline::Airline(){
             while(!airplane_file.eof() and airplane_file.peek()!=EOF){
                 string aux;
                 airplane_file>>aux;
-                airplane_file.ignore(1); //ignores the '\n'
                 if (aux=="-----------Services-----------"){
                     found_services=true;
                     break;
@@ -243,13 +266,16 @@ Airline::Airline(){
                     }
                     flight_file.close();
                 }
+                airplane_file.ignore(1); //"Ignores the \n"
             }
             if(found_services) {
                 string employee, type;
                 Schedule s;
-                while (!airplane_file.eof() and !airplane_file.peek()==EOF) {
-                    airplane_file>> employee>>type>>s;
-                    airplane_file.ignore(1); //ignores the '\n'
+                while (!airplane_file.eof() and airplane_file.peek()!=EOF) {
+                    if(airplane_file.peek()=='\n')
+                        airplane_file.ignore(1);
+                    getline(airplane_file,employee);
+                    airplane_file>>type>>s;
                     if(type=="maintenance"){
                         Service service= Service(maintenance, s, employee);
                         a1.add_service(service);
@@ -258,6 +284,7 @@ Airline::Airline(){
                         Service service= Service(cleaning, s, employee);
                         a1.add_service(service);
                     }
+                    airplane_file.ignore(1);
                 }
             }
             airplanes.push_back(a1);
@@ -293,7 +320,7 @@ Airline::~Airline(){
             airplane_file << "-----------Services-----------" << endl;
             while (!services.empty()) {
                 Service service = services.front();
-                airplane_file << service.get_name() << " " << (service.get_type() ? "cleaning" : "maintenance") << " "
+                airplane_file << service.get_name() << endl << (service.get_type() ? "cleaning" : "maintenance") << endl
                      << service.get_schedule() << endl;
                 services.pop();
             }
