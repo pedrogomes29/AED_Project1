@@ -70,8 +70,18 @@ bool Airplane::add_service(Service serv) {
     return true;
 }
 
-
-
+bool find_next_stack(vector<vector<stack<string>>> carriages,unsigned stack_size,unsigned & carriage,unsigned &pile){
+    for(unsigned carriage_index=0;carriage_index<carriages.size();carriage_index++){
+        for(unsigned pile_index=0;pile_index<carriages[0].size();pile_index++){
+            if(carriages[carriage_index][pile_index].size()<stack_size) {
+                carriage=carriage_index;
+                pile=pile_index;
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 
 
@@ -89,7 +99,7 @@ void show_baggages(Flight f){
         if(p.has_luggage()){
             unsigned carriage;
             unsigned pile;
-            if(!find_next_stack(carriages,carriage,pile)) {
+            if(!find_next_stack(carriages,stack_size,carriage,pile)) {
                 print_carriages(carriages);
                 carriages = vector<vector<stack<string>>>(num_of_carriages,vector<stack<string>>(num_of_stacks)); // clears carriages
             }
