@@ -7,7 +7,6 @@
 Airport::Airport(const string &name, const string& country):name(name),country(country),transports(LocalTransport("",0.0,"",vector<Time>())) {
 }
 
-
 string Airport::get_name() const{
     return name;
 }

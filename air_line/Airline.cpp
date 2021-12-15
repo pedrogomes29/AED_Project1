@@ -10,6 +10,90 @@
 
 using namespace std;
 
+Airline::Airline(){
+    ifstream file, airplane_file,flight_file;
+    file.open("files/Airplanes.txt");
+    if(!file.is_open()){
+        cerr << "Error opening file Airplanes.txt";
+        exit(1);
+    }
+    string license_plate;
+    while(getline(file,license_plate)){
+        airplane_file.open("files/Airplane_"+license_plate+".txt");
+        if(!airplane_file.is_open()) {
+            cerr << "Error opening airplane file with license plate " <<license_plate<<endl;
+            exit(1);
+        }
+        else{
+            string type;
+            unsigned capacity,flight_number;
+            airplane_file>>type;
+            airplane_file>>capacity;
+            Airplane a1 = Airplane(license_plate,type,capacity);
+            bool found_services=false;
+            airplane_file.ignore(1); // ignores the '\n'
+            while(!airplane_file.eof() and airplane_file.peek()!=EOF){
+                string aux;
+                airplane_file>>aux;
+                if (aux=="-----------Services-----------"){
+                    found_services=true;
+                    break;
+                }
+                else {
+                    flight_number = stoi(aux);
+                    flight_file.open("files/Flight_" + to_string(flight_number) + ".txt");
+                    if (!flight_file.is_open()) {
+                        cerr << "Error opening file of flight number " << flight_number << endl;
+                        exit(1);
+                    } else {
+                        unsigned flight_capacity;
+                        Time duration;
+                        Schedule schedule;
+                        string origin, destination, passenger_name;
+                        bool luggage;
+                        flight_file >> flight_capacity >> duration >> schedule >> origin >> destination;
+                        flight_file.ignore(1); //ignores the '\n'
+                        Flight f1 = Flight(flight_capacity, flight_number, duration, schedule, origin, destination);
+                        while (!flight_file.eof() and flight_file.peek()!=EOF) {
+                            getline(flight_file,passenger_name);
+                            flight_file >> luggage;
+                            Passenger p1 = Passenger(passenger_name, luggage);
+                            f1.add_passenger(p1);
+                            flight_file.ignore(1); //ignores the '\n' to move to next line
+                        }
+                        a1.add_flight(f1);
+                    }
+                    flight_file.close();
+                }
+                airplane_file.ignore(1); //"Ignores the \n"
+            }
+            if(found_services) {
+                string employee, type;
+                Schedule s;
+                while (!airplane_file.eof() and airplane_file.peek()!=EOF) {
+                    if(airplane_file.peek()=='\n')
+                        airplane_file.ignore(1);
+                    getline(airplane_file,employee);
+                    airplane_file>>type>>s;
+                    if(type=="maintenance"){
+                        Service service= Service(maintenance, s, employee);
+                        a1.add_service(service);
+                    }
+                    else{
+                        Service service= Service(cleaning, s, employee);
+                        a1.add_service(service);
+                    }
+                    airplane_file.ignore(1);
+                }
+            }
+            airplanes.push_back(a1);
+            airplane_file.close();
+        }
+    }
+    file.close();
+}
+
+
 bool Airline::find_airport(const string &name,Airport * airportptr){
     for (Airport& airport:airports){
         if(airport.get_name()==name) {
@@ -244,8 +328,8 @@ void Airline::check_db() {
 }
 
 void Airline::setup(){
-    airports.push_back(Airport("Porto"));
-    airports.push_back(Airport("Lisboa"));
+    airports.push_back(Airport("Porto", "Portugal"));
+    airports.push_back(Airport("Lisboa","Portugal"));
 }
 
 
@@ -331,89 +415,18 @@ void Airline::add_airplane() {
     airplanes.push_back(Airplane(license_plate,type,capacity));
 }
 
+void Airline::print_planes(char c) {
+    if(c=='A'){
 
-Airline::Airline(){
-    ifstream file, airplane_file,flight_file;
-    file.open("files/Airplanes.txt");
-    if(!file.is_open()){
-        cerr << "Error opening file Airplanes.txt";
-        exit(1);
     }
-    string license_plate;
-    while(getline(file,license_plate)){
-        airplane_file.open("files/Airplane_"+license_plate+".txt");
-        if(!airplane_file.is_open()) {
-            cerr << "Error opening airplane file with license plate " <<license_plate<<endl;
-            exit(1);
-        }
-        else{
-            string type;
-            unsigned capacity,flight_number;
-            airplane_file>>type;
-            airplane_file>>capacity;
-            Airplane a1 = Airplane(license_plate,type,capacity);
-            bool found_services=false;
-            airplane_file.ignore(1); // ignores the '\n'
-            while(!airplane_file.eof() and airplane_file.peek()!=EOF){
-                string aux;
-                airplane_file>>aux;
-                if (aux=="-----------Services-----------"){
-                    found_services=true;
-                    break;
-                }
-                else {
-                    flight_number = stoi(aux);
-                    flight_file.open("files/Flight_" + to_string(flight_number) + ".txt");
-                    if (!flight_file.is_open()) {
-                        cerr << "Error opening file of flight number " << flight_number << endl;
-                        exit(1);
-                    } else {
-                        unsigned flight_capacity;
-                        Time duration;
-                        Schedule schedule;
-                        string origin, destination, passenger_name;
-                        bool luggage;
-                        flight_file >> flight_capacity >> duration >> schedule >> origin >> destination;
-                        flight_file.ignore(1); //ignores the '\n'
-                        Flight f1 = Flight(flight_capacity, flight_number, duration, schedule, origin, destination);
-                        while (!flight_file.eof() and flight_file.peek()!=EOF) {
-                            getline(flight_file,passenger_name);
-                            flight_file >> luggage;
-                            Passenger p1 = Passenger(passenger_name, luggage);
-                            f1.add_passenger(p1);
-                            flight_file.ignore(1); //ignores the '\n' to move to next line
-                        }
-                        a1.add_flight(f1);
-                    }
-                    flight_file.close();
-                }
-                airplane_file.ignore(1); //"Ignores the \n"
-            }
-            if(found_services) {
-                string employee, type;
-                Schedule s;
-                while (!airplane_file.eof() and airplane_file.peek()!=EOF) {
-                    if(airplane_file.peek()=='\n')
-                        airplane_file.ignore(1);
-                    getline(airplane_file,employee);
-                    airplane_file>>type>>s;
-                    if(type=="maintenance"){
-                        Service service= Service(maintenance, s, employee);
-                        a1.add_service(service);
-                    }
-                    else{
-                        Service service= Service(cleaning, s, employee);
-                        a1.add_service(service);
-                    }
-                    airplane_file.ignore(1);
-                }
-            }
-            airplanes.push_back(a1);
-            airplane_file.close();
-        }
+    else if(c=='B'){
+
     }
-file.close();
-}
+    else{
+
+    }
+};
+
 
 Airline::~Airline(){
     ofstream file("files/Airplanes.txt");
@@ -450,15 +463,3 @@ Airline::~Airline(){
     }
     file.close();
 }
-
-void Airline::print_planes(char c) {
-    if(c=='A'){
-
-    }
-    else if(c=='B'){
-
-    }
-    else{
-
-    }
-};
