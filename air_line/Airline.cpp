@@ -195,7 +195,51 @@ void Airline::update_airplane(Airplane & airplane){
     }
 }
 
-void Airline::check_airplanes() {
+void Airline::check_db() {
+    char option;
+    cout << "1. See next 'x' flights: "<<endl;
+    cout << "2. See every plane owned by this airline company: " <<endl;
+    cout << "3. See every airport we operate in: ";
+    cin >> option;
+    switch (option){
+        case '1':{
+            int n;
+            cout << "How many flights do you wish to see: ";
+            cin>>n;
+            break;
+        }
+        case '2':{
+            char yes_or_no;
+            cout<<"Do you want to see how many planes of a certain type we have: ";
+            cin>> yes_or_no;
+            if(yes_or_no=='Y'){
+
+            }
+            else{
+                char answer;
+                cout<<"Sort planes by :"<<endl;
+                cout<<"A. License Plate"<<endl;
+                cout<<"B. Type"<<endl;
+                cout<<"C. Capacity"<<endl;
+                cout<<"Option: "<<endl;
+                cin>>answer;
+                switch (answer) {
+                    case 'A':{
+
+                    }
+                    case 'B':{
+
+                    }
+                    case 'C':{
+
+                    }
+                    default:cout << "The option you entered is invalid." << endl;
+                }
+            }
+            break;
+        }
+        case '3':
+    }
 
 }
 
@@ -213,7 +257,7 @@ void Airline::interface() {
         cout << "Please enter an option" << endl;
         cout << "1. Add an airplane" << endl;
         cout << "2. Update airplane" << endl;
-        cout << "3. Check airplanes" << endl;
+        cout << "3. Check Database" << endl;
         cout << "4. Check near transports" << endl;
         cout << "5. Exit" << endl;
         cin >> option;
@@ -236,7 +280,7 @@ void Airline::interface() {
                 break;
             }
             case '3':{
-                check_airplanes();
+                check_db();
                 break;
             }
             case '4':{
@@ -405,4 +449,16 @@ Airline::~Airline(){
         airplane_file.close();
     }
     file.close();
+}
+
+void Airline::print_planes(char c) {
+    if(c=='A'){
+
+    }
+    else if(c=='B'){
+
+    }
+    else{
+
+    }
 };
