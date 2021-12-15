@@ -94,7 +94,7 @@ Airline::Airline(){
 }
 
 
-bool Airline::find_airport(const string &name,Airport * airportptr){
+bool Airline::find_airport(const string &name,Airport * &airportptr){
     for (Airport& airport:airports){
         if(airport.get_name()==name) {
             airportptr = &airport;
@@ -300,17 +300,20 @@ void Airline::check_db() {
             cout << "A. License Plate" << endl;
             cout << "B. Type" << endl;
             cout << "C. Capacity" << endl;
-            cout << "Option: " << endl;
+            cout << "Option: ";
             cin >> answer;
             switch (answer) {
                 case 'A': {
                     print_planes('A');
+                    break;
                 }
                 case 'B': {
                     print_planes('B');
+                    break;
                 }
                 case 'C': {
                     print_planes('C');
+                    break;
                 }
                 default:
                     cout << "The option you entered is invalid." << endl;
@@ -334,11 +337,6 @@ void Airline::check_db() {
 }
 
 void Airline::setup(){
-
-    airports.push_back(Airport("Porto", "Portugal"));
-    airports.push_back(Airport("Lisboa","Portugal"));
-
-
 
     vector<Time> train_schedules;
     Time current_time(5,45);
@@ -382,7 +380,7 @@ void Airline::setup(){
     airport_porto.add_transport(LocalTransport("Campanha",15,"Train",train_schedules));
     airport_porto.add_transport(LocalTransport("Porto Sao Bento",12.5,"Train",train_schedules));
     airport_porto.add_transport(LocalTransport("Campanha",15.2,"Subway",subway_schedules));
-    airport_porto.add_transport(LocalTransport("Aeroporto",0.5,"Subway",subway_schedules));
+    airport_porto.add_transport(LocalTransport("Aeroport",0.5,"Subway",subway_schedules));
     airport_porto.add_transport(LocalTransport("Senhora da Hora",0.5,"Subway",subway_schedules));
     airport_porto.add_transport(LocalTransport("Trindade",12,"Subway",subway_schedules));
     airport_porto.add_transport(LocalTransport("Barreiro",0.5,"Bus",bus_schedules));
@@ -428,15 +426,6 @@ void Airline::setup(){
     airport_newyork.add_transport(LocalTransport("The Port Authority Midtown Bus Terminal",30,"Bus",bus_schedules));
     airport_newyork.add_transport(LocalTransport("Campo 24 de Agosto",35,"Bus",bus_schedules));
 
-
-    Airport airport_lisboa (Airport("Lisboa","Portugal"));
-    airport_lisboa.add_transport(LocalTransport("Campo Grande",3,"Subway",subway_schedules));
-    airport_lisboa.add_transport(LocalTransport("Campo Grande",3,"Subway",subway_schedules));
-    airport_lisboa.add_transport(LocalTransport("Campo Grande",3,"Subway",subway_schedules));
-    airport_lisboa.add_transport(LocalTransport("Barreiro",0.5,"Bus",bus_schedules));
-    airport_lisboa.add_transport(LocalTransport("Barreiro",0.5,"Bus",bus_schedules));
-    airport_lisboa.add_transport(LocalTransport("Santa Apolonia",15,"Train",train_schedules));
-    airport_lisboa.add_transport(LocalTransport("Sete Rios",15,"Train",train_schedules));
 
     airports.push_back(airport_porto);
     airports.push_back(airport_lisbon);
@@ -498,7 +487,7 @@ void Airline::interface() {
                         cout<<"There are only "<< nearest_t.size()<<" transports that are near the airport."<<endl;
                     }
                     for(auto& transport: nearest_t){
-                        cout<< transport.get_name()<< "with the next schedule at "<< transport.next_schedules(n,time_now)[0] <<endl;
+                        cout<< transport.get_name()<< " with the next schedule at "<< transport.next_schedules(1,time_now)[0] <<endl;
                     }
                 }
                 else{
@@ -583,7 +572,7 @@ void Airline::print_soonest_flights(int n){
             cout<<"Flight number "<< flight.get_number()<<":"<<endl;
             cout<<"Scheduled at: "<< flight.get_schedule()<<endl;
             cout<<"Flight duration of "<< flight.get_duration()<<endl;
-            cout<<"With origin in" << flight.get_origin()<< " and destination "<< flight.get_destination()<<endl;
+            cout<<"With origin in " << flight.get_origin()<< " and destination "<< flight.get_destination()<<endl;
         }
     }
     else{
@@ -609,7 +598,7 @@ void Airline::print_airports(string country) {
     else{
         cout << "We have the following airports that are operational at the moment:"<<endl;
         for(Airport &a: airports){
-            cout<< a.get_country()<<endl;
+            cout<< a.get_name()<<endl;
         }
     }
 }

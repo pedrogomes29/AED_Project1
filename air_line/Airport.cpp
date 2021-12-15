@@ -32,6 +32,7 @@ vector<LocalTransport> Airport::get_closest_transports(unsigned n_closest){
     while(!itr.isAtEnd() and n_closest>0){
         nearest_transports.push_back(itr.retrieve());
         n_closest--;
+        itr.advance();
     }
     return nearest_transports;
 }

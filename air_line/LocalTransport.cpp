@@ -59,8 +59,10 @@ vector<Time> LocalTransport::next_schedules(int n, Time t) {
     auto iter = schedules.begin();
     bool next_day = false;
     while(n){
-        if(t<*iter or next_day) result.push_back(*iter);
-        n--;
+        if(t<*iter or next_day) {
+            result.push_back(*iter);
+            n--;
+        }
         iter++;
         if (iter==schedules.end()){
             iter=schedules.begin();

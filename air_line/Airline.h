@@ -31,7 +31,7 @@ public:
     Airplane* find_airplane(const string& license_plate);
     bool add_flight(Airplane & airplane);
     bool add_airport(const string &name);
-    bool find_airport(const string &name,Airport * airportptr);
+    bool find_airport(const string &name,Airport * &airportptr);
     void print_planes(char c);
     void print_airports(string country);
     void print_soonest_flights(int n);
