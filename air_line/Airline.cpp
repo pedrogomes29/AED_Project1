@@ -187,9 +187,8 @@ void Airline::update_airplane(Airplane & airplane){
     cout << "1. Add flight" << endl;
     cout << "2. Remove flight" << endl;
     cout << "3. Update flight" << endl;
-    cout << "4. Check-in luggage" << endl;
-    cout << "5. Add Service" << endl;
-    cout << "6. Remove Service" << endl;
+    cout << "4. Add Service" << endl;
+    cout << "5. Remove Service" << endl;
     cin >> option;
     switch(option){
         case '1':{
@@ -224,27 +223,6 @@ void Airline::update_airplane(Airplane & airplane){
             break;
         }
         case '4': {
-            string employee, type;
-            Schedule schedule;
-            Service service(maintenance,"",0,0,"");
-            cout << "Enter the employee name: ";
-            cin >> employee;
-            cout << "Enter the type of service (maintenance or cleaning)";
-            if (type == "maintenance") {
-                service = Service(maintenance, schedule, employee);
-            } else if (type == "cleaning") {
-                service = Service(cleaning, schedule, employee);
-            } else {
-                cout << "No such type of service." << endl;
-                break;
-            }
-            if (airplane.add_service(service))
-                cout << "Service added successfuly" << endl;
-            else
-                cout << "Failed to add service (flight conflict)" << endl;
-            break;
-        }
-        case '5': {
             string employee,type;
             cout << "Enter the name of the employee: ";
             cin.ignore(1); // ignores the '\n'
@@ -271,8 +249,9 @@ void Airline::update_airplane(Airplane & airplane){
             }
             break;
         }
-        case '6':
-            airplane.remove_service();
+        case '5':
+            if(airplane.remove_service())cout<<"Service removed successfully"<<endl;
+            else cout<<"There were no services to remove!"<<endl;
             break;
         default:
             cout << "The option you entered is invalid." << endl;
@@ -441,12 +420,14 @@ void Airline::interface() {
     setup();
     char option;
     while (!cin.eof() and option != '5') {
+        cout<<endl;
         cout << "Please enter an option" << endl;
         cout << "1. Add an airplane" << endl;
         cout << "2. Update airplane" << endl;
         cout << "3. Check Database" << endl;
         cout << "4. Check near transports" << endl;
         cout << "5. Exit" << endl;
+        cout<<endl;
         cin >> option;
         switch (option) {
             case '1': {
