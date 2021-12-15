@@ -13,11 +13,14 @@ private:
 public:
     Time();
     Time(int hour,int minute);
+    void set_hour(int hour);
+    void set_minute (int minute);
     int get_hour() const;
     int get_minute() const;
-    bool operator<(Time const &time2);
+    bool operator<(Time const &time2) const;
     friend istream &operator>>(istream& stream,  Time& t);
     friend ostream &operator<< (ostream& stream, const Time& t);
+    Time operator+(const Time &t2) const;
 };
 
 
