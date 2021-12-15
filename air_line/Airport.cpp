@@ -5,8 +5,8 @@
 #include "Airport.h"
 
 Airport::Airport(const string &name,const string&country):name(name),country(country),transports(LocalTransport("",0.0,"",vector<Time>())) {
-}
 
+}
 string Airport::get_country() const {
     return country;
 }
