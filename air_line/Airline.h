@@ -21,7 +21,7 @@ public:
     ~Airline();
     void interface();
     void add_airplane();
-    void check_airplanes();
+    void check_db();
     void update_airplane(Airplane &airplane);
     void update_flight(Flight &flight);
     void setup();
@@ -30,6 +30,7 @@ public:
     bool add_flight(Airplane & airplane);
     bool add_airport(const string &name);
     bool find_airport(const string &name,Airport * airportptr);
+    void print_planes(char c);
 };
 
 #endif //AIRLINE_AIRLINE_H
