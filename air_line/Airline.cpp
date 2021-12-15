@@ -287,20 +287,20 @@ void Airline::setup(){
 
     airport_porto.add_transport(LocalTransport("Campanha",15,"Train",train_schedules));
     airport_porto.add_transport(LocalTransport("Porto Sao Bento",12.5,"Train",train_schedules));
-    airport_porto.add_transport(LocalTransport("Campanha",15,"Subway",subway_schedules));
+    airport_porto.add_transport(LocalTransport("Campanha",15.2,"Subway",subway_schedules));
     airport_porto.add_transport(LocalTransport("Aeroporto",0.5,"Subway",subway_schedules));
     airport_porto.add_transport(LocalTransport("Senhora da Hora",0.5,"Subway",subway_schedules));
     airport_porto.add_transport(LocalTransport("Trindade",12,"Subway",subway_schedules));
     airport_porto.add_transport(LocalTransport("Barreiro",0.5,"Bus",bus_schedules));
     airport_porto.add_transport(LocalTransport("Campo 24 de Agosto",13,"Bus",bus_schedules));
 
-    airport_lisbon.add_transport(LocalTransport("Campo Grande",3,"Subway",subway_schedules));
-    airport_lisbon.add_transport(LocalTransport("Marques de Pombal",3,"Subway",subway_schedules));
-    airport_lisbon.add_transport(LocalTransport("Baixa-Chiado",3,"Subway",subway_schedules));
-    airport_lisbon.add_transport(LocalTransport("Oriente",0.5,"Bus",bus_schedules));
-    airport_lisbon.add_transport(LocalTransport("Sete Rios",0.5,"Bus",bus_schedules));
-    airport_lisbon.add_transport(LocalTransport("Estacao do Oriente",15,"Train",train_schedules));
-    airport_lisbon.add_transport(LocalTransport("Sete Rios",15,"Train",train_schedules));
+    airport_lisbon.add_transport(LocalTransport("Estacao do Oriente",2.4,"Train",train_schedules));
+    airport_lisbon.add_transport(LocalTransport("Sete Rios",5,"Train",train_schedules));
+    airport_lisbon.add_transport(LocalTransport("Campo Grande",4,"Subway",subway_schedules));
+    airport_lisbon.add_transport(LocalTransport("Marques de Pombal",6,"Subway",subway_schedules));
+    airport_lisbon.add_transport(LocalTransport("Baixa-Chiado",7,"Subway",subway_schedules));
+    airport_lisbon.add_transport(LocalTransport("Oriente",2.5,"Bus",bus_schedules));
+    airport_lisbon.add_transport(LocalTransport("Sete Rios",5.3,"Bus",bus_schedules));
 
     airport_madrid.add_transport(LocalTransport("Atocha",13.5,"Train",train_schedules));
     airport_madrid.add_transport(LocalTransport("Chamartin",12,"Train",train_schedules));
@@ -312,11 +312,11 @@ void Airline::setup(){
 
     airport_frankfurt.add_transport(LocalTransport("Hauptbahnhof",11,"Train",train_schedules));
     airport_frankfurt.add_transport(LocalTransport("Frankfurt Airport Long distance rail station",0,"Train",train_schedules));
-    airport_frankfurt.add_transport(LocalTransport("Hauptbahnhof",11,"Subway",subway_schedules));
+    airport_frankfurt.add_transport(LocalTransport("Hauptbahnhof",11.3,"Subway",subway_schedules));
     airport_frankfurt.add_transport(LocalTransport("Hauptwache",12,"Subway",subway_schedules));
     airport_frankfurt.add_transport(LocalTransport("Schafflestrabe",16,"Subway",subway_schedules));
     airport_frankfurt.add_transport(LocalTransport("Frankfurt Central Station",10.5,"Bus",bus_schedules));
-    airport_frankfurt.add_transport(LocalTransport("Frankfurt Airport Bus Terminal",0,"Bus",bus_schedules));
+    airport_frankfurt.add_transport(LocalTransport("Frankfurt Airport Bus Terminal",0.5,"Bus",bus_schedules));
 
     airport_amsterdan.add_transport(LocalTransport("Centraal",16,"Train",train_schedules));
     airport_amsterdan.add_transport(LocalTransport("Schiphol Airport",0,"Train",train_schedules));
