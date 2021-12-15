@@ -328,8 +328,65 @@ void Airline::check_db() {
 }
 
 void Airline::setup(){
+
     airports.push_back(Airport("Porto", "Portugal"));
     airports.push_back(Airport("Lisboa","Portugal"));
+
+
+
+    vector<Time> train_schedules;
+    Time current_time(5,45);
+    Time past_last_schedule(23,31);
+    while(current_time<past_last_schedule){
+        train_schedules.push_back(current_time);
+        current_time = current_time + Time(0,30);
+    }
+
+
+    vector<Time> subway_schedules;
+    current_time.set_hour(6);
+    current_time.set_minute(30);
+    past_last_schedule.set_hour(23);
+    past_last_schedule.set_minute(31);
+    while(current_time<past_last_schedule){
+        subway_schedules.push_back(current_time);
+        current_time = current_time + Time(0,15);
+    }
+
+
+    current_time.set_hour(7);
+    current_time.set_minute(0);
+    past_last_schedule.set_hour(10);
+    past_last_schedule.set_minute(31);
+    vector<Time> bus_schedules;
+    while(current_time<past_last_schedule){
+        bus_schedules.push_back(current_time);
+        current_time = current_time + Time(0,15);
+    }
+
+
+    Airport airport_porto (Airport("Porto","Portugal"));
+    airport_porto.add_transport(LocalTransport("Campanha",15,"Train",train_schedules));
+    airport_porto.add_transport(LocalTransport("Porto Sao Bento",12.5,"Train",train_schedules));
+    airport_porto.add_transport(LocalTransport("Campanha",15,"Subway",subway_schedules));
+    airport_porto.add_transport(LocalTransport("Aeroporto",0.5,"Subway",subway_schedules));
+    airport_porto.add_transport(LocalTransport("Senhora da Hora",0.5,"Subway",subway_schedules));
+    airport_porto.add_transport(LocalTransport("Trindade",12,"Subway",subway_schedules));
+    airport_porto.add_transport(LocalTransport("Barreiro",0.5,"Bus",bus_schedules));
+    airport_porto.add_transport(LocalTransport("Campo 24 de Agosto",13,"Bus",bus_schedules));
+    airports.push_back(airport_porto);
+    Airport airport_lisboa (Airport("Lisboa","Portugal"));
+    airport_lisboa.add_transport(LocalTransport("Campo Grande",3,"Subway",subway_schedules));
+    airport_lisboa.add_transport(LocalTransport("Campo Grande",3,"Subway",subway_schedules));
+    airport_lisboa.add_transport(LocalTransport("Campo Grande",3,"Subway",subway_schedules));
+    airport_lisboa.add_transport(LocalTransport("Barreiro",0.5,"Bus",bus_schedules));
+    airport_lisboa.add_transport(LocalTransport("Barreiro",0.5,"Bus",bus_schedules));
+    airport_lisboa.add_transport(LocalTransport("Santa Apolonia",15,"Train",train_schedules));
+    airport_lisboa.add_transport(LocalTransport("Sete Rios",15,"Train",train_schedules));
+
+    airport_lisboa.add_transport(LocalTransport(""));
+    airports.push_back(Airport("Lisboa"));
+>>>>>>> 193c65b32e8f65f6d97e3db85694972ca568a6ef
 }
 
 
