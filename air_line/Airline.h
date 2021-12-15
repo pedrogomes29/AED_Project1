@@ -9,6 +9,8 @@
 #include "Airport.h"
 #include <string>
 #include <list>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -31,6 +33,8 @@ public:
     bool add_airport(const string &name);
     bool find_airport(const string &name,Airport * airportptr);
     void print_planes(char c);
+    void print_airports(string country);
+    void print_soonest_flights(int n);
 };
 
 #endif //AIRLINE_AIRLINE_H

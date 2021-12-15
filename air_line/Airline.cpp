@@ -281,48 +281,54 @@ void Airline::update_airplane(Airplane & airplane){
 
 void Airline::check_db() {
     char option;
-    cout << "1. See next 'x' flights: "<<endl;
-    cout << "2. See every plane owned by this airline company: " <<endl;
-    cout << "3. See every airport we operate in: ";
+    cout << "1. See the soonest 'x' flights. "<<endl;
+    cout << "2. See every plane owned by this airline company. " <<endl;
+    cout << "3. See every airport we operate in. "<<endl;
+    cout << "Option: ";
     cin >> option;
-    switch (option){
-        case '1':{
+    switch (option) {
+        case '1': {
             int n;
             cout << "How many flights do you wish to see: ";
-            cin>>n;
+            cin >> n;
+            print_soonest_flights(n);
             break;
         }
-        case '2':{
-            char yes_or_no;
-            cout<<"Do you want to see how many planes of a certain type we have: ";
-            cin>> yes_or_no;
-            if(yes_or_no=='Y'){
-
-            }
-            else{
-                char answer;
-                cout<<"Sort planes by :"<<endl;
-                cout<<"A. License Plate"<<endl;
-                cout<<"B. Type"<<endl;
-                cout<<"C. Capacity"<<endl;
-                cout<<"Option: "<<endl;
-                cin>>answer;
-                switch (answer) {
-                    case 'A':{
-
-                    }
-                    case 'B':{
-
-                    }
-                    case 'C':{
-
-                    }
-                    default:cout << "The option you entered is invalid." << endl;
+        case '2': {
+            char answer;
+            cout << "Sort planes by :" << endl;
+            cout << "A. License Plate" << endl;
+            cout << "B. Type" << endl;
+            cout << "C. Capacity" << endl;
+            cout << "Option: " << endl;
+            cin >> answer;
+            switch (answer) {
+                case 'A': {
+                    print_planes('A');
                 }
+                case 'B': {
+                    print_planes('B');
+                }
+                case 'C': {
+                    print_planes('C');
+                }
+                default:
+                    cout << "The option you entered is invalid." << endl;
             }
             break;
         }
-        case '3':
+        case '3':{
+            string country;
+            cout << "Wish country do you want to see the airports we operate. " << endl;
+            cout << "Enter specific country or enter 'x' to see all airplanes we operate in: ";
+            cin >> country;
+            print_airports(country);
+            break;
+        }
+        default: {
+            cout << "Invalid option"<<endl;
+        }
+
     }
 
 }
@@ -385,8 +391,7 @@ void Airline::setup(){
     airport_lisboa.add_transport(LocalTransport("Sete Rios",15,"Train",train_schedules));
 
     airport_lisboa.add_transport(LocalTransport(""));
-    airports.push_back(Airport("Lisboa"));
->>>>>>> 193c65b32e8f65f6d97e3db85694972ca568a6ef
+    airports.push_back(Airport("Lisboa",));
 }
 
 
@@ -471,18 +476,91 @@ void Airline::add_airplane() {
     cin >> capacity;
     airplanes.push_back(Airplane(license_plate,type,capacity));
 }
-
+bool my_sortf1(Airplane const &a1, Airplane const &a2){
+    return a1.get_license_plate()<a2.get_license_plate();
+}
+bool my_sortf2(Airplane const &a1, Airplane const &a2){
+    return a1.get_type()<a2.get_type();
+}
+bool my_sortf3(Airplane const &a1, Airplane const &a2){
+    return a1.get_capacity()<a2.get_capacity();
+}
 void Airline::print_planes(char c) {
+    cout<<"Here are the airplanes sorted by your criteria"<<endl;
+    list<Airplane> aux = airplanes;
     if(c=='A'){
-
+        aux.sort(my_sortf1);
+        int i=1;
+        for(const auto& a:aux){
+            cout<<i<< "-"<< a.get_license_plate() << "-"<<a.get_type()<<"-"<<a.get_capacity()<<endl;
+            i++;
+        }
     }
     else if(c=='B'){
-
+        aux.sort(my_sortf2);
+        int i=1;
+        for(const auto& a:aux){
+            cout<<i<< "-"<< a.get_license_plate() << "-"<<a.get_type()<<"-"<<a.get_capacity()<<endl;
+            i++;
+        }
     }
     else{
-
+        aux.sort(my_sortf3);
+        int i=1;
+        for(const auto& a:aux){
+            cout<<i<< "-"<< a.get_license_plate() << "-"<<a.get_type()<<"-"<<a.get_capacity()<<endl;
+            i++;
+        }
     }
-};
+}
+bool rule_flight(Flight const &f1,Flight const &f2 ){
+    return f1.get_schedule()<f2.get_schedule();
+}
+void Airline::print_soonest_flights(int n){
+    vector<Flight> all_flights;
+    for(Airplane const &a:airplanes){
+        for(Flight const  &f : a.get_flights()){
+            all_flights.push_back(f);
+        }
+    }
+    sort(all_flights.begin(), all_flights.end(), rule_flight);
+    if(n>all_flights.size()){
+        cout << "We don't have that many flights."<<endl;
+        cout<< "Here are all the flights we have sorted by schedule"<<endl;
+        for(auto const &flight: all_flights){
+            cout<<"Flight number "<< flight.get_number()<<":"<<endl;
+            cout<<"Scheduled at: "<< flight.get_schedule()<<endl;
+            cout<<"Flight duration of "<< flight.get_duration()<<endl;
+            cout<<"With origin in" << flight.get_origin()<< " and destination "<< flight.get_destination()<<endl;
+        }
+    }
+    else{
+        cout << "Here are the next"<< n << " flights:"<<endl;
+        for(int i = 0;i<n;i++){
+            cout<<"Flight number "<< all_flights[i].get_number()<<":"<<endl;
+            cout<<"Scheduled at: "<< all_flights[i].get_schedule()<<endl;
+            cout<<"Flight duration of "<< all_flights[i].get_duration()<<endl;
+            cout<<"With origin in" << all_flights[i].get_origin()<< " and destination "<< all_flights[i].get_destination()<<endl;
+        }
+    }
+}
+
+void Airline::print_airports(string country) {
+    if(country != "x"){
+        cout << "We have the following airport(s) operating in "<<country<<" :"<<endl;
+        for(Airport &a: airports){
+            if(a.get_country() == country){
+                cout<< a.get_name()<<endl;
+            }
+        }
+    }
+    else{
+        cout << "We have the following airports that are operational at the moment:"<<endl;
+        for(Airport &a: airports){
+            cout<< a.get_country()<<endl;
+        }
+    }
+}
 
 
 Airline::~Airline(){
@@ -520,3 +598,4 @@ Airline::~Airline(){
     }
     file.close();
 }
+
