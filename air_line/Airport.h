@@ -16,14 +16,16 @@ class Airport {
 
 private:
     string name;
+    string country;
     BST<LocalTransport> transports;
 public:
     string get_name() const;
     void set_name(const string &name);
+    string get_country() const;
     bool add_transport(const LocalTransport &lt);
     bool remove_transport (const LocalTransport &lt);
     vector<LocalTransport> get_closest_transports(unsigned n_closest);
-    Airport(const string& name);
+    Airport(const string& name,const string & country);
 };
 
 
