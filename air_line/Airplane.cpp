@@ -92,6 +92,7 @@ void print_carriages(vector<vector<stack<string>>> vector1) {
             }
         }
     }
+    cout << endl;
 }
 
 
@@ -107,22 +108,25 @@ void show_baggages(Flight f){
     cin >> stack_size;
     vector<vector<stack<string>>> carriages(num_of_carriages, vector<stack<string>>(num_of_stacks));
     vector<Passenger> passengers = f.get_passengers();
+    unsigned trips=1;
     for(Passenger p:passengers){
         if(p.has_luggage()){
             unsigned carriage;
             unsigned pile;
             if(!find_next_stack(carriages,stack_size,carriage,pile)) {
+                trips++;
                 print_carriages(carriages);
-                carriages = vector<vector<stack<string>>>(num_of_carriages,vector<stack<string>>(num_of_stacks)); // clears carriages
+                carriages = vector<vector<stack<string>>>(num_of_carriages,vector<stack<string>>(num_of_stacks));// clears carriages
+                carriages[0][0].push(p.get_name());
             }
             else{
                 carriages[carriage][pile].push(p.get_name());
             }
         }
     }
-    if(!carriages[0][0].empty()) // if  first pile in first stack is empty(there's something to print)
+    if(!carriages[0][0].empty()) // if  first pile in first stack isn't empty(there's something to print)
         print_carriages(carriages);
-    return;
+    cout << "The car made " << trips << " trips." << endl;
 }
 
 
