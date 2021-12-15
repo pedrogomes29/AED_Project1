@@ -33,6 +33,10 @@ Flight::Flight(unsigned capacity,unsigned number,Time duration,Schedule schedule
     this->destination = destination;
 }
 
+void Flight::set_schedule(const Schedule & s1){
+   schedule=s1;
+}
+
 Schedule Flight::get_schedule() const {
     return schedule;
 }
@@ -43,6 +47,7 @@ bool Flight::add_passenger(Passenger p) {
     }
     return false;
 }
+
 
 unsigned Flight::get_number() const {
     return number;

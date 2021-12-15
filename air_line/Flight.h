@@ -28,6 +28,7 @@ public:
            string destination, vector<Passenger> passengers);
     Flight(unsigned capacity,unsigned number,Time duration,Schedule schedule,string origin,string destination);
     Schedule get_schedule()const;
+    void set_schedule(const Schedule & s1);
     bool add_passenger(Passenger p);
     unsigned get_number() const;
     Time get_duration() const;

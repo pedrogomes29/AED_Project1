@@ -22,20 +22,41 @@ bool Airline::find_airport(const string &name,Airport * airportptr){
 
 
 void Airline::update_flight(Flight & flight){
-    cout << "1. Change flight time" << endl;
+    char option;
+    cout << "1. Change flight Schedule" << endl;
     cout << "2. Add passenger" << endl;
+    cin >> option;
+    switch(option){
+        case '1': {
+            Date date;
+            Time t;
+            cout << "Enter the new date (dd/mm/yyyy): ";
+            cin >> date;
+            cout << "Enter the time (hh:mm): ";
+            cin >> t;
+            flight.set_schedule(Schedule(t,date));
+            break;
+        }
+        case '2':{
+            string passenger_name;
+            char answer;
+            cout << "Enter the name of the passenger: ";
+            if(cin.peek()=='\n')
+                cin.ignore(1);
+            getline(cin,passenger_name);
+            cout << "Does have have luggagge?(Y/N): ";
+            cin >> answer;
+            if(answer=='Y')
+                flight.add_passenger(Passenger(passenger_name,true));
+            else if(answer=='N')
+                flight.add_passenger(Passenger(passenger_name,false));
+            else
+                cout << "Invalid answer" << endl;
+            break;
+        }
+    }
 }
 
-void Airline::add_passenger(Flight & flight){
-    cout << "Enter the name of the passenger: ";
-    string name,answer;
-    bool luggage;
-    getline(cin,name);
-    cout << "Does he/she have luggage?";
-    cin >> answer;
-    (answer=="yes")?luggage=true:luggage=false;
-    while(!flight.add_passenger(Passenger(name,luggage)));
-}
 
 
 Airplane* Airline::find_airplane(const string& license_plate){
@@ -63,7 +84,7 @@ bool Airline::add_flight(Airplane & airplane){
     Time duration = Time(0,0);
     cout << "Enter duration of the flight (hour:minute): ";
     cin >> duration;
-    cout << "Enter origin location ";
+    cout << "Enter origin location: ";
     cin>> origin;
     Airport * aux;
     if(!find_airport(origin,aux))
@@ -178,7 +199,15 @@ void Airline::check_airplanes() {
 
 }
 
+void Airline::setup(){
+    airports.push_back(Airport("Porto"));
+    airports.push_back(Airport("Lisboa"));
+}
+
+
+
 void Airline::interface() {
+    setup();
     char option;
     while (!cin.eof() and option != '5') {
         cout << "Please enter an option" << endl;
@@ -303,11 +332,12 @@ Airline::Airline(){
                         flight_file >> flight_capacity >> duration >> schedule >> origin >> destination;
                         flight_file.ignore(1); //ignores the '\n'
                         Flight f1 = Flight(flight_capacity, flight_number, duration, schedule, origin, destination);
-                        while (!flight_file.eof() and !flight_file.peek()==EOF) {
-                            flight_file >> passenger_name >> luggage;
-                            flight_file.ignore(1); //ignores the '\n'
+                        while (!flight_file.eof() and flight_file.peek()!=EOF) {
+                            getline(flight_file,passenger_name);
+                            flight_file >> luggage;
                             Passenger p1 = Passenger(passenger_name, luggage);
                             f1.add_passenger(p1);
+                            flight_file.ignore(1); //ignores the '\n' to move to next line
                         }
                         a1.add_flight(f1);
                     }
@@ -358,7 +388,7 @@ Airline::~Airline(){
             flight_file << flight.get_capacity() << endl << flight.get_duration() << endl
             << flight.get_schedule() << endl <<flight.get_origin() << endl <<flight.get_destination() << endl;
             for(const Passenger&passenger:flight.get_passengers()){
-                flight_file << passenger.get_name() << " " << passenger.has_luggage();
+                flight_file << passenger.get_name() << endl << passenger.has_luggage() << endl;
             }
             flight_file.close();
         }

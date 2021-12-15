@@ -24,6 +24,7 @@ public:
     void check_airplanes();
     void update_airplane(Airplane &airplane);
     void update_flight(Flight &flight);
+    void setup();
     void add_passenger(Flight &flight);
     Airplane* find_airplane(const string& license_plate);
     bool add_flight(Airplane & airplane);

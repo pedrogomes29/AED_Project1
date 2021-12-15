@@ -6,7 +6,6 @@
 #include <stack>
 #include "Airplane.h"
 
-void print_carriages(vector<vector<stack<string>>> vector1);
 
 Airplane::Airplane() {
     license_plate = "";
@@ -87,8 +86,10 @@ bool find_next_stack(vector<vector<stack<string>>> carriages,unsigned stack_size
 void print_carriages(vector<vector<stack<string>>> vector1) {
     for(int i = 0; i<vector1.size();i++){
         for(int j=0;j<vector1[0].size();j++){
-            cout<< vector1[i][j].top()<<endl;
-            vector1[i][j].pop();
+            while(!vector1[i][j].empty()) {
+                cout << vector1[i][j].top() << endl;
+                vector1[i][j].pop();
+            }
         }
     }
 }
@@ -119,7 +120,11 @@ void show_baggages(Flight f){
             }
         }
     }
+    if(!carriages[0][0].empty()) // if  first pile in first stack is empty(there's something to print)
+        print_carriages(carriages);
+    return;
 }
+
 
 bool Airplane::remove_flight(unsigned number){
     for (auto iter = flights.begin();iter!=flights.end();iter++){
