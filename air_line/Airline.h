@@ -17,7 +17,7 @@ using namespace std;
 class Airline {
 private:
     list<Airplane> airplanes;
-    list<Airport> airports;
+    vector<Airport> airports;
 public:
     Airline();
     ~Airline();
@@ -30,7 +30,8 @@ public:
     void add_passenger(Flight &flight);
     Airplane* find_airplane(const string& license_plate);
     bool add_flight(Airplane & airplane);
-    bool add_airport(const string &name);
+    bool add_airport(const Airport &airport);
+    void check_new_transports(const Airport & airport);
     bool find_airport(const string &name,Airport * &airportptr);
     void print_planes(char c);
     void print_airports(string country);

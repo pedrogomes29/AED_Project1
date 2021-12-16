@@ -24,7 +24,7 @@ public:
     string get_country() const;
     bool add_transport(const LocalTransport &lt);
     bool remove_transport (const LocalTransport &lt);
-    vector<LocalTransport> get_closest_transports(unsigned n_closest);
+    vector<LocalTransport> get_closest_transports(unsigned n_closest) const;
     Airport(const string& name,const string &country);
 };
 

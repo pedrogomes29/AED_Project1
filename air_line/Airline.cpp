@@ -95,9 +95,16 @@ Airline::Airline(){
 
 
 bool Airline::find_airport(const string &name,Airport * &airportptr){
-    for (Airport& airport:airports){
-        if(airport.get_name()==name) {
-            airportptr = &airport;
+    int low = 0;
+    int high = airports.size()-1;
+    while(low<=high){
+        int middle = (low+high)/2;
+        if (airports[middle].get_name()<name)
+            low=middle+1;
+        else if(name<airports[middle].get_name())
+            high=middle-1;
+        else{
+            airportptr = &airports[middle];
             return true;
         }
     }
@@ -179,6 +186,20 @@ bool Airline::add_flight(Airplane & airplane){
         return false;
     Flight f = Flight(capacity, flight_number, duration, schedule, origin, destination);
     airplane.add_flight(f);
+    return true;
+}
+
+
+
+bool Airline::add_airport(const Airport &airport) {
+    auto iter = airports.begin();
+    for(iter;iter!=airports.end();iter++){
+        if(iter->get_name()>airport.get_name())
+            break;
+        else if(iter->get_name()==airport.get_name())
+            return false;
+    }
+    airports.insert(iter,airport);
     return true;
 }
 
@@ -406,12 +427,30 @@ void Airline::setup(){
     airport_newyork.add_transport(LocalTransport("Campo 24 de Agosto",35,"Bus",bus_schedules));
 
 
-    airports.push_back(airport_porto);
-    airports.push_back(airport_lisbon);
-    airports.push_back(airport_madrid);
-    airports.push_back(airport_frankfurt);
-    airports.push_back(airport_amsterdan);
-    airports.push_back(airport_newyork);
+    add_airport(airport_porto);
+    add_airport(airport_lisbon);
+    add_airport(airport_madrid);
+    add_airport(airport_frankfurt);
+    add_airport(airport_amsterdan);
+    add_airport(airport_newyork);
+
+}
+
+void Airline::check_new_transports(const Airport &airport) {
+    Time time_now;
+    int n;
+    cout << "What time is it now: ";
+    cin >> time_now;
+    cout << "How many transports do you wish to see: ";
+    cin >> n;
+    vector<LocalTransport> nearest_t = airport.get_closest_transports(n);
+    if (nearest_t.size() < n) {
+        cout << "There are only " << nearest_t.size() << " transports that are near the airport." << endl;
+    }
+    for (auto &transport: nearest_t) {
+        cout << transport.get_name() << " with the next schedule at " << transport.next_schedules(1, time_now)[0]
+             << endl;
+    }
 }
 
 
@@ -457,19 +496,7 @@ void Airline::interface() {
                 cout << "Enter the airport you are currently in: ";
                 cin>>airport_name;
                 if(this->find_airport(airport_name,ap)){
-                    Time time_now;
-                    int n;
-                    cout<< "What time is it now: ";
-                    cin>>time_now;
-                    cout<<"How many transports do you wish to see: ";
-                    cin >> n;
-                    vector<LocalTransport>nearest_t = ap->get_closest_transports(n);
-                    if(nearest_t.size()<n){
-                        cout<<"There are only "<< nearest_t.size()<<" transports that are near the airport."<<endl;
-                    }
-                    for(auto& transport: nearest_t){
-                        cout<< transport.get_name()<< " with the next schedule at "<< transport.next_schedules(1,time_now)[0] <<endl;
-                    }
+                    check_new_transports(*ap);
                 }
                 else{
                     cout<< "Invalid Airport Name"<<endl;
