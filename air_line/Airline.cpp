@@ -232,114 +232,123 @@ void Airline::check_db() {
 
 void Airline::update_airplane(Airplane & airplane){
     char option;
-    cout << "1. Add flight" << endl;
-    cout << "2. Remove flight" << endl;
-    cout << "3. Update flight" << endl;
-    cout << "4. Add Service" << endl;
-    cout << "5. Remove Service" << endl;
-    cin >> option;
-    switch(option){
-        case '1':{
-            if(add_flight(airplane))
-                cout << "Added flight successfully" << endl;
-            else
-                cout << "No such airport" << endl;
-            break;
-        }
-        case '2': {
-            int flight_number;
-            cout << "Enter flight number: ";
-            cin >> flight_number;
+    while (!cin.eof() and option != '6') {
+        cout << "1. Add flight" << endl;
+        cout << "2. Remove flight" << endl;
+        cout << "3. Update flight" << endl;
+        cout << "4. Add Service" << endl;
+        cout << "5. Remove Service" << endl;
+        cout << "6. Exit" << endl;
+        cin >> option;
+        switch (option) {
+            case '1': {
+                if (add_flight(airplane))
+                    cout << "Added flight successfully" << endl;
+                else
+                    cout << "No such airport" << endl;
+                break;
+            }
+            case '2': {
+                int flight_number;
+                cout << "Enter flight number: ";
+                cin >> flight_number;
 
-            if(airplane.remove_flight(flight_number))
-                cout << "Removed flight successfuly" << endl;
-            else
-                cout << "No such flight found" << endl;
-            break;
+                if (airplane.remove_flight(flight_number))
+                    cout << "Removed flight successfuly" << endl;
+                else
+                    cout << "No such flight found" << endl;
+                break;
+            }
+            case '3': {
+                int flight_number;
+                cout << "Enter flight number: ";
+                cin >> flight_number;
+                Flight *f = airplane.find_flight(flight_number);
+                if (f != nullptr) {
+                    update_flight(*f);
+                } else {
+                    cout << "No such plane with flight number " << flight_number << endl;
+                }
+                break;
+            }
+            case '4': {
+                string employee, type;
+                cout << "Enter the name of the employee: ";
+                cin.ignore(1); // ignores the '\n'
+                getline(cin, employee);
+                cout << "Enter the type of service (maintenance or cleaning): ";
+                cin >> type;
+                cout << "Enter date of the service (day/month/year): ";
+                Date d(0, 0, 0);
+                cin >> d;
+                cout << "Enter hour of the service (hour:minute): ";
+                Time t(0, 0);
+                cin >> t;
+                Schedule schedule(t, d);
+                if (type == "maintenance") {
+                    Service service = Service(maintenance, schedule, employee);
+                    airplane.add_service(service);
+                } else if (type == "cleaning") {
+                    Service service = Service(cleaning, schedule, employee);
+                    airplane.add_service(service);
+                } else {
+                    cout << "The type of service that you entered does not exist." << endl;
+                }
+                break;
+            }
+            case '5': {
+                if (airplane.remove_service())cout << "Service removed successfully" << endl;
+                else cout << "There were no services to remove!" << endl;
+                break;
+            }
+            case '6':
+                continue;
+
+            default:
+                cout << "The option you entered is invalid." << endl;
         }
-        case '3': {
-            int flight_number;
-            cout << "Enter flight number: ";
-            cin >> flight_number;
-            Flight *f = airplane.find_flight(flight_number);
-            if (f!= nullptr) {
-                update_flight(*f);
-            }
-            else {
-                cout << "No such plane with flight number " << flight_number << endl;
-            }
-            break;
-        }
-        case '4': {
-            string employee,type;
-            cout << "Enter the name of the employee: ";
-            cin.ignore(1); // ignores the '\n'
-            getline(cin,employee);
-            cout << "Enter the type of service (maintenance or cleaning): ";
-            cin >> type;
-            cout << "Enter date of the service (day/month/year): ";
-            Date d(0,0,0);
-            cin >> d;
-            cout << "Enter hour of the service (hour:minute): ";
-            Time t(0,0);
-            cin >> t;
-            Schedule schedule(t,d);
-            if(type=="maintenance"){
-                Service service= Service(maintenance, schedule, employee);
-                airplane.add_service(service);
-            }
-            else if(type=="cleaning"){
-                Service service= Service(cleaning,schedule, employee);
-                airplane.add_service(service);
-            }
-            else{
-                cout << "The type of service that you entered does not exist." << endl;
-            }
-            break;
-        }
-        case '5':
-            if(airplane.remove_service())cout<<"Service removed successfully"<<endl;
-            else cout<<"There were no services to remove!"<<endl;
-            break;
-        default:
-            cout << "The option you entered is invalid." << endl;
     }
 }
 
 void Airline::update_flight(Flight & flight){
     char option;
-    cout << "1. Change flight Schedule" << endl;
-    cout << "2. Add passenger" << endl;
-    cin >> option;
-    switch(option){
-        case '1': {
-            Date date;
-            Time t;
-            cout << "Enter the new date (dd/mm/yyyy): ";
-            cin >> date;
-            cout << "Enter the time (hh:mm): ";
-            cin >> t;
-            flight.set_schedule(Schedule(t,date));
-            break;
+    while (!cin.eof() and option != '3'){
+        cout << "1. Change flight Schedule" << endl;
+        cout << "2. Add passenger" << endl;
+        cout << "3. Exit"<<endl;
+        cin >> option;
+        switch (option) {
+            case '1': {
+                Date date;
+                Time t;
+                cout << "Enter the new date (dd/mm/yyyy): ";
+                cin >> date;
+                cout << "Enter the time (hh:mm): ";
+                cin >> t;
+                flight.set_schedule(Schedule(t, date));
+                break;
+            }
+            case '2': {
+                string passenger_name;
+                char answer;
+                cout << "Enter the name of the passenger: ";
+                if (cin.peek() == '\n')
+                    cin.ignore(1);
+                getline(cin, passenger_name);
+                cout << "Does have have luggagge?(Y/N): ";
+                cin >> answer;
+                if (answer == 'Y')
+                    flight.add_passenger(Passenger(passenger_name, true));
+                else if (answer == 'N')
+                    flight.add_passenger(Passenger(passenger_name, false));
+                else
+                    cout << "Invalid answer" << endl;
+                break;
+            }
+            case '3': continue;
+            default:
+                cout << "Invalid option" << endl;
         }
-        case '2':{
-            string passenger_name;
-            char answer;
-            cout << "Enter the name of the passenger: ";
-            if(cin.peek()=='\n')
-                cin.ignore(1);
-            getline(cin,passenger_name);
-            cout << "Does have have luggagge?(Y/N): ";
-            cin >> answer;
-            if(answer=='Y')
-                flight.add_passenger(Passenger(passenger_name,true));
-            else if(answer=='N')
-                flight.add_passenger(Passenger(passenger_name,false));
-            else
-                cout << "Invalid answer" << endl;
-            break;
-        }
-        default: cout<<"Invalid option"<<endl;
     }
 }
 
