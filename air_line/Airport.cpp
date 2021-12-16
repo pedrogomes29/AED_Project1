@@ -26,7 +26,7 @@ bool Airport::remove_transport (const LocalTransport &lt){
     return transports.remove(lt);
 }
 
-vector<LocalTransport> Airport::get_closest_transports(unsigned n_closest){
+vector<LocalTransport> Airport::get_closest_transports(unsigned n_closest) const{
     BSTItrIn<LocalTransport> itr(transports);
     vector<LocalTransport> nearest_transports;
     while(!itr.isAtEnd() and n_closest>0){
