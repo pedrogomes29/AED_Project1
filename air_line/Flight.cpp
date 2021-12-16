@@ -14,7 +14,7 @@ Flight::Flight() {
 }
 
 Flight::Flight(unsigned capacity,unsigned number,Time duration,const string& date_of_departure, unsigned hour,unsigned minute, string origin,
-               string destination, vector<Passenger> passengers){
+       string destination, list<Passenger> passengers){
 this->capacity = capacity;
 this->number = number;
 this->duration = duration;
@@ -65,7 +65,7 @@ string Flight::get_destination() const {
     return destination;
 }
 
-vector<Passenger> Flight::get_passengers() const {
+list<Passenger> Flight::get_passengers() const {
     return passengers;
 }
 
