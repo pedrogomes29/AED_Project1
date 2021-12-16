@@ -33,7 +33,7 @@ public:
     vector<Flight> get_flights() const;
     Flight* find_flight(unsigned number);
     void add_flight(const Flight &f);
-    bool add_service(Service serv);
+    bool add_service(const Service& serv);
     bool remove_flight(unsigned number);
 };
 

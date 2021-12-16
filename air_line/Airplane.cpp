@@ -45,7 +45,7 @@ void Airplane::add_flight(const Flight &f){
     flights.push_back(f);
 }
 
-bool Airplane::add_service(Service serv) {
+bool Airplane::add_service(const Service& serv) {
     if(flights.empty()){
         services.push(serv);
         return true;
