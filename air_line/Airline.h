@@ -19,9 +19,29 @@ private:
     vector<Airplane> airplanes;
     vector<Airport> airports;
 public:
+    /*
+     * Default constructor of the AirLine class
+     * This Constructor is responsible for reading every single data stored in local files
+     * It reads every airplane, flight, services and passengers that were created in the past and are associated and stored in this airline
+     */
     Airline();
+    /*
+     * Destructor of the Airline class
+     * This Constructor is responsible for writing every single new creation and possible modification to the text files.
+     * containing all the assets of the airline
+     * It writes every airplane, flight, services and passengers that were created while the program ran and in its respective text file.
+     * Every airplane and every flight have its own text file.
+     * The passengers are stored in the flight file corresponding to the flight where they checked in
+     * The services are stored in the airplane file corresponding to the airplane where we want to clean/repair
+     */
     ~Airline();
+    /**
+     * Simple text based interface to interact with the user and read their desired input
+     */
     void interface();
+    /*
+     * Function that trys to add an airplane to
+     */
     bool add_airplane();
     void check_db();
     void update_airplane(Airplane &airplane);

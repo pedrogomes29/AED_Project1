@@ -93,120 +93,141 @@ Airline::Airline(){
     file.close();
 }
 
-
-Airport * Airline::find_airport(const string &name){
-    int low = 0;
-    int high = airports.size()-1;
-    while(low<=high){
-        int middle = (low+high)/2;
-        if (airports[middle].get_name()<name)
-            low=middle+1;
-        else if(name<airports[middle].get_name())
-            high=middle-1;
-        else{
-            return &airports[middle];
-        }
-    }
-    return nullptr;
-}
-
-
-void Airline::update_flight(Flight & flight){
+void Airline::interface() {
+    setup();
     char option;
-    cout << "1. Change flight Schedule" << endl;
-    cout << "2. Add passenger" << endl;
-    cin >> option;
-    switch(option){
-        case '1': {
-            Date date;
-            Time t;
-            cout << "Enter the new date (dd/mm/yyyy): ";
-            cin >> date;
-            cout << "Enter the time (hh:mm): ";
-            cin >> t;
-            flight.set_schedule(Schedule(t,date));
-            break;
+    while (!cin.eof() and option != '5') {
+        cout<<endl;
+        cout << "Please enter an option" << endl;
+        cout << "1. Add an airplane" << endl;
+        cout << "2. Update airplane" << endl;
+        cout << "3. Check Database" << endl;
+        cout << "4. Check near transports" << endl;
+        cout << "5. Exit" << endl;
+        cout<<endl;
+        cin >> option;
+        switch (option) {
+            case '1': {
+                add_airplane();
+                break;
+            }
+            case '2': {
+                string license_plate;
+                cout << "Enter the airplane's license_plate: ";
+                cin >> license_plate;
+                Airplane *a1=find_airplane(license_plate);
+                if(a1!=nullptr){
+                    update_airplane(*a1);
+                }
+                else{
+                    cout << "No such airplane with license plate " << license_plate << endl;
+                }
+                break;
+            }
+            case '3':{
+                check_db();
+                break;
+            }
+            case '4':{
+                string airport_name;
+                cout << "Enter the airport you are currently in: ";
+                cin>>airport_name;
+                Airport* ap = find_airport(airport_name);
+                if(ap!=nullptr){
+                    check_new_transports(*ap);
+                }
+                else{
+                    cout<< "Invalid Airport Name"<<endl;
+                }
+                break;
+            }
+            case '5':{
+                continue;
+            }
+            default:{
+                cout << "The option you entered is invalid. " << endl;
+                break;
+            }
         }
-        case '2':{
-            string passenger_name;
-            char answer;
-            cout << "Enter the name of the passenger: ";
-            if(cin.peek()=='\n')
-                cin.ignore(1);
-            getline(cin,passenger_name);
-            cout << "Does have have luggagge?(Y/N): ";
-            cin >> answer;
-            if(answer=='Y')
-                flight.add_passenger(Passenger(passenger_name,true));
-            else if(answer=='N')
-                flight.add_passenger(Passenger(passenger_name,false));
-            else
-                cout << "Invalid answer" << endl;
-            break;
-        }
-        default: cout<<"Invalid option"<<endl;
     }
 }
 
-
-
-Airplane* Airline::find_airplane(const string& license_plate){
-    int low = 0;
-    int high = airplanes.size()-1;
-    while(low<=high){
-        int middle = (low+high)/2;
-        if (airplanes[middle].get_license_plate()<license_plate)
-            low=middle+1;
-        else if(license_plate<airplanes[middle].get_license_plate())
-            high=middle-1;
-        else{
-            return &airplanes[middle];
-        }
-    }
-    return nullptr;
-}
-
-bool Airline::add_flight(Airplane & airplane){
-    string origin, destination;
-    unsigned flight_number;
-    int capacity = airplane.get_capacity();
-    cout << "Enter flight number: ";
-    cin >> flight_number;
-    cout << "Enter date of the flight (day/month/year): ";
-    Date d(0,0,0);
-    cin >> d;
-    cout << "Enter hour of the flight (hour:minute): ";
-    Time origin_time(0,0);
-    cin >> origin_time;
-    Schedule schedule = Schedule(origin_time, d);
-    Time duration = Time(0,0);
-    cout << "Enter duration of the flight (hour:minute): ";
-    cin >> duration;
-    cout << "Enter origin location: ";
-    cin>> origin;
-    if(find_airport(origin)== nullptr)
-        return false;
-    cout << "Enter destination location: ";
-    cin>>destination;
-    if(find_airport(destination)==nullptr)
-        return false;
-    Flight f = Flight(capacity, flight_number, duration, schedule, origin, destination);
-    airplane.add_flight(f);
-    return true;
-}
-
-
-
-bool Airline::add_airport(const Airport &airport) {
-    auto iter = airports.begin();
-    for(iter;iter!=airports.end();iter++){
-        if(iter->get_name()>airport.get_name())
+bool Airline::add_airplane() {
+    string license_plate,type;
+    unsigned capacity;
+    cout << "Enter license plate: ";
+    cin >> license_plate;
+    cout << "Enter airplane type: ";
+    cin >> type;
+    cout << "Enter airplane capacity: ";
+    cin >> capacity;
+    Airplane airplane(license_plate,type,capacity);
+    auto iter = airplanes.begin();
+    for(iter;iter!=airplanes.end();iter++){
+        if(iter->get_license_plate()>airplane.get_license_plate())
             break;
-        else if(iter->get_name()==airport.get_name())
+        else if(iter->get_license_plate()==airplane.get_license_plate())
             return false;
     }
-    airports.insert(iter,airport);
+    airplanes.insert(iter,airplane);
     return true;
+}
+
+void Airline::check_db() {
+    char option;
+    cout << "1. See the soonest 'x' flights. "<<endl;
+    cout << "2. See every plane owned by this airline company. " <<endl;
+    cout << "3. See every airport we operate in. "<<endl;
+    cout << "Option: ";
+    cin >> option;
+    switch (option) {
+        case '1': {
+            int n;
+            cout << "How many flights do you wish to see: ";
+            cin >> n;
+            print_soonest_flights(n);
+            break;
+        }
+        case '2': {
+            char answer;
+            cout << "Sort planes by :" << endl;
+            cout << "A. License Plate" << endl;
+            cout << "B. Type" << endl;
+            cout << "C. Capacity" << endl;
+            cout << "Option: ";
+            cin >> answer;
+            switch (answer) {
+                case 'A': {
+                    print_planes('A');
+                    break;
+                }
+                case 'B': {
+                    print_planes('B');
+                    break;
+                }
+                case 'C': {
+                    print_planes('C');
+                    break;
+                }
+                default:
+                    cout << "The option you entered is invalid." << endl;
+            }
+            break;
+        }
+        case '3':{
+            string country;
+            cout << "Wish country do you want to see the airports we operate. " << endl;
+            cout << "Enter specific country or enter 'x' to see all airplanes we operate in: ";
+            cin >> country;
+            print_airports(country);
+            break;
+        }
+        default: {
+            cout << "Invalid option"<<endl;
+        }
+
+    }
+
 }
 
 void Airline::update_airplane(Airplane & airplane){
@@ -285,61 +306,41 @@ void Airline::update_airplane(Airplane & airplane){
     }
 }
 
-void Airline::check_db() {
+void Airline::update_flight(Flight & flight){
     char option;
-    cout << "1. See the soonest 'x' flights. "<<endl;
-    cout << "2. See every plane owned by this airline company. " <<endl;
-    cout << "3. See every airport we operate in. "<<endl;
-    cout << "Option: ";
+    cout << "1. Change flight Schedule" << endl;
+    cout << "2. Add passenger" << endl;
     cin >> option;
-    switch (option) {
+    switch(option){
         case '1': {
-            int n;
-            cout << "How many flights do you wish to see: ";
-            cin >> n;
-            print_soonest_flights(n);
+            Date date;
+            Time t;
+            cout << "Enter the new date (dd/mm/yyyy): ";
+            cin >> date;
+            cout << "Enter the time (hh:mm): ";
+            cin >> t;
+            flight.set_schedule(Schedule(t,date));
             break;
         }
-        case '2': {
+        case '2':{
+            string passenger_name;
             char answer;
-            cout << "Sort planes by :" << endl;
-            cout << "A. License Plate" << endl;
-            cout << "B. Type" << endl;
-            cout << "C. Capacity" << endl;
-            cout << "Option: ";
+            cout << "Enter the name of the passenger: ";
+            if(cin.peek()=='\n')
+                cin.ignore(1);
+            getline(cin,passenger_name);
+            cout << "Does have have luggagge?(Y/N): ";
             cin >> answer;
-            switch (answer) {
-                case 'A': {
-                    print_planes('A');
-                    break;
-                }
-                case 'B': {
-                    print_planes('B');
-                    break;
-                }
-                case 'C': {
-                    print_planes('C');
-                    break;
-                }
-                default:
-                    cout << "The option you entered is invalid." << endl;
-            }
+            if(answer=='Y')
+                flight.add_passenger(Passenger(passenger_name,true));
+            else if(answer=='N')
+                flight.add_passenger(Passenger(passenger_name,false));
+            else
+                cout << "Invalid answer" << endl;
             break;
         }
-        case '3':{
-            string country;
-            cout << "Wish country do you want to see the airports we operate. " << endl;
-            cout << "Enter specific country or enter 'x' to see all airplanes we operate in: ";
-            cin >> country;
-            print_airports(country);
-            break;
-        }
-        default: {
-            cout << "Invalid option"<<endl;
-        }
-
+        default: cout<<"Invalid option"<<endl;
     }
-
 }
 
 void Airline::setup(){
@@ -442,47 +443,62 @@ void Airline::setup(){
 
 }
 
-
-void Airline::print_closest_transports(const Airport &airport){
-    int n;
-    cout << "How many transports do you wish to see: ";
-    cin >> n;
-    vector<LocalTransport> nearest_t = airport.get_closest_transports(n);
-    if (nearest_t.size() < n) {
-        cout << "There are only " << nearest_t.size() << " transports that are near the airport." << endl;
+Airplane* Airline::find_airplane(const string& license_plate){
+    int low = 0;
+    int high = airplanes.size()-1;
+    while(low<=high){
+        int middle = (low+high)/2;
+        if (airplanes[middle].get_license_plate()<license_plate)
+            low=middle+1;
+        else if(license_plate<airplanes[middle].get_license_plate())
+            high=middle-1;
+        else{
+            return &airplanes[middle];
+        }
     }
-    for (auto &transport: nearest_t) {
-        cout << transport.get_name() << "("<<transport.get_type()<< ") : " << transport.get_distance() << " km away." << endl;
-    }
+    return nullptr;
 }
 
-void Airline::see_information_transport(const LocalTransport &l){
-    string n;
-    Time current_time;
-    cout << "Please enter the current time (hh:mm): ";
-    cin >> current_time;
-    cout << "How many schedules do you want to see? (type x for all): ";
-    cin >> n;
-    vector<Time> next_schedules;
-    if(n=="x"){
-        next_schedules = l.next_schedules(l.get_schedules().size(),current_time);
-    }
-    else{
-        if(stoi(n)>l.get_schedules().size()){
-            cout << "There aren't that many schedules." << endl ;
-        }
-        next_schedules = l.next_schedules(stoi(n),current_time);
-    }
-    bool next_day_print=false;
-    for(Time t:next_schedules){
-        if(t<current_time and !next_day_print){
-            cout << "Next day" << endl;
-            next_day_print=true;
-        }
-        cout << t << endl;
-    }
+bool Airline::add_flight(Airplane & airplane){
+    string origin, destination;
+    unsigned flight_number;
+    int capacity = airplane.get_capacity();
+    cout << "Enter flight number: ";
+    cin >> flight_number;
+    cout << "Enter date of the flight (day/month/year): ";
+    Date d(0,0,0);
+    cin >> d;
+    cout << "Enter hour of the flight (hour:minute): ";
+    Time origin_time(0,0);
+    cin >> origin_time;
+    Schedule schedule = Schedule(origin_time, d);
+    Time duration = Time(0,0);
+    cout << "Enter duration of the flight (hour:minute): ";
+    cin >> duration;
+    cout << "Enter origin location: ";
+    cin>> origin;
+    if(find_airport(origin)== nullptr)
+        return false;
+    cout << "Enter destination location: ";
+    cin>>destination;
+    if(find_airport(destination)==nullptr)
+        return false;
+    Flight f = Flight(capacity, flight_number, duration, schedule, origin, destination);
+    airplane.add_flight(f);
+    return true;
 }
 
+bool Airline::add_airport(const Airport &airport) {
+    auto iter = airports.begin();
+    for(iter;iter!=airports.end();iter++){
+        if(iter->get_name()>airport.get_name())
+            break;
+        else if(iter->get_name()==airport.get_name())
+            return false;
+    }
+    airports.insert(iter,airport);
+    return true;
+}
 
 void Airline::check_new_transports(const Airport &airport) {
     char option;
@@ -515,87 +531,64 @@ void Airline::check_new_transports(const Airport &airport) {
     }
 }
 
+void Airline::see_information_transport(const LocalTransport &l){
+    string n;
+    Time current_time;
+    cout << "Please enter the current time (hh:mm): ";
+    cin >> current_time;
+    cout << "How many schedules do you want to see? (type x for all): ";
+    cin >> n;
+    vector<Time> next_schedules;
+    if(n=="x"){
+        next_schedules = l.next_schedules(l.get_schedules().size(),current_time);
+    }
+    else{
+        if(stoi(n)>l.get_schedules().size()){
+            cout << "There aren't that many schedules." << endl ;
+        }
+        next_schedules = l.next_schedules(stoi(n),current_time);
+    }
+    bool next_day_print=false;
+    for(Time t:next_schedules){
+        if(t<current_time and !next_day_print){
+            cout << "Next day" << endl;
+            next_day_print=true;
+        }
+        cout << t << endl;
+    }
+}
 
-
-void Airline::interface() {
-    setup();
-    char option;
-    while (!cin.eof() and option != '5') {
-        cout<<endl;
-        cout << "Please enter an option" << endl;
-        cout << "1. Add an airplane" << endl;
-        cout << "2. Update airplane" << endl;
-        cout << "3. Check Database" << endl;
-        cout << "4. Check near transports" << endl;
-        cout << "5. Exit" << endl;
-        cout<<endl;
-        cin >> option;
-        switch (option) {
-            case '1': {
-                add_airplane();
-                break;
-            }
-            case '2': {
-                string license_plate;
-                cout << "Enter the airplane's license_plate: ";
-                cin >> license_plate;
-                Airplane *a1=find_airplane(license_plate);
-                if(a1!=nullptr){
-                    update_airplane(*a1);
-                }
-                else{
-                    cout << "No such airplane with license plate " << license_plate << endl;
-                }
-                break;
-            }
-            case '3':{
-                check_db();
-                break;
-            }
-            case '4':{
-                string airport_name;
-                cout << "Enter the airport you are currently in: ";
-                cin>>airport_name;
-                Airport* ap = find_airport(airport_name);
-                if(ap!=nullptr){
-                    check_new_transports(*ap);
-                }
-                else{
-                    cout<< "Invalid Airport Name"<<endl;
-                }
-                break;
-            }
-            case '5':{
-                continue;
-            }
-            default:{
-                cout << "The option you entered is invalid. " << endl;
-                break;
-            }
+Airport * Airline::find_airport(const string &name){
+    int low = 0;
+    int high = airports.size()-1;
+    while(low<=high){
+        int middle = (low+high)/2;
+        if (airports[middle].get_name()<name)
+            low=middle+1;
+        else if(name<airports[middle].get_name())
+            high=middle-1;
+        else{
+            return &airports[middle];
         }
     }
+    return nullptr;
 }
 
-bool Airline::add_airplane() {
-    string license_plate,type;
-    unsigned capacity;
-    cout << "Enter license plate: ";
-    cin >> license_plate;
-    cout << "Enter airplane type: ";
-    cin >> type;
-    cout << "Enter airplane capacity: ";
-    cin >> capacity;
-    Airplane airplane(license_plate,type,capacity);
-    auto iter = airplanes.begin();
-    for(iter;iter!=airplanes.end();iter++){
-        if(iter->get_license_plate()>airplane.get_license_plate())
-            break;
-        else if(iter->get_license_plate()==airplane.get_license_plate())
-            return false;
+
+void Airline::print_closest_transports(const Airport &airport){
+    int n;
+    cout << "How many transports do you wish to see: ";
+    cin >> n;
+    vector<LocalTransport> nearest_t = airport.get_closest_transports(n);
+    if (nearest_t.size() < n) {
+        cout << "There are only " << nearest_t.size() << " transports that are near the airport." << endl;
     }
-    airplanes.insert(iter,airplane);
-    return true;
+    for (auto &transport: nearest_t) {
+        cout << transport.get_name() << "("<<transport.get_type()<< ") : " << transport.get_distance() << " km away." << endl;
+    }
 }
+
+
 bool my_sortf1(Airplane const &a1, Airplane const &a2){
     return a1.get_license_plate()<a2.get_license_plate();
 }
@@ -633,9 +626,28 @@ void Airline::print_planes(char c) {
         }
     }
 }
+
+void Airline::print_airports(string country) {
+    if(country != "x"){
+        cout << "We have the following airport(s) operating in "<<country<<" :"<<endl;
+        for(Airport &a: airports){
+            if(a.get_country() == country){
+                cout<< a.get_name()<<endl;
+            }
+        }
+    }
+    else{
+        cout << "We have the following airports that are operational at the moment:"<<endl;
+        for(Airport &a: airports){
+            cout<< a.get_name()<<endl;
+        }
+    }
+}
+
 bool rule_flight(Flight const &f1,Flight const &f2 ){
     return f1.get_schedule()<f2.get_schedule();
 }
+
 void Airline::print_soonest_flights(int n){
     vector<Flight> all_flights;
     for(Airplane const &a:airplanes){
@@ -664,24 +676,6 @@ void Airline::print_soonest_flights(int n){
         }
     }
 }
-
-void Airline::print_airports(string country) {
-    if(country != "x"){
-        cout << "We have the following airport(s) operating in "<<country<<" :"<<endl;
-        for(Airport &a: airports){
-            if(a.get_country() == country){
-                cout<< a.get_name()<<endl;
-            }
-        }
-    }
-    else{
-        cout << "We have the following airports that are operational at the moment:"<<endl;
-        for(Airport &a: airports){
-            cout<< a.get_name()<<endl;
-        }
-    }
-}
-
 
 Airline::~Airline(){
     ofstream file("files/Airplanes.txt");
