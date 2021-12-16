@@ -94,7 +94,7 @@ Airline::Airline(){
 }
 
 
-bool Airline::find_airport(const string &name,Airport * &airportptr){
+Airport * Airline::find_airport(const string &name){
     int low = 0;
     int high = airports.size()-1;
     while(low<=high){
@@ -104,11 +104,10 @@ bool Airline::find_airport(const string &name,Airport * &airportptr){
         else if(name<airports[middle].get_name())
             high=middle-1;
         else{
-            airportptr = &airports[middle];
-            return true;
+            return &airports[middle];
         }
     }
-    return false;
+    return nullptr;
 }
 
 
@@ -152,9 +151,16 @@ void Airline::update_flight(Flight & flight){
 
 
 Airplane* Airline::find_airplane(const string& license_plate){
-    for(Airplane &a1:airplanes){
-        if(a1.get_license_plate()==license_plate) {
-            return &a1;
+    int low = 0;
+    int high = airplanes.size()-1;
+    while(low<=high){
+        int middle = (low+high)/2;
+        if (airplanes[middle].get_license_plate()<license_plate)
+            low=middle+1;
+        else if(license_plate<airplanes[middle].get_license_plate())
+            high=middle-1;
+        else{
+            return &airplanes[middle];
         }
     }
     return nullptr;
@@ -178,12 +184,11 @@ bool Airline::add_flight(Airplane & airplane){
     cin >> duration;
     cout << "Enter origin location: ";
     cin>> origin;
-    Airport * aux;
-    if(!find_airport(origin,aux))
+    if(find_airport(origin)== nullptr)
         return false;
     cout << "Enter destination location: ";
     cin>>destination;
-    if(!find_airport(origin,aux))
+    if(find_airport(destination)==nullptr)
         return false;
     Flight f = Flight(capacity, flight_number, duration, schedule, origin, destination);
     airplane.add_flight(f);
@@ -493,10 +498,10 @@ void Airline::interface() {
             }
             case '4':{
                 string airport_name;
-                Airport* ap = nullptr;
                 cout << "Enter the airport you are currently in: ";
                 cin>>airport_name;
-                if(this->find_airport(airport_name,ap)){
+                Airport* ap = find_airport(airport_name);
+                if(ap!=nullptr){
                     check_new_transports(*ap);
                 }
                 else{
@@ -515,7 +520,7 @@ void Airline::interface() {
     }
 }
 
-void Airline::add_airplane() {
+bool Airline::add_airplane() {
     string license_plate,type;
     unsigned capacity;
     cout << "Enter license plate: ";
@@ -524,7 +529,16 @@ void Airline::add_airplane() {
     cin >> type;
     cout << "Enter airplane capacity: ";
     cin >> capacity;
-    airplanes.push_back(Airplane(license_plate,type,capacity));
+    Airplane airplane(license_plate,type,capacity);
+    auto iter = airplanes.begin();
+    for(iter;iter!=airplanes.end();iter++){
+        if(iter->get_license_plate()>airplane.get_license_plate())
+            break;
+        else if(iter->get_license_plate()==airplane.get_license_plate())
+            return false;
+    }
+    airplanes.insert(iter,airplane);
+    return true;
 }
 bool my_sortf1(Airplane const &a1, Airplane const &a2){
     return a1.get_license_plate()<a2.get_license_plate();
@@ -537,9 +551,9 @@ bool my_sortf3(Airplane const &a1, Airplane const &a2){
 }
 void Airline::print_planes(char c) {
     cout<<"Here are the airplanes sorted by your criteria"<<endl;
-    list<Airplane> aux = airplanes;
+    vector<Airplane> aux = airplanes;
     if(c=='A'){
-        aux.sort(my_sortf1);
+        sort(aux.begin(),aux.end(),my_sortf1);
         int i=1;
         for(const auto& a:aux){
             cout<<i<< "-"<< a.get_license_plate() << "-"<<a.get_type()<<"-"<<a.get_capacity()<<endl;
@@ -547,7 +561,7 @@ void Airline::print_planes(char c) {
         }
     }
     else if(c=='B'){
-        aux.sort(my_sortf2);
+        sort(aux.begin(),aux.end(),my_sortf2);
         int i=1;
         for(const auto& a:aux){
             cout<<i<< "-"<< a.get_license_plate() << "-"<<a.get_type()<<"-"<<a.get_capacity()<<endl;
@@ -555,7 +569,7 @@ void Airline::print_planes(char c) {
         }
     }
     else{
-        aux.sort(my_sortf3);
+        sort(aux.begin(),aux.end(),my_sortf3);
         int i=1;
         for(const auto& a:aux){
             cout<<i<< "-"<< a.get_license_plate() << "-"<<a.get_type()<<"-"<<a.get_capacity()<<endl;

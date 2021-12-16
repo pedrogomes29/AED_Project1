@@ -6,8 +6,8 @@
 #define AIRLINE_FLIGHT_H
 
 #include <string>
+#include <list>
 #include "Passenger.h"
-#include <vector>
 #include "Date.h"
 #include "Schedule.h"
 
@@ -21,11 +21,11 @@ private:
     Schedule schedule;
     string origin;
     string destination;
-    vector<Passenger> passengers;
+    list<Passenger> passengers;
 public:
     Flight();
     Flight(unsigned capacity,unsigned number,Time duration,const string& date_of_departure, unsigned hour,unsigned minute, string origin,
-           string destination, vector<Passenger> passengers);
+           string destination, list<Passenger> passengers);
     Flight(unsigned capacity,unsigned number,Time duration,Schedule schedule,string origin,string destination);
     Schedule get_schedule()const;
     void set_schedule(const Schedule & s1);
@@ -35,7 +35,7 @@ public:
     unsigned get_capacity () const;
     string get_origin() const;
     string get_destination() const;
-    vector<Passenger> get_passengers() const;
+    list<Passenger> get_passengers() const;
 };
 ;
 
