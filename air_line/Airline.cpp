@@ -175,57 +175,59 @@ bool Airline::add_airplane() {
 
 void Airline::check_db() {
     char option;
-    cout << "1. See the soonest 'x' flights. "<<endl;
-    cout << "2. See every plane owned by this airline company. " <<endl;
-    cout << "3. See every airport we operate in. "<<endl;
-    cout << "Option: ";
-    cin >> option;
-    switch (option) {
-        case '1': {
-            int n;
-            cout << "How many flights do you wish to see: ";
-            cin >> n;
-            print_soonest_flights(n);
-            break;
-        }
-        case '2': {
-            char answer;
-            cout << "Sort planes by :" << endl;
-            cout << "A. License Plate" << endl;
-            cout << "B. Type" << endl;
-            cout << "C. Capacity" << endl;
-            cout << "Option: ";
-            cin >> answer;
-            switch (answer) {
-                case 'A': {
-                    print_planes('A');
-                    break;
-                }
-                case 'B': {
-                    print_planes('B');
-                    break;
-                }
-                case 'C': {
-                    print_planes('C');
-                    break;
-                }
-                default:
-                    cout << "The option you entered is invalid." << endl;
+    while(!cin.eof() and option!='4') {
+        cout << "1. See the soonest 'x' flights. " << endl;
+        cout << "2. See every plane owned by this airline company. " << endl;
+        cout << "3. See every airport we operate in. " << endl;
+        cout << "4. Exit to previous menu. " << endl;
+        cout << "Option: ";
+        cin >> option;
+        switch (option) {
+            case '1': {
+                int n;
+                cout << "How many flights do you wish to see: ";
+                cin >> n;
+                print_soonest_flights(n);
+                break;
             }
-            break;
+            case '2': {
+                char answer;
+                cout << "Sort planes by :" << endl;
+                cout << "A. License Plate" << endl;
+                cout << "B. Type" << endl;
+                cout << "C. Capacity" << endl;
+                cout << "Option: ";
+                cin >> answer;
+                switch (answer) {
+                    case 'A': {
+                        print_planes('A');
+                        break;
+                    }
+                    case 'B': {
+                        print_planes('B');
+                        break;
+                    }
+                    case 'C': {
+                        print_planes('C');
+                        break;
+                    }
+                    default:
+                        cout << "The option you entered is invalid." << endl;
+                }
+                break;
+            }
+            case '3': {
+                string country;
+                cout << "Wish country do you want to see the airports we operate. " << endl;
+                cout << "Enter specific country or enter 'x' to see all airplanes we operate in: ";
+                cin >> country;
+                print_airports(country);
+                break;
+            }
+            default: {
+                cout << "Invalid option" << endl;
+            }
         }
-        case '3':{
-            string country;
-            cout << "Wish country do you want to see the airports we operate. " << endl;
-            cout << "Enter specific country or enter 'x' to see all airplanes we operate in: ";
-            cin >> country;
-            print_airports(country);
-            break;
-        }
-        default: {
-            cout << "Invalid option"<<endl;
-        }
-
     }
 
 }
@@ -502,31 +504,34 @@ bool Airline::add_airport(const Airport &airport) {
 
 void Airline::check_new_transports(const Airport &airport) {
     char option;
-    cout << "Please enter an option" << endl;
-    cout << "1. See closest transports" << endl;
-    cout << "2. See information about a local transport" << endl;
-    cin >> option;
-    switch(option){
-        case '1':{
-            print_closest_transports(airport);
-            break;
-        }
-        case '2':{
-            string type,name;
-            cout << "Enter the type of transport (Subway/Train/Bus): ";
-            cin >> type;
-            cout << "Enter the name of the transport: ";
-            cin >> name;
-            const LocalTransport * ltptr= airport.find_transport(name,type);
-            if(ltptr!= nullptr)
-                see_information_transport(*ltptr);
-            else
-                cout << "No such transport. "<< endl;
-            break;
-        }
-        default:{
-            cout << "The option you entered is invalid." << endl;
-            break;
+    while(!cin.eof() and option!='3') {
+        cout << "Please enter an option" << endl;
+        cout << "1. See closest transports" << endl;
+        cout << "2. See information about a local transport" << endl;
+        cout << "3. Exit to the previous menu" << endl;
+        cin >> option;
+        switch (option) {
+            case '1': {
+                print_closest_transports(airport);
+                break;
+            }
+            case '2': {
+                string type, name;
+                cout << "Enter the type of transport (Subway/Train/Bus): ";
+                cin >> type;
+                cout << "Enter the name of the transport: ";
+                cin >> name;
+                const LocalTransport *ltptr = airport.find_transport(name, type);
+                if (ltptr != nullptr)
+                    see_information_transport(*ltptr);
+                else
+                    cout << "No such transport. " << endl;
+                break;
+            }
+            default: {
+                cout << "The option you entered is invalid." << endl;
+                break;
+            }
         }
     }
 }
@@ -590,19 +595,17 @@ void Airline::print_closest_transports(const Airport &airport){
 
 
 bool my_sortf1(Airplane const &a1, Airplane const &a2){
-    return a1.get_license_plate()<a2.get_license_plate();
-}
-bool my_sortf2(Airplane const &a1, Airplane const &a2){
     return a1.get_type()<a2.get_type();
 }
-bool my_sortf3(Airplane const &a1, Airplane const &a2){
+
+bool my_sortf2(Airplane const &a1, Airplane const &a2){
     return a1.get_capacity()<a2.get_capacity();
 }
+
 void Airline::print_planes(char c) {
     cout<<"Here are the airplanes sorted by your criteria"<<endl;
     vector<Airplane> aux = airplanes;
     if(c=='A'){
-        sort(aux.begin(),aux.end(),my_sortf1);
         int i=1;
         for(const auto& a:aux){
             cout<<i<< "-"<< a.get_license_plate() << "-"<<a.get_type()<<"-"<<a.get_capacity()<<endl;
@@ -610,7 +613,7 @@ void Airline::print_planes(char c) {
         }
     }
     else if(c=='B'){
-        sort(aux.begin(),aux.end(),my_sortf2);
+        sort(aux.begin(),aux.end(),my_sortf1);
         int i=1;
         for(const auto& a:aux){
             cout<<i<< "-"<< a.get_license_plate() << "-"<<a.get_type()<<"-"<<a.get_capacity()<<endl;
@@ -618,7 +621,7 @@ void Airline::print_planes(char c) {
         }
     }
     else{
-        sort(aux.begin(),aux.end(),my_sortf3);
+        sort(aux.begin(),aux.end(),my_sortf2);
         int i=1;
         for(const auto& a:aux){
             cout<<i<< "-"<< a.get_license_plate() << "-"<<a.get_type()<<"-"<<a.get_capacity()<<endl;
