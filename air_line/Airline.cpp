@@ -144,6 +144,7 @@ void Airline::update_flight(Flight & flight){
                 cout << "Invalid answer" << endl;
             break;
         }
+        default: cout<<"Invalid option"<<endl;
     }
 }
 
