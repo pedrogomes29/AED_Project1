@@ -21,30 +21,30 @@ private:
     string name_of_employee;
 public:
     /**
-     *
+     *Constructor of the class Service
      * @param type type of service either cleaning or maintenance as declared on the enum
      * @param schedule date and time of when the service is scheduled
      * @param name_of_employee name of the person in charge of the given service
      */
     Service(Type type,const Schedule & schedule,const string&name_of_employee);
     /**
-     *
-     * @return getter for the type of service
+     * getter for the type attribute
+     * @return returns the type of service
      */
     Type get_type() const;
     /**
-     *
-     * @return getter for the duration of the service
+     * getter for the duration which depends on the type of service
+     * @return returns the duration of the service
      */
     Time get_duration() const;
     /**
-     *
-     * @return getter for the date and time of when the service was scheduled
+     * getter for the schedule attribute
+     * @return returns the date and time of when the service was scheduled
      */
     Schedule get_schedule() const;
     /**
-     *
-     * @return getter for the name of employee in charge
+     * getter for the name of the employee
+     * @return returns the name of employee in charge
      */
     string get_name() const;
 };
