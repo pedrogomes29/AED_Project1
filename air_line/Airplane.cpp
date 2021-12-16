@@ -35,7 +35,10 @@ Schedule result(Schedule s,Time t){
 }
 
 void Airplane::add_flight(const Flight &f){
-    if(flights.empty())flights.push_back(f);
+    if(flights.empty()){
+        flights.push_back(f);
+        return;
+    }
     for(auto iter=flights.begin(); iter!= flights.end();iter++){
         if(f.get_schedule() < (*iter).get_schedule()) {
             flights.insert(iter, f);

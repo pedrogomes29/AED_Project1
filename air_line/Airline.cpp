@@ -667,12 +667,12 @@ void Airline::print_soonest_flights(int n){
         }
     }
     else{
-        cout << "Here are the next"<< n << " flights:"<<endl;
+        cout << "Here are the next "<< n << " flights:"<<endl;
         for(int i = 0;i<n;i++){
             cout<<"Flight number "<< all_flights[i].get_number()<<":"<<endl;
             cout<<"Scheduled at: "<< all_flights[i].get_schedule()<<endl;
             cout<<"Flight duration of "<< all_flights[i].get_duration()<<endl;
-            cout<<"With origin in" << all_flights[i].get_origin()<< " and destination "<< all_flights[i].get_destination()<<endl;
+            cout<<"With origin in " << all_flights[i].get_origin()<< " and destination "<< all_flights[i].get_destination()<<endl;
         }
     }
 }
