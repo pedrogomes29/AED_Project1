@@ -176,6 +176,7 @@ bool Airline::add_airplane() {
 void Airline::check_db() {
     char option;
     while(!cin.eof() and option!='4') {
+        cout << endl;
         cout << "1. See the soonest 'x' flights. " << endl;
         cout << "2. See every plane owned by this airline company. " << endl;
         cout << "3. See every airport we operate in. " << endl;
@@ -224,6 +225,8 @@ void Airline::check_db() {
                 print_airports(country);
                 break;
             }
+            case '4':
+                continue;
             default: {
                 cout << "Invalid option" << endl;
             }
@@ -235,12 +238,13 @@ void Airline::check_db() {
 void Airline::update_airplane(Airplane & airplane){
     char option;
     while (!cin.eof() and option != '6') {
+        cout << endl;
         cout << "1. Add flight" << endl;
         cout << "2. Remove flight" << endl;
         cout << "3. Update flight" << endl;
         cout << "4. Add Service" << endl;
         cout << "5. Remove Service" << endl;
-        cout << "6. Exit" << endl;
+        cout << "6. Exit to the previous menu" << endl;
         cin >> option;
         switch (option) {
             case '1': {
@@ -314,10 +318,12 @@ void Airline::update_airplane(Airplane & airplane){
 
 void Airline::update_flight(Flight & flight){
     char option;
-    while (!cin.eof() and option != '3'){
+    while (!cin.eof() and option != '4'){
+        cout << endl;
         cout << "1. Change flight Schedule" << endl;
         cout << "2. Add passenger" << endl;
-        cout << "3. Exit"<<endl;
+        cout << "3. Add a group of passengers" << endl;
+        cout << "4. Exit to the previous menu"<<endl;
         cin >> option;
         switch (option) {
             case '1': {
@@ -347,7 +353,36 @@ void Airline::update_flight(Flight & flight){
                     cout << "Invalid answer" << endl;
                 break;
             }
-            case '3': continue;
+            case '3':{
+                int number_of_passengers;
+                cout << "How many people are in the group?: ";
+                cin >> number_of_passengers;
+                if(number_of_passengers+flight.get_passengers().size()>flight.get_capacity())
+                    cout << "Sorry, there are only " << flight.get_capacity()-flight.get_passengers().size() << "seats available." << endl;
+                else{
+                    for(unsigned int i=1;i<=number_of_passengers;i++){
+                        string passenger_name;
+                        char answer;
+                        cout << "Enter the name of the passenger: ";
+                        if (cin.peek() == '\n')
+                            cin.ignore(1);
+                        getline(cin, passenger_name);
+                        cout << "Does have have luggagge?(Y/N): ";
+                        cin >> answer;
+                        if (answer == 'Y')
+                            flight.add_passenger(Passenger(passenger_name, true));
+                        else if (answer == 'N')
+                            flight.add_passenger(Passenger(passenger_name, false));
+                        else {
+                            cout << "Invalid answer, please add the previous passenger again." << endl;
+                            i--;
+                        }
+                    }
+                    break;
+                }
+            }
+            case '4':
+                continue;
             default:
                 cout << "Invalid option" << endl;
         }
@@ -529,7 +564,9 @@ void Airline::check_new_transports(const Airport &airport) {
                 cout << "Enter the type of transport (Subway/Train/Bus): ";
                 cin >> type;
                 cout << "Enter the name of the transport: ";
-                cin >> name;
+                if(cin.peek()=='\n')
+                    cin.ignore(1);
+                getline(cin,name);
                 const LocalTransport *ltptr = airport.find_transport(name, type);
                 if (ltptr != nullptr)
                     see_information_transport(*ltptr);
@@ -537,6 +574,8 @@ void Airline::check_new_transports(const Airport &airport) {
                     cout << "No such transport. " << endl;
                 break;
             }
+            case '3':
+                continue;
             default: {
                 cout << "The option you entered is invalid." << endl;
                 break;
