@@ -5,6 +5,7 @@
 #ifndef AIRLINE_AIRPLANE_H
 #define AIRLINE_AIRPLANE_H
 
+#include <vector>
 #include <string>
 #include <queue>
 #include <list>
@@ -20,7 +21,7 @@ private:
     string type;
     unsigned capacity;
     queue<Service> services;
-    list<Flight> flights;
+    vector<Flight> flights;
 public:
     Airplane();
     Airplane(string _license_plate,string _type,unsigned _capacity);
@@ -29,10 +30,9 @@ public:
     unsigned get_capacity() const;
     bool remove_service();
     queue<Service> get_services() const;
-    list<Flight> get_flights() const;
+    vector<Flight> get_flights() const;
     Flight* find_flight(unsigned number);
     void add_flight(const Flight &f);
-    void update_flights();
     bool add_service(Service serv);
     bool remove_flight(unsigned number);
 };

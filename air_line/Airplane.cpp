@@ -35,21 +35,15 @@ Schedule result(Schedule s,Time t){
 }
 
 void Airplane::add_flight(const Flight &f){
+    if(flights.empty())flights.push_back(f);
+    for(auto iter=flights.begin(); iter!= flights.end();iter++){
+        if(f.get_schedule() < (*iter).get_schedule()) {
+            flights.insert(iter, f);
+            return;
+        }
+    }
     flights.push_back(f);
 }
-
-void Airplane::update_flights(){
-    time_t t = time(0);   // get time now
-    tm* now = localtime(&t);
-    Schedule time_now(Time(now->tm_hour,now->tm_min),Date(now->tm_mday,now->tm_mon+1,now->tm_year+1900));
-    auto iter = flights.begin();
-    while(iter->get_schedule()<time_now and iter!=flights.end()){
-        auto aux = iter;
-        iter++;
-        flights.erase(aux);
-    }
-}
-
 
 bool Airplane::add_service(Service serv) {
     if(flights.empty()){
@@ -170,7 +164,7 @@ unsigned Airplane::get_capacity() const{
 queue<Service> Airplane::get_services() const{
     return services;
 };
-list<Flight> Airplane::get_flights() const{
+vector<Flight> Airplane::get_flights() const{
     return flights;
 }
 
