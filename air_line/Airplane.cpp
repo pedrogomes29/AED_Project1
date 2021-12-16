@@ -65,36 +65,30 @@ bool Airplane::add_service(const Service& serv) {
     return true;
 }
 
-/*
-bool find_next_stack(vector<vector<stack<string>>> carriages,unsigned stack_size,unsigned & carriage,unsigned &pile){
-    for(unsigned carriage_index=0;carriage_index<carriages.size();carriage_index++){
-        for(unsigned pile_index=0;pile_index<carriages[0].size();pile_index++){
-            if(carriages[carriage_index][pile_index].size()<stack_size) {
-                carriage=carriage_index;
-                pile=pile_index;
-                return true;
-            }
-        }
-    }
-    return false;
-}
- */
 void print_carriages(vector<vector<stack<string>>> vector1) {
+    bool nothing_more_to_print=false;
     for(int i = 0; i<vector1.size();i++){
+        if(nothing_more_to_print)
+            break;
         for(int j=0;j<vector1[0].size();j++){
+            if(vector1[i][j].empty()) {
+                nothing_more_to_print = true;
+                break;
+            }
+            cout <<"-------------"<< endl;
             while(!vector1[i][j].empty()) {
                 cout << vector1[i][j].top() << endl;
                 vector1[i][j].pop();
             }
+            cout <<"-------------"<< endl;
         }
+        cout << endl;
     }
     cout << endl;
 }
 
-
-
-
 void show_baggages(Flight f){
+    bool there_is_luggage=false;
     unsigned num_of_carriages, num_of_stacks, stack_size;
     cout << "Enter the number of carriages: ";
     cin >> num_of_carriages;
@@ -110,6 +104,8 @@ void show_baggages(Flight f){
     unsigned current_size=0;
     for(Passenger p:passengers){
         if(p.has_luggage()){
+            if(!there_is_luggage)
+                there_is_luggage=true;
             current_size++;
             if(current_size>stack_size) {
                 current_size = 1;
@@ -135,7 +131,14 @@ void show_baggages(Flight f){
     }
     if(!carriages[0][0].empty()) // if  first pile in first stack isn't empty(there's something to print)
         print_carriages(carriages);
-    cout << "The car made " << trips << " trips." << endl;
+    if(there_is_luggage) {
+        if (trips > 1)
+            cout << "The car made " << trips << " trips." << endl;
+        else
+            cout << "The car made " << trips << " trip." << endl;
+    }
+    else
+        cout << "No luggage found" << endl;
 }
 
 

@@ -26,6 +26,22 @@ bool Airport::remove_transport (const LocalTransport &lt){
     return transports.remove(lt);
 }
 
+BST<LocalTransport> Airport::get_transports()const {
+    return transports;
+}
+
+const LocalTransport* Airport::find_transport(const string&transport_name, const string& type)const{
+    BSTItrIn<LocalTransport> itr(transports);
+    while(!itr.isAtEnd()){
+        if(itr.retrieve().get_type()==type and itr.retrieve().get_name()==transport_name){
+            return &itr.retrieve();
+        }
+        itr.advance();
+    }
+    return nullptr;
+}
+
+
 vector<LocalTransport> Airport::get_closest_transports(unsigned n_closest) const{
     BSTItrIn<LocalTransport> itr(transports);
     vector<LocalTransport> nearest_transports;

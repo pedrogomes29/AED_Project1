@@ -25,6 +25,8 @@ public:
     bool add_transport(const LocalTransport &lt);
     bool remove_transport (const LocalTransport &lt);
     vector<LocalTransport> get_closest_transports(unsigned n_closest) const;
+    BST<LocalTransport> get_transports()const;
+    const LocalTransport* find_transport(const string&name, const string& type)const;
     Airport(const string& name,const string &country);
 };
 

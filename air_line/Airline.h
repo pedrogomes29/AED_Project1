@@ -31,7 +31,9 @@ public:
     bool add_flight(Airplane & airplane);
     bool add_airport(const Airport &airport);
     void check_new_transports(const Airport & airport);
+    void see_information_transport(const LocalTransport &l);
     Airport * find_airport(const string &name);
+    void print_closest_transports(const Airport &airport);
     void print_planes(char c);
     void print_airports(string country);
     void print_soonest_flights(int n);

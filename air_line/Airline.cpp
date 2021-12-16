@@ -442,11 +442,9 @@ void Airline::setup(){
 
 }
 
-void Airline::check_new_transports(const Airport &airport) {
-    Time time_now;
+
+void Airline::print_closest_transports(const Airport &airport){
     int n;
-    cout << "What time is it now: ";
-    cin >> time_now;
     cout << "How many transports do you wish to see: ";
     cin >> n;
     vector<LocalTransport> nearest_t = airport.get_closest_transports(n);
@@ -454,8 +452,66 @@ void Airline::check_new_transports(const Airport &airport) {
         cout << "There are only " << nearest_t.size() << " transports that are near the airport." << endl;
     }
     for (auto &transport: nearest_t) {
-        cout << transport.get_name() << " with the next schedule at " << transport.next_schedules(1, time_now)[0]
-             << endl;
+        cout << transport.get_name() << "("<<transport.get_type()<< ") : " << transport.get_distance() << " km away." << endl;
+    }
+}
+
+void Airline::see_information_transport(const LocalTransport &l){
+    string n;
+    Time current_time;
+    cout << "Please enter the current time (hh:mm): ";
+    cin >> current_time;
+    cout << "How many schedules do you want to see? (type x for all): ";
+    cin >> n;
+    vector<Time> next_schedules;
+    if(n=="x"){
+        next_schedules = l.next_schedules(l.get_schedules().size(),current_time);
+    }
+    else{
+        if(stoi(n)>l.get_schedules().size()){
+            cout << "There aren't that many schedules." << endl ;
+        }
+        next_schedules = l.next_schedules(stoi(n),current_time);
+    }
+    bool next_day_print=false;
+    for(Time t:next_schedules){
+        if(t<current_time and !next_day_print){
+            cout << "Next day" << endl;
+            next_day_print=true;
+        }
+        cout << t << endl;
+    }
+}
+
+
+void Airline::check_new_transports(const Airport &airport) {
+    char option;
+    cout << "Please enter an option" << endl;
+    cout << "1. See closest transports" << endl;
+    cout << "2. See information about a local transport" << endl;
+    cin >> option;
+    switch(option){
+        case '1':{
+            print_closest_transports(airport);
+            break;
+        }
+        case '2':{
+            string type,name;
+            cout << "Enter the type of transport (Subway/Train/Bus): ";
+            cin >> type;
+            cout << "Enter the name of the transport: ";
+            cin >> name;
+            const LocalTransport * ltptr= airport.find_transport(name,type);
+            if(ltptr!= nullptr)
+                see_information_transport(*ltptr);
+            else
+                cout << "No such transport. "<< endl;
+            break;
+        }
+        default:{
+            cout << "The option you entered is invalid." << endl;
+            break;
+        }
     }
 }
 

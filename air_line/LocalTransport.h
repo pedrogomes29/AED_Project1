@@ -30,7 +30,7 @@ public:
     void set_schedules(vector<Time> &s);
     void add_schedule(Time s);
     bool operator<(const LocalTransport &lt1) const;
-    vector<Time> next_schedules(int n, Time t);
+    vector<Time> next_schedules(int n, Time t)const;
 };
 
 
