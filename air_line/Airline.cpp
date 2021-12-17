@@ -11,24 +11,7 @@
 
 using namespace std;
 
-
 const char INVALID_KEY = 0;
-
-char readChar() {
-    char c;
-    cin >> c;
-    if (cin.eof()) {
-        exit(EXIT_SUCCESS);
-        return INVALID_KEY;
-    }
-    else if (cin.peek() != '\n') {
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        return INVALID_KEY;
-    }
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    return c;
-}
-
 
 const int INVALID = -1;
 
@@ -113,6 +96,21 @@ Airline::Airline(){
         }
     }
     file.close();
+}
+
+char readChar() {
+    char c;
+    cin >> c;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID_KEY;
+    }
+    else if (cin.peek() != '\n') {
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID_KEY;
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return c;
 }
 
 int read_int() {
