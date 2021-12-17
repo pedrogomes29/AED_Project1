@@ -13,5 +13,7 @@ var searchData=
   ['set_5fschedules_10',['set_schedules',['../class_local_transport.html#aabfe09f89ff705ada240b0959020aced',1,'LocalTransport']]],
   ['set_5ftype_11',['set_type',['../class_local_transport.html#a1f439c15922fbb8bf7a966331dd75afe',1,'LocalTransport']]],
   ['set_5fyear_12',['set_year',['../class_date.html#afd39dbc0dfb19465585b6dcc20ffb206',1,'Date']]],
-  ['setup_13',['setup',['../class_airline.html#a65bca0ee4c956f5613f17ec46b3b2077',1,'Airline']]]
+  ['setup_13',['setup',['../class_airline.html#a65bca0ee4c956f5613f17ec46b3b2077',1,'Airline']]],
+  ['show_5fbaggages_14',['show_baggages',['../class_flight.html#a02c2ccafc42158fa2af0bc4e7f1f45b0',1,'Flight']]],
+  ['start_5fflight_15',['start_flight',['../class_airplane.html#a59c006c45e97a65a4d928c135cac6a7d',1,'Airplane']]]
 ];
