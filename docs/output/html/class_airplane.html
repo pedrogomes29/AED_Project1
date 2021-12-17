@@ -91,12 +91,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8af90ecba42cf3f780d1fc3719fdc86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b3a3302c10025d0279a3dcfba247f8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_flight.html">Flight</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_airplane.html#a5b3a3302c10025d0279a3dcfba247f8a">find_flight</a> (unsigned number)</td></tr>
 <tr class="separator:a5b3a3302c10025d0279a3dcfba247f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59c006c45e97a65a4d928c135cac6a7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_airplane.html#a59c006c45e97a65a4d928c135cac6a7d">start_flight</a> ()</td></tr>
+<tr class="separator:a59c006c45e97a65a4d928c135cac6a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4a1d75a47963ff38cfbb85ec26ec86f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_airplane.html#aa4a1d75a47963ff38cfbb85ec26ec86f">cancel_flights</a> (const vector&lt; unsigned &gt; &amp;numbers)</td></tr>
+<tr class="separator:aa4a1d75a47963ff38cfbb85ec26ec86f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab23fcaeceb6b64d4a361f7403fad432d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_airplane.html#ab23fcaeceb6b64d4a361f7403fad432d">add_flight</a> (const <a class="el" href="class_flight.html">Flight</a> &amp;f)</td></tr>
 <tr class="separator:ab23fcaeceb6b64d4a361f7403fad432d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6f95611f4c9a9bacc90b91a99c109c3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_airplane.html#ab6f95611f4c9a9bacc90b91a99c109c3">check_if_in_order_adding</a> (const vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt; &amp;flights) const</td></tr>
+<tr class="separator:ab6f95611f4c9a9bacc90b91a99c109c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96b674bbb761aced0e99c6b2ea1d35b6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_airplane.html#a96b674bbb761aced0e99c6b2ea1d35b6">check_if_in_order_removing</a> (const vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt; &amp;flights)</td></tr>
+<tr class="separator:a96b674bbb761aced0e99c6b2ea1d35b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06cf41861ed4b66d8c09edf2900233ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_airplane.html#a06cf41861ed4b66d8c09edf2900233ba">add_flights</a> (vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt; flights)</td></tr>
+<tr class="separator:a06cf41861ed4b66d8c09edf2900233ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0067061f25ed1f4429860a9aa2c10199"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_airplane.html#a0067061f25ed1f4429860a9aa2c10199">add_service</a> (const <a class="el" href="class_service.html">Service</a> &amp;serv)</td></tr>
 <tr class="separator:a0067061f25ed1f4429860a9aa2c10199"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cdcbf25c972d3a302eaee687bbe0c83"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_airplane.html#a9cdcbf25c972d3a302eaee687bbe0c83">remove_flight</a> (unsigned number)</td></tr>
-<tr class="separator:a9cdcbf25c972d3a302eaee687bbe0c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -193,12 +201,37 @@ vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt;&#160;</td><td 
         </tr>
       </table>
 </div><div class="memdoc">
-<p >method that adds a flight in its correct position in the ordered vector flights. </p><dl class="params"><dt>Parameters</dt><dd>
+<p >Only used in the <a class="el" href="class_airline.html">Airline</a> class constructor because the order of the flights read from the file is always going to be the correct order so we only need to add them in the vector. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">f</td><td>object of class <a class="el" href="class_flight.html">Flight</a> passed by reference that we want to add to the flights vector. </td></tr>
+    <tr><td class="paramname">f</td><td>flight read from this airplane file in the <a class="el" href="class_airline.html">Airline</a> class constructor. </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a06cf41861ed4b66d8c09edf2900233ba" name="a06cf41861ed4b66d8c09edf2900233ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06cf41861ed4b66d8c09edf2900233ba">&#9670;&nbsp;</a></span>add_flights()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Airplane::add_flights </td>
+          <td>(</td>
+          <td class="paramtype">vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt;&#160;</td>
+          <td class="paramname"><em>flights</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >method that adds a flight in its correct position in the ordered vector flights. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flights</td><td>vector of objects of class <a class="el" href="class_flight.html">Flight</a> passed by reference that we want to add to the flights vector. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns if it was possible to add the flights or not. </dd></dl>
 
 </div>
 </div>
@@ -224,6 +257,81 @@ vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt;&#160;</td><td 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>returns a boolean value indicating whether the insertion was possible because we cannot add a service at the same time a flight is taking place </dd></dl>
+
+</div>
+</div>
+<a id="aa4a1d75a47963ff38cfbb85ec26ec86f" name="aa4a1d75a47963ff38cfbb85ec26ec86f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4a1d75a47963ff38cfbb85ec26ec86f">&#9670;&nbsp;</a></span>cancel_flights()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Airplane::cancel_flights </td>
+          <td>(</td>
+          <td class="paramtype">const vector&lt; unsigned &gt; &amp;&#160;</td>
+          <td class="paramname"><em>numbers</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Tries to remove a certain number of flights from the vector flights. The logic behind this method is you can't cancel any flights you want because they depend on one another </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">numbers</td><td>vector of containing the numbers of flights the user wishes to cancel </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns a boolean value indicating if the removal of the flight was possible </dd></dl>
+
+</div>
+</div>
+<a id="ab6f95611f4c9a9bacc90b91a99c109c3" name="ab6f95611f4c9a9bacc90b91a99c109c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6f95611f4c9a9bacc90b91a99c109c3">&#9670;&nbsp;</a></span>check_if_in_order_adding()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Airplane::check_if_in_order_adding </td>
+          <td>(</td>
+          <td class="paramtype">const vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>flights</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >This method is responsible behind the logic of adding flights. Every flight needs to start in the same airport where the previous flight ends. And the schedules also need to make sense according to other flights. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flights</td><td>vector of objects of class <a class="el" href="class_flight.html">Flight</a> passed by reference that we want to add to the flights vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns a boolean value indicating if the adding of the flights was possible </dd></dl>
+
+</div>
+</div>
+<a id="a96b674bbb761aced0e99c6b2ea1d35b6" name="a96b674bbb761aced0e99c6b2ea1d35b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96b674bbb761aced0e99c6b2ea1d35b6">&#9670;&nbsp;</a></span>check_if_in_order_removing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Airplane::check_if_in_order_removing </td>
+          <td>(</td>
+          <td class="paramtype">const vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>flights</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >This method is responsible behind the logic of removing flights. Every flight needs to start in the same airport where the previous flight ends. And the schedules also need to make sense according to other flights. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flights</td><td>vector of objects of class <a class="el" href="class_flight.html">Flight</a> passed by reference that we want to remove from the flights vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns a boolean value indicating if the removal of the flights was possible </dd></dl>
 
 </div>
 </div>
@@ -342,31 +450,6 @@ vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt;&#160;</td><td 
 
 </div>
 </div>
-<a id="a9cdcbf25c972d3a302eaee687bbe0c83" name="a9cdcbf25c972d3a302eaee687bbe0c83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9cdcbf25c972d3a302eaee687bbe0c83">&#9670;&nbsp;</a></span>remove_flight()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Airplane::remove_flight </td>
-          <td>(</td>
-          <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>number</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Method that trys to remove a flight from the vector flight: Either because we simply want to remove it or because the flight is about to happen </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">number</td><td>unsigned int representing the number of the flight we wish to remove </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>returns a boolean value indicating whether the removal was possible </dd></dl>
-
-</div>
-</div>
 <a id="a0f8457564df06fc0625dd7892d46bfe0" name="a0f8457564df06fc0625dd7892d46bfe0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f8457564df06fc0625dd7892d46bfe0">&#9670;&nbsp;</a></span>remove_service()</h2>
 
@@ -382,6 +465,24 @@ vector&lt; <a class="el" href="class_flight.html">Flight</a> &gt;&#160;</td><td 
       </table>
 </div><div class="memdoc">
 <p >method that trys to remove the next service in the queue of services of the airplane </p><dl class="section return"><dt>Returns</dt><dd>returns a boolean value indicating if the removal was possible, that is if the queue of services was not empty </dd></dl>
+
+</div>
+</div>
+<a id="a59c006c45e97a65a4d928c135cac6a7d" name="a59c006c45e97a65a4d928c135cac6a7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59c006c45e97a65a4d928c135cac6a7d">&#9670;&nbsp;</a></span>start_flight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Airplane::start_flight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Removes the first flight of the ordered vector flights </p>
 
 </div>
 </div>

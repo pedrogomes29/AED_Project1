@@ -71,16 +71,39 @@ public:
      * @return returns a pointer to a flight if that flight existed in the vector flight, else returns a null pointer
      */
     Flight* find_flight(unsigned number);
-
+    /**
+     * Removes the first flight of the ordered vector flights
+     */
     void start_flight();
-
+    /**
+     * Tries to remove a certain number of flights from the vector flights.
+     * The logic behind this method is you can't cancel any flights you want because
+     * they depend on one another
+     * @param numbers vector of containing the numbers of flights the user wishes to cancel
+     * @return returns a boolean value indicating if the removal of the flight was possible
+     */
     bool cancel_flights(const vector<unsigned>& numbers);
-
-
+    /**
+     * Only used in the Airline class constructor because the order of the flights read from the file is always
+     * going to be the correct order so we only need to add them in the vector.
+     * @param f flight read from this airplane file in the Airline class constructor.
+     */
     void add_flight(const Flight &f);
-
+    /**
+     * This method is responsible behind the logic of adding flights.
+     * Every flight needs to start in the same airport where the previous flight ends.
+     * And the schedules also need to make sense according to other flights.
+     * @param flights vector of objects of class Flight passed by reference that we want to add to the flights vector
+     * @return returns a boolean value indicating if the adding of the flights was possible
+     */
     bool check_if_in_order_adding(const vector<Flight> &flights) const;
-
+    /**
+     * This method is responsible behind the logic of removing flights.
+     * Every flight needs to start in the same airport where the previous flight ends.
+     * And the schedules also need to make sense according to other flights.
+     * @param flights vector of objects of class Flight passed by reference that we want to remove from the flights vector
+     * @return returns a boolean value indicating if the removal of the flights was possible
+     */
     bool check_if_in_order_removing(const vector<Flight> &flights);
     /**
      * method that adds a flight in its correct position in the ordered vector flights.
