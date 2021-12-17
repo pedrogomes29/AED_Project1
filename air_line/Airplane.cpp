@@ -57,7 +57,7 @@ queue<Service> Airplane::get_services() const{
 }
 
 
-bool check_if_in_order_removing(const vector<Flight> &flights){
+bool Airplane::check_if_in_order_removing(const vector<Flight> &flights){
     for(unsigned int i=1;i<flights.size();i++){
         if (flights[i].get_origin() != flights[i - 1].get_destination() ||
         flights[i].get_schedule() < result(flights[i - 1].get_schedule(), flights[i - 1].get_duration()))
@@ -115,7 +115,16 @@ bool Airplane::add_flights(vector<Flight> new_flights){
     if(!insert_in_end)
         new_flights.push_back(*iter);
     if(check_if_in_order_adding(new_flights)){
-        for(unsigned i=1;i<new_flights.size()-1;i++){
+        unsigned i,end;
+        if(insert_in_beggining)
+            i=0;
+        else
+            i=1;
+        if(insert_in_end)
+            end = new_flights.size();
+        else
+            end = new_flights.size()-1;
+        for(i;i<end;i++){
             iter = flights.insert(iter,new_flights[i]);
             iter++;
         }
@@ -179,6 +188,9 @@ bool Airplane::cancel_flights(const vector<unsigned>& numbers){
     if(flights_found<numbers.size())
         return false;
     else if(check_if_in_order_removing(aux_vector)) {
+        for(unsigned n:numbers) {
+            remove(("files/Flight_" + to_string(n) + ".txt").c_str());
+        }
         flights = aux_vector;
         return true;
     }

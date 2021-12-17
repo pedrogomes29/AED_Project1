@@ -265,11 +265,11 @@ bool Airline::add_airplane() {
     string license_plate,type;
     unsigned capacity;
     while(license_plate.empty()) {
-        cout << "Enter license plate (no spaces allowed)";
+        cout << "Enter license plate (no spaces allowed): ";
         license_plate = read_string();
     }
     while(type.empty()) {
-        cout << "Enter airplane type (no spaces allowed)";
+        cout << "Enter airplane type (no spaces allowed): ";
         type = read_string();
     }
     cout << "Enter airplane capacity: ";
@@ -364,7 +364,7 @@ void Airline::update_airplane(Airplane & airplane){
                 if (add_flights(airplane))
                     cout << "Added flights successfully" << endl;
                 else
-                    cout << "You can't add that flights (check if the flights make sense and if the airports exist in the database)." << endl;
+                    cout << "You can't add those flights (check if they make sense)" << endl;
                 break;
             }
             case '2': {
@@ -383,12 +383,15 @@ void Airline::update_airplane(Airplane & airplane){
                         numbers.push_back(flight_number);
                     }
                     if (airplane.cancel_flights(numbers))
-                        cout << "Removed flight successfuly" << endl;
+                        cout << "Removed flights successfuly" << endl;
                     else
-                        cout << "No such flight found" << endl;
+                        cout << "Error canceling flights (they don't exist or other flights depend on them)" << endl;
+                }
+                else if(decision=='X'){
+                    airplane.start_flight();
                 }
                 else{
-                    airplane.start_flight();
+                    cout << "Invalid answer." << endl;
                 }
                 break;
             }
@@ -419,10 +422,12 @@ void Airline::update_airplane(Airplane & airplane){
                 Schedule schedule(t, d);
                 if (type == "maintenance") {
                     Service service = Service(maintenance, schedule, employee);
-                    airplane.add_service(service);
+                    if(!airplane.add_service(service))
+                        cout << "Flight scheduled at that time." << endl;
                 } else if (type == "cleaning") {
                     Service service = Service(cleaning, schedule, employee);
-                    airplane.add_service(service);
+                    if(!airplane.add_service(service))
+                        cout << "Flight scheduled at that time." << endl;
                 } else {
                     cout << "The type of service that you entered does not exist." << endl;
                 }
@@ -430,7 +435,7 @@ void Airline::update_airplane(Airplane & airplane){
             }
             case '5': {
                 if (airplane.remove_service())cout << "Service removed successfully" << endl;
-                else cout << "There were no services to remove!" << endl;
+                else cout << "There are no services to remove!" << endl;
                 break;
             }
             case '6':
@@ -554,8 +559,8 @@ void Airline::setup(){
     Airport airport_lisbon (Airport("Lisbon","Portugal"));
     Airport airport_madrid(Airport("Madrid","Spain"));
     Airport airport_frankfurt(Airport("Frankfurt","Germany"));
-    Airport airport_amsterdan(Airport("Amsterdan","The Netherlands"));
-    Airport airport_newyork(Airport("New york","The United states of America"));
+    Airport airport_amsterdan(Airport("Amsterdan","Netherlands"));
+    Airport airport_newyork(Airport("NewYork","USA"));
 
 
     airport_porto.add_transport(LocalTransport("Campanha",15,"Train",train_schedules));
@@ -634,15 +639,15 @@ Airplane* Airline::find_airplane(const string& license_plate){
 }
 
 bool Airline::add_flights(Airplane & airplane){
-    unsigned n_of_flights;
-    while(n_of_flights!=(unsigned)-1) {
+    unsigned n_of_flights = (unsigned)-1;
+    while(n_of_flights==(unsigned)-1) {
         cout << "How many flights do you want to add: ";
         n_of_flights = readUnsigned();
     }
     vector<Flight> flights_to_add;
     for(unsigned i=0;i<n_of_flights;i++) {
         string origin, destination;
-        int flight_number;
+        int flight_number=-1;
         unsigned capacity = airplane.get_capacity();
         while(flight_number==-1) {
             cout << "Enter flight number: ";
@@ -668,10 +673,6 @@ bool Airline::add_flights(Airplane & airplane){
             cout << "Enter origin location: ";
             origin = read_string();
         }
-        cout << "Enter origin location: ";
-        cin >> origin;
-        if (find_airport(origin) == nullptr)
-            return false;
         while (destination.empty() or find_airport(destination) == nullptr) {
             cout << "Enter destination location: ";
             destination = read_string();
@@ -861,7 +862,7 @@ void Airline::print_soonest_flights(int n){
             cout<<"Flight number "<< flight.get_number()<<":"<<endl;
             cout<<"Scheduled at: "<< flight.get_schedule()<<endl;
             cout<<"Flight duration of "<< flight.get_duration()<<endl;
-            cout<<"With origin in " << flight.get_origin()<< " and destination "<< flight.get_destination()<<endl;
+            cout<<"With origin in " << flight.get_origin()<< " and destination "<< flight.get_destination()<<endl << endl;
         }
     }
     else{
