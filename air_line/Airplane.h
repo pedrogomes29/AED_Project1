@@ -73,9 +73,10 @@ public:
     Flight* find_flight(unsigned number);
     /**
      * method that adds a flight in its correct position in the ordered vector flights.
-     * @param f object of class Flight passed by reference that we want to add to the flights vector.
+     * @param flights vector of objects of class Flight passed by reference that we want to add to the flights vector.
+     * @return returns if it was possible to add the flights or not.
      */
-    void add_flight(const Flight &f);
+    bool add_flights(const vector<Flight> &flights);
     /**
      * method that trys to add a service to the back of the queue of services in this plane
      * @param serv object of class Service that we want to add in the queue

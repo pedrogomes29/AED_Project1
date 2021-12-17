@@ -15,6 +15,10 @@ const char INVALID_KEY = 0;
 
 const int INVALID = -1;
 
+const Date INVALID_DATE = Date(0,0,0);
+const string INVALID_STRING = "";
+const Time INVALID_TIME = Time (0,0);
+
 Airline::Airline(){
     ifstream file, airplane_file,flight_file;
     file.open("files/Airplanes.txt");
@@ -66,7 +70,7 @@ Airline::Airline(){
                             f1.add_passenger(p1);
                             flight_file.ignore(1); //ignores the '\n' to move to next line
                         }
-                        a1.add_flight(f1);
+                        //a1.add_flight(f1);
                     }
                     flight_file.close();
                 }
@@ -113,6 +117,22 @@ char readChar() {
     return c;
 }
 
+
+string read_string(){
+    string s;
+    cin >> s;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID_STRING;
+    }
+    else if (cin.peek() != '\n') {
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID_STRING;
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return s;
+}
+
 int read_int() {
     int n;
     cin >> n;
@@ -130,7 +150,7 @@ int read_int() {
     return n;
 }
 
-unsigned read_unsigned() {
+unsigned readUnsigned() {
     unsigned n;
     cin >> n;
     if (cin.eof()) {
@@ -145,6 +165,41 @@ unsigned read_unsigned() {
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     return n;
+}
+
+
+Date read_date(){
+    Date d;
+    cin >> d;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID_DATE;
+    }
+    else if (cin.fail() or cin.peek() != '\n') {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID_DATE;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return d;
+}
+
+Time read_time(){
+    Time t;
+    cin >> t;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID_TIME;
+    }
+    else if (cin.fail() or cin.peek() != '\n') {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID_TIME;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return t;
 }
 
 void Airline::interface() {
@@ -185,7 +240,8 @@ void Airline::interface() {
             case '4':{
                 string airport_name;
                 cout << "Enter the airport you are currently in: ";
-                cin>>airport_name;
+                while(airport_name=="")
+                    airport_name = read_string();
                 Airport* ap = find_airport(airport_name);
                 if(ap!=nullptr){
                     check_new_transports(*ap);
@@ -209,12 +265,16 @@ void Airline::interface() {
 bool Airline::add_airplane() {
     string license_plate,type;
     unsigned capacity;
-    cout << "Enter license plate: ";
-    cin >> license_plate;
-    cout << "Enter airplane type: ";
-    cin >> type;
+    while(license_plate.empty()) {
+        cout << "Enter license plate (no spaces allowed)";
+        license_plate = read_string();
+    }
+    while(type.empty()) {
+        cout << "Enter airplane type (no spaces allowed)";
+        type = read_string();
+    }
     cout << "Enter airplane capacity: ";
-    capacity = read_unsigned();
+    capacity = readUnsigned();
     Airplane airplane(license_plate,type,capacity);
     auto iter = airplanes.begin();
     for(iter;iter!=airplanes.end();iter++){
@@ -339,10 +399,10 @@ void Airline::update_airplane(Airplane & airplane){
                 cin >> type;
                 cout << "Enter date of the service (day/month/year): ";
                 Date d(0, 0, 0);
-                cin >> d;
+                d = read_date();
                 cout << "Enter hour of the service (hour:minute): ";
                 Time t(0, 0);
-                cin >> t;
+                t = read_time();
                 Schedule schedule(t, d);
                 if (type == "maintenance") {
                     Service service = Service(maintenance, schedule, employee);
@@ -574,16 +634,20 @@ bool Airline::add_flight(Airplane & airplane){
     Time duration = Time(0,0);
     cout << "Enter duration of the flight (hour:minute): ";
     cin >> duration;
-    cout << "Enter origin location: ";
-    cin>> origin;
+    while(origin.empty()) {
+        cout << "Enter origin location: ";
+        origin = read_string();
+    }
     if(find_airport(origin)== nullptr)
         return false;
-    cout << "Enter destination location: ";
-    cin>>destination;
+    while(destination.empty()) {
+        cout << "Enter destination location: ";
+        destination = read_string();
+    }
     if(find_airport(destination)==nullptr)
         return false;
     Flight f = Flight(capacity, flight_number, duration, schedule, origin, destination);
-    airplane.add_flight(f);
+    //airplane.add_flight(f);
     return true;
 }
 

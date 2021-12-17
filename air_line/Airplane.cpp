@@ -34,20 +34,23 @@ Schedule result(Schedule s,Time t){
     return Schedule(Time(hour,min),d);
 }
 
-void Airplane::add_flight(const Flight &f){
+
+/*
+
+bool Airplane::add_flights(const vector<Flight> &flights){
     if(flights.empty()){
-        flights.push_back(f);
-        return;
+        flights.push_back(flights[0]);
+        return true;
     }
     for(auto iter=flights.begin(); iter!= flights.end();iter++){
-        if(f.get_schedule() < (*iter).get_schedule()) {
-            flights.insert(iter, f);
-            return;
+        if(flights[0].get_schedule() < (*iter).get_schedule()) {
+            flights.insert(iter, flights[0]);
+            return true;
         }
     }
     flights.push_back(f);
 }
-
+*/
 bool Airplane::add_service(const Service& serv) {
     if(flights.empty()){
         services.push(serv);
