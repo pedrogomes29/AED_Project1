@@ -70,7 +70,7 @@ Airline::Airline(){
                             f1.add_passenger(p1);
                             flight_file.ignore(1); //ignores the '\n' to move to next line
                         }
-                        //a1.add_flight(f1);
+                        a1.add_flight(f1);
                     }
                     flight_file.close();
                 }
@@ -301,7 +301,7 @@ void Airline::check_db() {
                 int n;
                 cout << "How many flights do you wish to see: ";
                 n = read_int();
-                print_soonest_flights(n);
+                    print_soonest_flights(n);
                 break;
             }
             case '2': {
@@ -352,7 +352,7 @@ void Airline::update_airplane(Airplane & airplane){
     char option;
     while (!cin.eof() and option != '6') {
         cout << endl;
-        cout << "1. Add flight" << endl;
+        cout << "1. Add flights" << endl;
         cout << "2. Remove flight" << endl;
         cout << "3. Update flight" << endl;
         cout << "4. Add Service" << endl;
@@ -361,7 +361,7 @@ void Airline::update_airplane(Airplane & airplane){
         option=readChar();
         switch (option) {
             case '1': {
-                if (add_flight(airplane))
+                if (add_flights(airplane))
                     cout << "Added flight successfully" << endl;
                 else
                     cout << "No such airport" << endl;
@@ -453,14 +453,16 @@ void Airline::update_flight(Flight & flight){
                 if (cin.peek() == '\n')
                     cin.ignore(1);
                 getline(cin, passenger_name);
-                cout << "Does have have luggagge?(Y/N): ";
-                option=readChar();
-                if (answer == 'Y')
-                    flight.add_passenger(Passenger(passenger_name, true));
-                else if (answer == 'N')
-                    flight.add_passenger(Passenger(passenger_name, false));
-                else
-                    cout << "Invalid answer" << endl;
+                while(answer!='Y' and answer!='N') {
+                    cout << "Does have have luggagge?(Y/N): ";
+                    answer = readChar();
+                    if (answer == 'Y')
+                        flight.add_passenger(Passenger(passenger_name, true));
+                    else if (answer == 'N')
+                        flight.add_passenger(Passenger(passenger_name, false));
+                    else
+                        cout << "Invalid answer" << endl;
+                }
                 break;
             }
             case '3':{
@@ -615,40 +617,46 @@ Airplane* Airline::find_airplane(const string& license_plate){
     return nullptr;
 }
 
-bool Airline::add_flight(Airplane & airplane){
-    string origin, destination;
-    int flight_number;
-    unsigned capacity = airplane.get_capacity();
-    cout << "Enter flight number: ";
-    flight_number = read_int();
-    cout << "Enter date of the flight (day/month/year): ";
-    Date d;
-    d = read_date();
-    cout << "Enter hour of the flight (hour:minute): ";
-    Time origin_time;
-    origin_time = read_time();
-    Schedule schedule = Schedule(origin_time, d);
-    Time duration;
-    cout << "Enter duration of the flight (hour:minute): ";
-    cin >> duration;
-    while(origin.empty()) {
+bool Airline::add_flights(Airplane & airplane){
+    unsigned n_of_flights;
+    while(n_of_flights!=(unsigned)-1) {
+        cout << "How many flights do you want to add: ";
+        n_of_flights = readUnsigned();
+    }
+    vector<Flight> flights_to_add;
+    for(unsigned i=0;i<n_of_flights;i++) {
+        string origin, destination;
+        int flight_number;
+        unsigned capacity = airplane.get_capacity();
+        cout << "Enter flight number: ";
+        flight_number = read_int();
+        cout << "Enter date of the flight (day/month/year): ";
+        Date d;
+        d = read_date();
+        cout << "Enter hour of the flight (hour:minute): ";
+        Time origin_time;
+        origin_time = read_time();
+        Schedule schedule = Schedule(origin_time, d);
+        Time duration;
+        cout << "Enter duration of the flight (hour:minute): ";
+        duration = read_time();
+        while (origin.empty()) {
+            cout << "Enter origin location: ";
+            origin = read_string();
+        }
         cout << "Enter origin location: ";
-        origin = read_string();
+        cin >> origin;
+        if (find_airport(origin) == nullptr)
+            return false;
+        while (destination.empty()) {
+            cout << "Enter destination location: ";
+            destination = read_string();
+        }
+        if (find_airport(destination) == nullptr)
+            return false;
+        flights_to_add.push_back(Flight(capacity, flight_number, duration, schedule, origin, destination));
     }
-    duration = read_time();
-    cout << "Enter origin location: ";
-    cin>> origin;
-    if(find_airport(origin)== nullptr)
-        return false;
-    while(destination.empty()) {
-        cout << "Enter destination location: ";
-        destination = read_string();
-    }
-    if(find_airport(destination)==nullptr)
-        return false;
-    Flight f = Flight(capacity, flight_number, duration, schedule, origin, destination);
-    //airplane.add_flight(f);
-    return true;
+    return (airplane.add_flights(flights_to_add))
 }
 
 bool Airline::add_airport(const Airport &airport) {

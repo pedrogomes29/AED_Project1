@@ -71,12 +71,23 @@ public:
      * @return returns a pointer to a flight if that flight existed in the vector flight, else returns a null pointer
      */
     Flight* find_flight(unsigned number);
+
+    void start_flight();
+
+    bool cancel_flights(const vector<unsigned>& numbers);
+
+
+    void add_flight(const Flight &f);
+
+    bool check_if_in_order_adding(const vector<Flight> &flights) const;
+
+    bool check_if_in_order_removing(const vector<Flight> &flights);
     /**
      * method that adds a flight in its correct position in the ordered vector flights.
      * @param flights vector of objects of class Flight passed by reference that we want to add to the flights vector.
      * @return returns if it was possible to add the flights or not.
      */
-    bool add_flights(const vector<Flight> &flights);
+    bool add_flights(vector<Flight> flights);
     /**
      * method that trys to add a service to the back of the queue of services in this plane
      * @param serv object of class Service that we want to add in the queue

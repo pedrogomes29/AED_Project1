@@ -6,6 +6,24 @@
 #include <stack>
 #include "Airplane.h"
 
+const char INVALID_KEY = 0;
+
+char read_char() {
+    char c;
+    cin >> c;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID_KEY;
+    }
+    else if (cin.peek() != '\n') {
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID_KEY;
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return c;
+}
+
+
 
 Airplane::Airplane() {
     license_plate = "";
@@ -34,23 +52,79 @@ Schedule result(Schedule s,Time t){
     return Schedule(Time(hour,min),d);
 }
 
+queue<Service> Airplane::get_services() const{
+    return services;
+}
 
-/*
 
-bool Airplane::add_flights(const vector<Flight> &flights){
-    if(flights.empty()){
-        flights.push_back(flights[0]);
-        return true;
+bool check_if_in_order_removing(const vector<Flight> &flights){
+    for(unsigned int i=1;i<flights.size();i++){
+        if (flights[i].get_origin() != flights[i - 1].get_destination() ||
+        flights[i].get_schedule() < result(flights[i - 1].get_schedule(), flights[i - 1].get_duration()))
+             return false;
     }
-    for(auto iter=flights.begin(); iter!= flights.end();iter++){
-        if(flights[0].get_schedule() < (*iter).get_schedule()) {
-            flights.insert(iter, flights[0]);
+    return true;
+}
+
+
+bool Airplane::check_if_in_order_adding(const vector <Flight> &flights) const{
+    queue<Service> aux_services = get_services();
+    vector<Service> v_services;
+    while(!aux_services.empty()){
+        v_services.push_back(aux_services.front());
+        aux_services.pop();
+    }
+    for(unsigned int i=0;i<flights.size();i++){
+        if(i>=1) {
+            if (flights[i].get_origin() != flights[i - 1].get_destination() ||
+                flights[i].get_schedule() < result(flights[i - 1].get_schedule(), flights[i - 1].get_duration()))
+                return false;
+        }
+        for(Service s:v_services){
+            if((s.get_schedule()<flights[i].get_schedule() and flights[i].get_schedule()<result(s.get_schedule(),s.get_duration())) ||
+            flights[i].get_schedule()<s.get_schedule() and s.get_schedule()<result(flights[i].get_schedule(),flights[i].get_duration()))
+                return false;
+        }
+    }
+    return true;
+}
+
+
+bool Airplane::add_flights(vector<Flight> new_flights){
+    auto previous=flights.begin();
+    auto iter = flights.begin();
+    if(flights.empty()){
+        if(check_if_in_order_adding(new_flights)) {
+            flights = new_flights;
             return true;
         }
     }
-    flights.push_back(f);
+    bool insert_in_end=true;
+    bool insert_in_beggining=true;
+    for(iter; iter!= flights.end();iter++){
+        if(new_flights[0].get_schedule()<iter->get_schedule()){
+            insert_in_end=false;
+            break;
+        }
+        else if (insert_in_beggining)
+            insert_in_beggining=false;
+        previous = iter;
+    }
+    if(!insert_in_beggining)
+        new_flights.insert(new_flights.begin(), *previous);
+    if(!insert_in_end)
+        new_flights.push_back(*iter);
+    if(check_if_in_order_adding(new_flights)){
+        for(unsigned i=1;i<new_flights.size()-1;i++){
+            iter = flights.insert(iter,new_flights[i]);
+            iter++;
+        }
+        return true;
+    }
+    return false;
+
 }
-*/
+
 bool Airplane::add_service(const Service& serv) {
     if(flights.empty()){
         services.push(serv);
@@ -72,23 +146,47 @@ bool Airplane::add_service(const Service& serv) {
 }
 
 
+void Airplane::add_flight(const Flight &f){
+    flights.push_back(f);
+}
 
-bool Airplane::remove_flight(unsigned number){
-    for (auto iter = flights.begin();iter!=flights.end();iter++){
-        if(iter->get_number()==number){
-            bool is_about_to_happen;
-            cout << "Do you want to cancel the flight or is it about to happen? (0 to cancel else 1): ";
-            cin >> is_about_to_happen;
-            if(is_about_to_happen) {
-                iter->show_baggages();
-            }
-            remove(("files/Flight_"+to_string(iter->get_number())+".txt").c_str());
-            flights.erase(iter);
+void Airplane::start_flight(){
+        flights[0].show_baggages();
+        remove(("files/Flight_"+to_string(flights[0].get_number())+".txt").c_str());
+        flights.erase(flights.begin());
+}
+
+bool is_in(unsigned number,const vector<unsigned>&numbers){
+    for(unsigned n:numbers){
+        if (n==number)
             return true;
-        }
     }
     return false;
 }
+
+
+
+bool Airplane::cancel_flights(const vector<unsigned>& numbers){
+    unsigned flights_found=0;
+    vector<Flight> aux_vector;
+    for(const Flight &f:flights){
+        if (!is_in(f.get_number(),numbers))
+            aux_vector.push_back(f);
+        else{
+            flights_found++;
+        }
+    }
+    if(flights_found<numbers.size())
+        return false;
+    else if(check_if_in_order_removing(aux_vector)) {
+        flights = aux_vector;
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 
 
 Flight* Airplane::find_flight(unsigned number){
@@ -117,9 +215,7 @@ string Airplane::get_type() const{
 unsigned Airplane::get_capacity() const{
     return capacity;
 };
-queue<Service> Airplane::get_services() const{
-    return services;
-};
+
 vector<Flight> Airplane::get_flights() const{
     return flights;
 }

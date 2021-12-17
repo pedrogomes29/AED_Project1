@@ -77,11 +77,11 @@ public:
      */
     Airplane* find_airplane(const string& license_plate);
     /**
-     * Method that adds a flight to a certain airplane with details given by the user
+     * Method that adds flights to a certain airplane with details given by the user
      * @param airplane object of class Airplane passed by reference in which the flight will be added
-     * @return boolean value representing whether it was possible to add the flight given by the user.
+     * @return boolean value representing whether it was possible to add the flights given by the user.
      */
-    bool add_flight(Airplane & airplane);
+    bool add_flights(Airplane & airplane);
     /**
      * Method that adds an object of class Airport to the ordered vector airports.
      * @param airport object of class Airport passed by reference which we want to add on the ordered vector
