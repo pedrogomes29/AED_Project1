@@ -368,20 +368,28 @@ void Airline::update_airplane(Airplane & airplane){
                 break;
             }
             case '2': {
-                int flights_to_cancel;
-                vector<unsigned > numbers;
-                cout<<"How many flights do you wish to cancel: ";
-                flights_to_cancel = read_int();
-                for(int i = 0; i<flights_to_cancel;i++) {
-                    unsigned flight_number;
-                    cout << "Enter flight number: ";
-                    flight_number = readUnsigned();
-                    numbers.push_back(flight_number);
+                char decision;
+                cout<<"X to start or Y to cancel";
+                decision = readChar();
+                if(decision=='Y'){
+                    int flights_to_cancel;
+                    vector<unsigned > numbers;
+                    cout<<"How many flights do you wish to cancel: ";
+                    flights_to_cancel = read_int();
+                    for(int i = 0; i<flights_to_cancel;i++) {
+                        unsigned flight_number;
+                        cout << "Enter flight number: ";
+                        flight_number = readUnsigned();
+                        numbers.push_back(flight_number);
+                    }
+                    if (airplane.cancel_flights(numbers))
+                        cout << "Removed flight successfuly" << endl;
+                    else
+                        cout << "No such flight found" << endl;
                 }
-                if (airplane.cancel_flights(numbers))
-                    cout << "Removed flight successfuly" << endl;
-                else
-                    cout << "No such flight found" << endl;
+                else{
+                    airplane.start_flight();
+                }
                 break;
             }
             case '3': {

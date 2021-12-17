@@ -95,6 +95,7 @@ public:
      * we cannot add a service at the same time a flight is taking place
      */
     bool add_service(const Service& serv);
+    bool start
 };
 
 #endif //AIRLINE_AIRPLANE_H
