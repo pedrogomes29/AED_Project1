@@ -449,25 +449,14 @@ void Airline::update_airplane(Airplane & airplane){
 
 void Airline::update_flight(Flight & flight){
     char option;
-    while (!cin.eof() and option != '4'){
+    while (!cin.eof() and option != '3'){
         cout << endl;
-        cout << "1. Change flight Schedule" << endl;
-        cout << "2. Add passenger" << endl;
-        cout << "3. Add a group of passengers" << endl;
-        cout << "4. Exit to the previous menu"<<endl;
+        cout << "1. Add passenger" << endl;
+        cout << "2. Add a group of passengers" << endl;
+        cout << "3. Exit to the previous menu"<<endl;
         option=readChar();
         switch (option) {
             case '1': {
-                Date date;
-                Time t;
-                cout << "Enter the new date (dd/mm/yyyy): ";
-                date = read_date();
-                cout << "Enter the time (hh:mm): ";
-                t = read_time();
-                flight.set_schedule(Schedule(t, date));
-                break;
-            }
-            case '2': {
                 string passenger_name;
                 char answer;
                 cout << "Enter the name of the passenger: ";
@@ -486,7 +475,7 @@ void Airline::update_flight(Flight & flight){
                 }
                 break;
             }
-            case '3':{
+            case '2':{
                 int number_of_passengers;
                 cout << "How many people are in the group?: ";
                 number_of_passengers = read_int();
@@ -514,7 +503,7 @@ void Airline::update_flight(Flight & flight){
                     break;
                 }
             }
-            case '4':
+            case '3':
                 continue;
             default:
                 cout << "Invalid option" << endl;
