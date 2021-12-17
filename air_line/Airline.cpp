@@ -12,6 +12,8 @@
 using namespace std;
 
 const int INVALID = -1;
+const Date INVALID_DATE = Date(0,0,0);
+const Time INVALID_TIME = Time (0,0);
 
 Airline::Airline(){
     ifstream file, airplane_file,flight_file;
@@ -111,6 +113,39 @@ int read_int() {
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     return n;
+}
+Date read_date(){
+    Date d;
+    cin >> d;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID_DATE;
+    }
+    else if (cin.fail() or cin.peek() != '\n') {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID_DATE;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return d;
+}
+
+Time read_time(){
+    Time t;
+    cin >> t;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID_TIME;
+    }
+    else if (cin.fail() or cin.peek() != '\n') {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID_TIME;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return t;
 }
 
 unsigned read_unsigned() {
@@ -321,11 +356,11 @@ void Airline::update_airplane(Airplane & airplane){
                 cout << "Enter the type of service (maintenance or cleaning): ";
                 cin >> type;
                 cout << "Enter date of the service (day/month/year): ";
-                Date d(0, 0, 0);
-                cin >> d;
+                Date d;
+                d = read_date();
                 cout << "Enter hour of the service (hour:minute): ";
-                Time t(0, 0);
-                cin >> t;
+                Time t;
+                t = read_time();
                 Schedule schedule(t, d);
                 if (type == "maintenance") {
                     Service service = Service(maintenance, schedule, employee);
@@ -366,9 +401,9 @@ void Airline::update_flight(Flight & flight){
                 Date date;
                 Time t;
                 cout << "Enter the new date (dd/mm/yyyy): ";
-                cin >> date;
+                date = read_date();
                 cout << "Enter the time (hh:mm): ";
-                cin >> t;
+                t = read_time();
                 flight.set_schedule(Schedule(t, date));
                 break;
             }
@@ -548,15 +583,15 @@ bool Airline::add_flight(Airplane & airplane){
     cout << "Enter flight number: ";
     flight_number = read_int();
     cout << "Enter date of the flight (day/month/year): ";
-    Date d(0,0,0);
-    cin >> d;
+    Date d;
+    d = read_date();
     cout << "Enter hour of the flight (hour:minute): ";
-    Time origin_time(0,0);
-    cin >> origin_time;
+    Time origin_time;
+    origin_time = read_time();
     Schedule schedule = Schedule(origin_time, d);
-    Time duration = Time(0,0);
+    Time duration;
     cout << "Enter duration of the flight (hour:minute): ";
-    cin >> duration;
+    duration = read_time();
     cout << "Enter origin location: ";
     cin>> origin;
     if(find_airport(origin)== nullptr)
@@ -624,7 +659,7 @@ void Airline::see_information_transport(const LocalTransport &l){
     string n;
     Time current_time;
     cout << "Please enter the current time (hh:mm): ";
-    cin >> current_time;
+    current_time = read_time();
     cout << "How many schedules do you want to see? (type x for all): ";
     cin >> n;
     vector<Time> next_schedules;
@@ -667,7 +702,7 @@ Airport * Airline::find_airport(const string &name){
 void Airline::print_closest_transports(const Airport &airport){
     int n;
     cout << "How many transports do you wish to see: ";
-    cin >> n;
+    n = read_int();
     vector<LocalTransport> nearest_t = airport.get_closest_transports(n);
     if (nearest_t.size() < n) {
         cout << "There are only " << nearest_t.size() << " transports that are near the airport." << endl;
