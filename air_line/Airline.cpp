@@ -663,7 +663,7 @@ bool Airline::add_flights(Airplane & airplane){
         }
         flights_to_add.push_back(Flight(capacity, flight_number, duration, schedule, origin, destination));
     }
-    return (airplane.add_flights(flights_to_add))
+    return (airplane.add_flights(flights_to_add));
 }
 
 bool Airline::add_airport(const Airport &airport) {
