@@ -8,7 +8,10 @@
 #include <string>
 #include <fstream>
 
+
 using namespace std;
+
+const int INVALID = -1;
 
 Airline::Airline(){
     ifstream file, airplane_file,flight_file;
@@ -93,6 +96,40 @@ Airline::Airline(){
     file.close();
 }
 
+int read_int() {
+    int n;
+    cin >> n;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID;
+    }
+    else if (cin.fail() or cin.peek() != '\n') {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return n;
+}
+
+unsigned read_unsigned() {
+    unsigned n;
+    cin >> n;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID;
+    }
+    else if (cin.fail() or cin.peek() != '\n') {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return n;
+}
+
 void Airline::interface() {
     setup();
     char option;
@@ -160,7 +197,7 @@ bool Airline::add_airplane() {
     cout << "Enter airplane type: ";
     cin >> type;
     cout << "Enter airplane capacity: ";
-    cin >> capacity;
+    capacity = read_unsigned();
     Airplane airplane(license_plate,type,capacity);
     auto iter = airplanes.begin();
     for(iter;iter!=airplanes.end();iter++){
@@ -187,7 +224,7 @@ void Airline::check_db() {
             case '1': {
                 int n;
                 cout << "How many flights do you wish to see: ";
-                cin >> n;
+                n = read_int();
                 print_soonest_flights(n);
                 break;
             }
@@ -257,8 +294,7 @@ void Airline::update_airplane(Airplane & airplane){
             case '2': {
                 int flight_number;
                 cout << "Enter flight number: ";
-                cin >> flight_number;
-
+                flight_number = read_int();
                 if (airplane.remove_flight(flight_number))
                     cout << "Removed flight successfuly" << endl;
                 else
@@ -268,7 +304,7 @@ void Airline::update_airplane(Airplane & airplane){
             case '3': {
                 int flight_number;
                 cout << "Enter flight number: ";
-                cin >> flight_number;
+                flight_number = read_int();
                 Flight *f = airplane.find_flight(flight_number);
                 if (f != nullptr) {
                     update_flight(*f);
@@ -356,7 +392,7 @@ void Airline::update_flight(Flight & flight){
             case '3':{
                 int number_of_passengers;
                 cout << "How many people are in the group?: ";
-                cin >> number_of_passengers;
+                number_of_passengers = read_int();
                 if(number_of_passengers+flight.get_passengers().size()>flight.get_capacity())
                     cout << "Sorry, there are only " << flight.get_capacity()-flight.get_passengers().size() << "seats available." << endl;
                 else{
@@ -507,10 +543,10 @@ Airplane* Airline::find_airplane(const string& license_plate){
 
 bool Airline::add_flight(Airplane & airplane){
     string origin, destination;
-    unsigned flight_number;
-    int capacity = airplane.get_capacity();
+    int flight_number;
+    unsigned capacity = airplane.get_capacity();
     cout << "Enter flight number: ";
-    cin >> flight_number;
+    flight_number = read_int();
     cout << "Enter date of the flight (day/month/year): ";
     Date d(0,0,0);
     cin >> d;
