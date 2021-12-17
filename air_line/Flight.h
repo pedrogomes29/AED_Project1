@@ -7,10 +7,13 @@
 
 #include <string>
 #include <list>
+#include <vector>
+#include <iostream>
+#include <stack>
+#include <limits>
 #include "Passenger.h"
 #include "Date.h"
 #include "Schedule.h"
-
 using namespace std;
 
 class Flight {
@@ -65,6 +68,11 @@ public:
      * @param s1 object of Schedule Class representing the date and hour of when the flight will take place
      */
     void set_schedule(const Schedule & s1);
+    /**
+     * shows order in which the baggages were put in the airplane after asking for the number of carriages,
+     * stacks and stack size of the car. Also outputs the number of trips the car made.
+    */
+    void show_baggages() const;
     /**
      * method that allows a passenger to be added to the flight
      * checks if there are still empty seats available in the flight

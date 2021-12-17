@@ -68,81 +68,6 @@ bool Airplane::add_service(const Service& serv) {
     return true;
 }
 
-void print_carriages(vector<vector<stack<string>>> vector1) {
-    bool nothing_more_to_print=false;
-    for(int i = 0; i<vector1.size();i++){
-        if(nothing_more_to_print)
-            break;
-        for(int j=0;j<vector1[0].size();j++){
-            if(vector1[i][j].empty()) {
-                nothing_more_to_print = true;
-                break;
-            }
-            cout <<"-------------"<< endl;
-            while(!vector1[i][j].empty()) {
-                cout << vector1[i][j].top() << endl;
-                vector1[i][j].pop();
-            }
-            cout <<"-------------"<< endl;
-        }
-        cout << endl;
-    }
-    cout << endl;
-}
-
-void show_baggages(Flight f){
-    bool there_is_luggage=false;
-    unsigned num_of_carriages, num_of_stacks, stack_size;
-    cout << "Enter the number of carriages: ";
-    cin >> num_of_carriages;
-    cout << "Enter the number of stacks: ";
-    cin >> num_of_stacks;
-    cout << "Enter the stack size: ";
-    cin >> stack_size;
-    vector<vector<stack<string>>> carriages(num_of_carriages, vector<stack<string>>(num_of_stacks));
-    list<Passenger> passengers = f.get_passengers();
-    unsigned trips=1;
-    unsigned carriage=0;
-    unsigned pile=0;
-    unsigned current_size=0;
-    for(Passenger p:passengers){
-        if(p.has_luggage()){
-            if(!there_is_luggage)
-                there_is_luggage=true;
-            current_size++;
-            if(current_size>stack_size) {
-                current_size = 1;
-                pile++;
-            }
-            if(pile>=num_of_stacks){
-                carriage++;
-                pile=0;
-            }
-            if(carriage>=num_of_carriages) {
-                trips++;
-                carriage=0;
-                pile=0;
-                current_size=1;
-                print_carriages(carriages);
-                carriages = vector<vector<stack<string>>>(num_of_carriages,vector<stack<string>>(num_of_stacks));// clears carriages
-                carriages[0][0].push(p.get_name());
-            }
-            else{
-                carriages[carriage][pile].push(p.get_name());
-            }
-        }
-    }
-    if(!carriages[0][0].empty()) // if  first pile in first stack isn't empty(there's something to print)
-        print_carriages(carriages);
-    if(there_is_luggage) {
-        if (trips > 1)
-            cout << "The car made " << trips << " trips." << endl;
-        else
-            cout << "The car made " << trips << " trip." << endl;
-    }
-    else
-        cout << "No luggage found" << endl;
-}
 
 
 bool Airplane::remove_flight(unsigned number){
@@ -152,7 +77,7 @@ bool Airplane::remove_flight(unsigned number){
             cout << "Do you want to cancel the flight or is it about to happen? (0 to cancel else 1): ";
             cin >> is_about_to_happen;
             if(is_about_to_happen) {
-                show_baggages(*iter);
+                iter->show_baggages();
             }
             remove(("files/Flight_"+to_string(iter->get_number())+".txt").c_str());
             flights.erase(iter);

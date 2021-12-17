@@ -10,6 +10,24 @@
 
 using namespace std;
 
+const char INVALID_KEY = 0;
+
+char readChar() {
+    char c;
+    cin >> c;
+    if (cin.eof()) {
+        exit(EXIT_SUCCESS);
+        return INVALID_KEY;
+    }
+    else if (cin.peek() != '\n') {
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return INVALID_KEY;
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return c;
+}
+
+
 Airline::Airline(){
     ifstream file, airplane_file,flight_file;
     file.open("files/Airplanes.txt");
@@ -105,7 +123,7 @@ void Airline::interface() {
         cout << "4. Check near transports" << endl;
         cout << "5. Exit" << endl;
         cout<<endl;
-        cin >> option;
+        option=readChar();
         switch (option) {
             case '1': {
                 add_airplane();
@@ -182,7 +200,7 @@ void Airline::check_db() {
         cout << "3. See every airport we operate in. " << endl;
         cout << "4. Exit to previous menu. " << endl;
         cout << "Option: ";
-        cin >> option;
+        option=readChar();
         switch (option) {
             case '1': {
                 int n;
@@ -245,7 +263,7 @@ void Airline::update_airplane(Airplane & airplane){
         cout << "4. Add Service" << endl;
         cout << "5. Remove Service" << endl;
         cout << "6. Exit to the previous menu" << endl;
-        cin >> option;
+        option=readChar();
         switch (option) {
             case '1': {
                 if (add_flight(airplane))
@@ -324,7 +342,7 @@ void Airline::update_flight(Flight & flight){
         cout << "2. Add passenger" << endl;
         cout << "3. Add a group of passengers" << endl;
         cout << "4. Exit to the previous menu"<<endl;
-        cin >> option;
+        option=readChar();
         switch (option) {
             case '1': {
                 Date date;
@@ -344,7 +362,7 @@ void Airline::update_flight(Flight & flight){
                     cin.ignore(1);
                 getline(cin, passenger_name);
                 cout << "Does have have luggagge?(Y/N): ";
-                cin >> answer;
+                option=readChar();
                 if (answer == 'Y')
                     flight.add_passenger(Passenger(passenger_name, true));
                 else if (answer == 'N')
