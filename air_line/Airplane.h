@@ -95,13 +95,7 @@ public:
      * we cannot add a service at the same time a flight is taking place
      */
     bool add_service(const Service& serv);
-    /**
-     * Method that trys to remove a flight from the vector flight:
-     * Either because we simply want to remove it or because the flight is about to happen
-     * @param number unsigned int representing the number of the flight we wish to remove
-     * @return returns a boolean value indicating whether the removal was possible
-     */
-    bool remove_flight(unsigned number);
+    bool start
 };
 
 #endif //AIRLINE_AIRPLANE_H
