@@ -16,9 +16,7 @@ string Airport::get_country() const {
 string Airport::get_name() const{
     return name;
 }
-void Airport::set_name(const string & name){
-    this->name = name;
-}
+
 bool Airport::add_transport(const LocalTransport &lt){
     return transports.insert(lt);
 }

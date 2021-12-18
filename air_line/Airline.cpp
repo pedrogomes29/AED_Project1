@@ -480,7 +480,7 @@ void Airline::update_flight(Flight & flight){
                 cout << "How many people are in the group?: ";
                 number_of_passengers = read_int();
                 if(number_of_passengers+flight.get_passengers().size()>flight.get_capacity())
-                    cout << "Sorry, there are only " << flight.get_capacity()-flight.get_passengers().size() << "seats available." << endl;
+                    cout << "Sorry, there are only " << flight.get_capacity()-flight.get_passengers().size() << " seats available." << endl;
                 else{
                     for(unsigned int i=1;i<=number_of_passengers;i++){
                         string passenger_name;

@@ -31,11 +31,6 @@ public:
      */
     string get_name() const;
     /**
-     * setter for the name attribute
-     * @param name string representing the name of the Airport
-     */
-    void set_name(const string &name);
-    /**
      * getter for the country attribute
      * @return returns string representing the country where the airport is located
      */
