@@ -288,12 +288,13 @@ bool Airline::add_airplane() {
 
 void Airline::check_db() {
     char option;
-    while(!cin.eof() and option!='4') {
+    while(!cin.eof() and option!='5') {
         cout << endl;
         cout << "1. See the soonest 'x' flights. " << endl;
         cout << "2. See every plane owned by this airline company. " << endl;
         cout << "3. See every airport we operate in. " << endl;
-        cout << "4. Exit to previous menu. " << endl;
+        cout << "4. See all flights to a specific destination from a specific origin. "<<endl;
+        cout << "5. Exit to previous menu. " << endl;
         cout << "Option: ";
         option=readChar();
         switch (option) {
@@ -338,7 +339,15 @@ void Airline::check_db() {
                 print_airports(country);
                 break;
             }
-            case '4':
+            case '4':{
+                string destination,origin;
+                cout<<"What's the origin : ";
+                origin = read_string();
+                cout<<"What's the destination : ";
+                destination = read_string();
+                print_specific_flights(origin,destination);
+            }
+            case '5':
                 continue;
             default: {
                 cout << "Invalid option" << endl;
@@ -861,6 +870,24 @@ void Airline::print_soonest_flights(int n){
             cout<<"Scheduled at: "<< all_flights[i].get_schedule()<<endl;
             cout<<"Flight duration of "<< all_flights[i].get_duration()<<endl;
             cout<<"With origin in " << all_flights[i].get_origin()<< " and destination "<< all_flights[i].get_destination()<<endl;
+        }
+    }
+}
+
+void Airline::print_specific_flights(const string &origin,const string& destination) {
+    vector<Flight> answer;
+    for(Airplane const &a:airplanes){
+        for(Flight const  &f : a.get_flights()){
+            if(f.get_destination()== destination and f.get_origin()==origin)
+                answer.push_back(f);
+        }
+    }
+    sort(answer.begin(),answer.end(), rule_flight);
+    for(auto const &flight: answer){
+        if(flight.get_destination()== destination and flight.get_origin()==origin){
+            cout<<"Flight number "<< flight.get_number()<<":"<<endl;
+            cout<<"Scheduled at: "<< flight.get_schedule()<<endl;
+            cout<<"Flight duration of "<< flight.get_duration()<<endl;
         }
     }
 }

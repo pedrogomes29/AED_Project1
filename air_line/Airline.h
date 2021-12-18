@@ -131,6 +131,12 @@ public:
      * @param n integer representing the number of soonest flights the user wants to see.
      */
     void print_soonest_flights(int n);
+    /**
+     * Method that prints to the console the listing of the flights with the same destination and origin as the method's parameters.
+     * @param destination string representing the destination which we want to see flights landing on
+     * @param origin string representing the origin which we want to see flights departing from
+     */
+    void print_specific_flights(const string &origin,const string& destination);
 };
 
 #endif //AIRLINE_AIRLINE_H
