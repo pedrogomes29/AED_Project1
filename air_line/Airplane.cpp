@@ -45,8 +45,10 @@ queue<Service> Airplane::get_services() const{
 
 bool Airplane::check_if_in_order_removing(const vector<Flight> &flights){
     for(unsigned int i=1;i<flights.size();i++){
+        Schedule s1 = flights[i - 1].get_schedule();
+        s1.add_time(flights[i - 1].get_duration());
         if (flights[i].get_origin() != flights[i - 1].get_destination() ||
-        flights[i].get_schedule() < flights[i - 1].get_schedule().add_time(flights[i - 1].get_duration()))
+        flights[i].get_schedule() < s1)
              return false;
     }
     return true;
@@ -62,13 +64,19 @@ bool Airplane::check_if_in_order_adding(const vector <Flight> &flights) const{
     }
     for(unsigned int i=0;i<flights.size();i++){
         if(i>=1) {
+            Schedule s1 = flights[i - 1].get_schedule();
+            s1.add_time(flights[i - 1].get_duration());
             if (flights[i].get_origin() != flights[i - 1].get_destination() ||
-                flights[i].get_schedule() < flights[i - 1].get_schedule().add_time(flights[i - 1].get_duration()))
+                flights[i].get_schedule() < s1)
                 return false;
         }
         for(Service s:v_services){
-            if((s.get_schedule()<flights[i].get_schedule() and flights[i].get_schedule()<s.get_schedule().add_time(s.get_duration()) ||
-            flights[i].get_schedule()<s.get_schedule() and s.get_schedule()<flights[i].get_schedule().add_time(flights[i].get_duration())))
+            Schedule s1 = s.get_schedule();
+            s1.add_time(s.get_duration());
+            Schedule s2 = flights[i].get_schedule();
+            s2.add_time(flights[i].get_duration());
+            if((s.get_schedule()<flights[i].get_schedule() and flights[i].get_schedule()<s1 ||
+            flights[i].get_schedule()<s.get_schedule() and s.get_schedule()<s2))
                 return false;
         }
     }
@@ -127,11 +135,14 @@ bool Airplane::add_service(const Service& serv) {
     }
     Time duration = serv.get_duration();
     Schedule s = serv.get_schedule();
-    Schedule s_f = s.add_time(duration);
+    Schedule s_f = s;
+    s_f.add_time(duration);
     for(auto const &f:flights){
+        Schedule s1 = f.get_schedule();
+        s1.add_time(f.get_duration());
         if(s<f.get_schedule() && f.get_schedule()<s_f)
             return false;
-        if (f.get_schedule() < s && s< f.get_schedule().add_time(f.get_duration()))
+        if (f.get_schedule() < s && s<s1)
             return false;
     }
     services.push(serv);
