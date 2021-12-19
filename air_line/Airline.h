@@ -18,6 +18,7 @@ class Airline {
 private:
     vector<Airplane> airplanes;
     vector<Airport> airports;
+
 public:
     /*
      * Default constructor of the AirLine class

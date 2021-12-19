@@ -69,7 +69,7 @@ bool Flight::add_passenger(Passenger p) {
 
 /**
  *
- * prints the carriage given as a paramater to the screen
+ * prints the car given as a paramater to the screen
  * @param vector1 carriages to print
  */
 

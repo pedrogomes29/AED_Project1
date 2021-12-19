@@ -37,20 +37,6 @@ Airplane::Airplane(string _license_plate,string _type,unsigned _capacity){
     capacity=_capacity;
 }
 
-Schedule result(Schedule s,Time t){
-    int min = s.get_time().get_minute()+t.get_minute();
-    int hour = s.get_time().get_hour()+t.get_hour();
-    Date d = s.get_date();
-    if(min>60){
-        min = min%60;
-        hour+=hour/60;
-    }
-    if(hour>23){
-        d.increment(hour/24);
-        hour%=24;
-    }
-    return Schedule(Time(hour,min),d);
-}
 
 queue<Service> Airplane::get_services() const{
     return services;
@@ -60,7 +46,7 @@ queue<Service> Airplane::get_services() const{
 bool Airplane::check_if_in_order_removing(const vector<Flight> &flights){
     for(unsigned int i=1;i<flights.size();i++){
         if (flights[i].get_origin() != flights[i - 1].get_destination() ||
-        flights[i].get_schedule() < result(flights[i - 1].get_schedule(), flights[i - 1].get_duration()))
+        flights[i].get_schedule() < flights[i - 1].get_schedule().add_time(flights[i - 1].get_duration()))
              return false;
     }
     return true;
@@ -77,12 +63,12 @@ bool Airplane::check_if_in_order_adding(const vector <Flight> &flights) const{
     for(unsigned int i=0;i<flights.size();i++){
         if(i>=1) {
             if (flights[i].get_origin() != flights[i - 1].get_destination() ||
-                flights[i].get_schedule() < result(flights[i - 1].get_schedule(), flights[i - 1].get_duration()))
+                flights[i].get_schedule() < flights[i - 1].get_schedule().add_time(flights[i - 1].get_duration()))
                 return false;
         }
         for(Service s:v_services){
-            if((s.get_schedule()<flights[i].get_schedule() and flights[i].get_schedule()<result(s.get_schedule(),s.get_duration())) ||
-            flights[i].get_schedule()<s.get_schedule() and s.get_schedule()<result(flights[i].get_schedule(),flights[i].get_duration()))
+            if((s.get_schedule()<flights[i].get_schedule() and flights[i].get_schedule()<s.get_schedule().add_time(s.get_duration()) ||
+            flights[i].get_schedule()<s.get_schedule() and s.get_schedule()<flights[i].get_schedule().add_time(flights[i].get_duration())))
                 return false;
         }
     }
@@ -114,7 +100,7 @@ bool Airplane::add_flights(vector<Flight> new_flights){
         new_flights.insert(new_flights.begin(), *previous);
     if(!insert_in_end)
         new_flights.push_back(*iter);
-    if(check_if_in_order_adding(new_flights)){
+        if(check_if_in_order_adding(new_flights)){
         unsigned i,end;
         if(insert_in_beggining)
             i=0;
@@ -141,13 +127,11 @@ bool Airplane::add_service(const Service& serv) {
     }
     Time duration = serv.get_duration();
     Schedule s = serv.get_schedule();
-    Schedule s_f = result(s,duration);
+    Schedule s_f = s.add_time(duration);
     for(auto const &f:flights){
-        if(s<f.get_schedule() && f.get_schedule()<s_f )
-            return false;
         if(s<f.get_schedule() && f.get_schedule()<s_f)
             return false;
-        if (f.get_schedule() < s && s< result(f.get_schedule(),f.get_duration()))
+        if (f.get_schedule() < s && s< f.get_schedule().add_time(f.get_duration()))
             return false;
     }
     services.push(serv);
