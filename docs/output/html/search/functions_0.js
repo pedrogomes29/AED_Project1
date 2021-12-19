@@ -7,7 +7,8 @@ var searchData=
   ['add_5fpassenger_4',['add_passenger',['../class_flight.html#abffe14b44847f2f6983140d6ce803e0e',1,'Flight']]],
   ['add_5fschedule_5',['add_schedule',['../class_local_transport.html#a3915ba02534ebf1b6074a743cb9c319e',1,'LocalTransport']]],
   ['add_5fservice_6',['add_service',['../class_airplane.html#a0067061f25ed1f4429860a9aa2c10199',1,'Airplane']]],
-  ['add_5ftransport_7',['add_transport',['../class_airport.html#a34e83797529018ad6d0ff64fece016fe',1,'Airport']]],
-  ['airplane_8',['Airplane',['../class_airplane.html#afccae36e3013e038d51504cea1a98219',1,'Airplane::Airplane()'],['../class_airplane.html#a6020d1080382cfcae16b2010b9090df4',1,'Airplane::Airplane(string _license_plate, string _type, unsigned _capacity)']]],
-  ['airport_9',['Airport',['../class_airport.html#a2ab0908f02ea4d24aaede804f5d0e7c8',1,'Airport']]]
+  ['add_5ftime_7',['add_time',['../class_schedule.html#a94b6268620ffe5875409f26de9a85d30',1,'Schedule']]],
+  ['add_5ftransport_8',['add_transport',['../class_airport.html#a34e83797529018ad6d0ff64fece016fe',1,'Airport']]],
+  ['airplane_9',['Airplane',['../class_airplane.html#afccae36e3013e038d51504cea1a98219',1,'Airplane::Airplane()'],['../class_airplane.html#a6020d1080382cfcae16b2010b9090df4',1,'Airplane::Airplane(string _license_plate, string _type, unsigned _capacity)']]],
+  ['airport_10',['Airport',['../class_airport.html#a2ab0908f02ea4d24aaede804f5d0e7c8',1,'Airport']]]
 ];
