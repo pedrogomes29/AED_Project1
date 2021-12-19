@@ -20,7 +20,7 @@ Date Schedule::get_date()const{
     return date;
 }
 
-Schedule Schedule::add_time(const Time&t){
+void Schedule::add_time(const Time&t){
     int min = get_time().get_minute()+t.get_minute();
     int hour = get_time().get_hour()+t.get_hour();
     if(min>60){

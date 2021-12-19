@@ -36,11 +36,10 @@ public:
      */
     Date get_date()const;
     /**
-     *
+     * adds Time t to the current schedule (can change the date)
      * @param t time to add to the schedule
-     * @return current schedule + Time t (can change the date)
      */
-    Schedule add_time(const Time&t);
+    void add_time(const Time&t);
     /**
      * Overloading of the < operator used to compare two Schedules.
      * @param schedule2 Object passed by reference of the same class.
