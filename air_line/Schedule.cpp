@@ -20,6 +20,21 @@ Date Schedule::get_date()const{
     return date;
 }
 
+Schedule Schedule::add_time(const Time&t){
+    int min = get_time().get_minute()+t.get_minute();
+    int hour = get_time().get_hour()+t.get_hour();
+    if(min>60){
+        min = min%60;
+        hour+=hour/60;
+    }
+    if(hour>23){
+        date.increment(hour/24);
+        hour%=24;
+    }
+    time.set_hour(hour);
+    time.set_minute(min);
+}
+
 bool Schedule::operator<(Schedule const &schedule2){
     if(date<schedule2.get_date()){
         return true;
