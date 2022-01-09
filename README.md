@@ -15,7 +15,7 @@ This program also insures data persistence, since we use files to store almost e
 ### Class Diagram
 
 <p align="center" justify="center">
-  <img src="docs/imgs/class_diagram.png"/>
+  <img src="imgs/class_diagram.png"/>
 </p>
 <p align="center">
   <b><i>Fig 2. Class Diagram </i></b>
